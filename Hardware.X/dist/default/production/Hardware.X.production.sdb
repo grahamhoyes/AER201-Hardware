@@ -1,0 +1,342 @@
+[p LITE_MODE AUTOSTATIC LFSROK EMI_WORD ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F4620 ]
+[d frameptr 4065 ]
+"46 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\main.c
+[e E3064 fs `uc
+B 0
+N 1
+S 2
+W 3
+BN 4
+BS 5
+BW 6
+BBN 7
+BBS 8
+BBW 9
+BNW 10
+BSW 11
+BWW 12
+BNWW 13
+BSWW 14
+BBSW 15
+BBNW 16
+BNNW 17
+BNNN 18
+BWWW 19
+]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"54 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftmul.c
+[v ___ftmul __ftmul `(f  1 e 3 0 ]
+"20 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftsub.c
+[v ___ftsub __ftsub `(f  1 e 3 0 ]
+"10 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 3 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 3 0 ]
+"11 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 3 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\sprcmul.c
+[v ___flmul __flmul `(d  1 e 3 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\strcpy.c
+[v _strcpy strcpy `(*.39uc  1 e 2 0 ]
+"15 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+"15 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"12 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.c
+[v _lcdInst lcdInst `(v  1 e 1 0 ]
+"25
+[v _putch putch `(v  1 e 1 0 ]
+"38
+[v _lcdNibble lcdNibble `(v  1 e 1 0 ]
+"61
+[v _initLCD initLCD `(v  1 e 1 0 ]
+"81
+[v _lcd_set_cursor lcd_set_cursor `(v  1 e 1 0 ]
+"98
+[v _lcd_shift_cursor lcd_shift_cursor `(v  1 e 1 0 ]
+"4 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd_extras.c
+[v _printStringLCD printStringLCD `(i  1 e 2 0 ]
+"60
+[v _printErrorLCD printErrorLCD `(v  1 e 1 0 ]
+"66
+[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
+"89 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\main.c
+[v _inputEntry inputEntry `(i  1 e 2 0 ]
+"192
+[v _main main `(v  1 e 1 0 ]
+"187 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
+[v _PORTB PORTB `VEuc  1 e 1 @3969 ]
+[s S309 . 1 `uc 1 RB0 1 0 :1:0 
+`uc 1 RB1 1 0 :1:1 
+`uc 1 RB2 1 0 :1:2 
+`uc 1 RB3 1 0 :1:3 
+`uc 1 RB4 1 0 :1:4 
+`uc 1 RB5 1 0 :1:5 
+`uc 1 RB6 1 0 :1:6 
+`uc 1 RB7 1 0 :1:7 
+]
+"228
+[s S318 . 1 `uc 1 INT0 1 0 :1:0 
+`uc 1 INT1 1 0 :1:1 
+`uc 1 INT2 1 0 :1:2 
+`uc 1 CCP2 1 0 :1:3 
+`uc 1 KBI0 1 0 :1:4 
+`uc 1 KBI1 1 0 :1:5 
+`uc 1 KBI2 1 0 :1:6 
+`uc 1 KBI3 1 0 :1:7 
+]
+[s S327 . 1 `uc 1 AN12 1 0 :1:0 
+`uc 1 AN10 1 0 :1:1 
+`uc 1 AN8 1 0 :1:2 
+`uc 1 AN9 1 0 :1:3 
+`uc 1 AN11 1 0 :1:4 
+`uc 1 PGM 1 0 :1:5 
+`uc 1 PGC 1 0 :1:6 
+`uc 1 PGD 1 0 :1:7 
+]
+[s S336 . 1 `uc 1 . 1 0 :3:0 
+`uc 1 CCP2_PA2 1 0 :1:3 
+]
+[u S339 . 1 `S309 1 . 1 0 `S318 1 . 1 0 `S327 1 . 1 0 `S336 1 . 1 0 ]
+[v _PORTBbits PORTBbits `VES339  1 e 1 @3969 ]
+"878
+[v _LATA LATA `VEuc  1 e 1 @3977 ]
+"990
+[v _LATB LATB `VEuc  1 e 1 @3978 ]
+"1102
+[v _LATC LATC `VEuc  1 e 1 @3979 ]
+"1214
+[v _LATD LATD `VEuc  1 e 1 @3980 ]
+[s S159 . 1 `uc 1 LATD0 1 0 :1:0 
+`uc 1 LATD1 1 0 :1:1 
+`uc 1 LATD2 1 0 :1:2 
+`uc 1 LATD3 1 0 :1:3 
+`uc 1 LATD4 1 0 :1:4 
+`uc 1 LATD5 1 0 :1:5 
+`uc 1 LATD6 1 0 :1:6 
+`uc 1 LATD7 1 0 :1:7 
+]
+"1241
+[s S168 . 1 `uc 1 LD0 1 0 :1:0 
+`uc 1 LD1 1 0 :1:1 
+`uc 1 LD2 1 0 :1:2 
+`uc 1 LD3 1 0 :1:3 
+`uc 1 LD4 1 0 :1:4 
+`uc 1 LD5 1 0 :1:5 
+`uc 1 LD6 1 0 :1:6 
+`uc 1 LD7 1 0 :1:7 
+]
+[u S177 . 1 `S159 1 . 1 0 `S168 1 . 1 0 ]
+[v _LATDbits LATDbits `VES177  1 e 1 @3980 ]
+"1326
+[v _LATE LATE `VEuc  1 e 1 @3981 ]
+"1378
+[v _TRISA TRISA `VEuc  1 e 1 @3986 ]
+"1600
+[v _TRISB TRISB `VEuc  1 e 1 @3987 ]
+"1822
+[v _TRISC TRISC `VEuc  1 e 1 @3988 ]
+"2044
+[v _TRISD TRISD `VEuc  1 e 1 @3989 ]
+"2266
+[v _TRISE TRISE `VEuc  1 e 1 @3990 ]
+[s S207 . 1 `uc 1 RBIF 1 0 :1:0 
+`uc 1 INT0IF 1 0 :1:1 
+`uc 1 TMR0IF 1 0 :1:2 
+`uc 1 RBIE 1 0 :1:3 
+`uc 1 INT0IE 1 0 :1:4 
+`uc 1 TMR0IE 1 0 :1:5 
+`uc 1 PEIE_GIEL 1 0 :1:6 
+`uc 1 GIE_GIEH 1 0 :1:7 
+]
+"6404
+[s S216 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 INT0F 1 0 :1:1 
+`uc 1 T0IF 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 INT0E 1 0 :1:4 
+`uc 1 T0IE 1 0 :1:5 
+`uc 1 PEIE 1 0 :1:6 
+`uc 1 GIE 1 0 :1:7 
+]
+[s S225 . 1 `uc 1 . 1 0 :6:0 
+`uc 1 GIEL 1 0 :1:6 
+`uc 1 GIEH 1 0 :1:7 
+]
+[u S229 . 1 `S207 1 . 1 0 `S216 1 . 1 0 `S225 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES229  1 e 1 @4082 ]
+"10 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.c
+[v _LCDinterruptState LCDinterruptState `uc  1 s 1 LCDinterruptState ]
+"65 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.h
+[v _LCD_SIZE_VERT LCD_SIZE_VERT `Cuc  1 e 1 0 ]
+"11 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd_extras.h
+[v _keypadChars keypadChars `C[17]uc  1 e 17 0 ]
+"15 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\main.c
+[v _inputEntryQuestions inputEntryQuestions `C[4][33]uc  1 e 132 0 ]
+[s S21 errorMessages 224 `C[32]uc 1 badEntry 32 0 `C[32]uc 1 tooManyFasteners 32 32 `C[32]uc 1 tooManyBolts 32 64 `C[32]uc 1 tooManyNuts 32 96 `C[32]uc 1 tooManyWashers 32 128 `C[32]uc 1 tooManySpacers 32 160 `C[32]uc 1 noFasteners 32 192 ]
+"32
+[v _errMsgs errMsgs `CS21  1 e 224 0 ]
+[s S50 inputParams 26 `i 1 steps 2 0 `[8]E3064 1 toFill 8 2 `[8]i 1 setMultiple 16 10 ]
+"46
+[v _params params `S50  1 e 26 0 ]
+"48
+[v _fastenerMatrix fastenerMatrix `C[20][4]uc  1 e 80 0 ]
+"72
+[v _assemblyStepEncoding assemblyStepEncoding `C[5]uc  1 e 5 0 ]
+"192
+[v _main main `(v  1 e 1 0 ]
+{
+"221
+} 0
+"89
+[v _inputEntry inputEntry `(i  1 e 2 0 ]
+{
+"128
+[v inputEntry@fastenerString fastenerString `[32]uc  1 a 32 29 ]
+"122
+[v inputEntry@setIsGood setIsGood `i  1 a 2 75 ]
+"118
+[v inputEntry@compartmentsToFill compartmentsToFill `uc  1 a 1 77 ]
+"98
+[v inputEntry@i i `i  1 a 2 86 ]
+"95
+[v inputEntry@inputEntryStep inputEntryStep `i  1 a 2 84 ]
+"93
+[v inputEntry@compartmentNum compartmentNum `i  1 a 2 82 ]
+"98
+[v inputEntry@numPressed numPressed `i  1 a 2 80 ]
+[v inputEntry@doneCompartment doneCompartment `i  1 a 2 78 ]
+[v inputEntry@found found `i  1 a 2 73 ]
+[v inputEntry@numW numW `i  1 a 2 71 ]
+[v inputEntry@numS numS `i  1 a 2 69 ]
+[v inputEntry@numN numN `i  1 a 2 67 ]
+[v inputEntry@numB numB `i  1 a 2 65 ]
+"96
+[v inputEntry@done done `i  1 a 2 63 ]
+"94
+[v inputEntry@compartmentLabel compartmentLabel `[2]uc  1 a 2 61 ]
+"99
+[v inputEntry@pressed pressed `uc  1 a 1 88 ]
+"93
+[v inputEntry@F3113 F3113 `[2]uc  1 s 2 F3113 ]
+"190
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\strcpy.c
+[v _strcpy strcpy `(*.39uc  1 e 2 0 ]
+{
+"15
+[v strcpy@cp cp `*.39uc  1 a 2 10 ]
+"8
+[v strcpy@to to `*.39uc  1 p 2 6 ]
+[v strcpy@from from `*.25Cuc  1 p 2 8 ]
+"24
+} 0
+"60 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd_extras.c
+[v _printErrorLCD printErrorLCD `(v  1 e 1 0 ]
+{
+[v printErrorLCD@string string `*.25uc  1 p 2 21 ]
+"63
+} 0
+"4
+[v _printStringLCD printStringLCD `(i  1 e 2 0 ]
+{
+"10
+[v printStringLCD@i i `i  1 a 2 19 ]
+"13
+[v printStringLCD@newlineCharIndex newlineCharIndex `i  1 a 2 17 ]
+"12
+[v printStringLCD@newlineIndex newlineIndex `i  1 a 2 15 ]
+"14
+[v printStringLCD@spaceIndex spaceIndex `i  1 a 2 13 ]
+"11
+[v printStringLCD@j j `i  1 a 2 11 ]
+"4
+[v printStringLCD@string string `*.35uc  1 p 2 6 ]
+"58
+} 0
+"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.c
+[v _putch putch `(v  1 e 1 0 ]
+{
+[v putch@data data `uc  1 a 1 wreg ]
+[v putch@data data `uc  1 a 1 wreg ]
+"33
+[v putch@data data `uc  1 a 1 2 ]
+"36
+} 0
+"66 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd_extras.c
+[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
+{
+"71
+[v pollKeypad@keypress keypress `uc  1 a 1 0 ]
+"79
+} 0
+"81 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.c
+[v _lcd_set_cursor lcd_set_cursor `(v  1 e 1 0 ]
+{
+[v lcd_set_cursor@x x `uc  1 a 1 wreg ]
+"92
+[v lcd_set_cursor@i i `uc  1 a 1 8 ]
+"81
+[v lcd_set_cursor@x x `uc  1 a 1 wreg ]
+[v lcd_set_cursor@y y `uc  1 p 1 6 ]
+"91
+[v lcd_set_cursor@x x `uc  1 a 1 9 ]
+"96
+} 0
+"98
+[v _lcd_shift_cursor lcd_shift_cursor `(v  1 e 1 0 ]
+{
+[v lcd_shift_cursor@numChars numChars `uc  1 a 1 wreg ]
+"110
+[v lcd_shift_cursor@n n `uc  1 a 1 5 ]
+"98
+[v lcd_shift_cursor@numChars numChars `uc  1 a 1 wreg ]
+[v lcd_shift_cursor@direction direction `uc  1 p 1 3 ]
+"110
+[v lcd_shift_cursor@numChars numChars `uc  1 a 1 4 ]
+"113
+} 0
+"15 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+{
+"17
+[v ___wmul@product product `ui  1 a 2 4 ]
+"15
+[v ___wmul@multiplier multiplier `ui  1 p 2 0 ]
+[v ___wmul@multiplicand multiplicand `ui  1 p 2 2 ]
+"53
+} 0
+"61 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\Packager\Hardware.X\lcd.c
+[v _initLCD initLCD `(v  1 e 1 0 ]
+{
+"79
+} 0
+"12
+[v _lcdInst lcdInst `(v  1 e 1 0 ]
+{
+[v lcdInst@data data `uc  1 a 1 wreg ]
+[v lcdInst@data data `uc  1 a 1 wreg ]
+"20
+[v lcdInst@data data `uc  1 a 1 2 ]
+"23
+} 0
+"38
+[v _lcdNibble lcdNibble `(v  1 e 1 0 ]
+{
+[v lcdNibble@data data `uc  1 a 1 wreg ]
+"46
+[v lcdNibble@temp temp `uc  1 a 1 0 ]
+"38
+[v lcdNibble@data data `uc  1 a 1 wreg ]
+"46
+[v lcdNibble@data data `uc  1 a 1 1 ]
+"59
+} 0

@@ -1,0 +1,59 @@
+
+# 1 "menu.c"
+
+# 11 "menu.h"
+typedef enum {B=66, N=78, S=83, W=87, steps, sets, x} fastener;
+
+struct menuOption {
+char min;
+char max;
+char end;
+char name[5];
+fastener type;
+struct menuOption * next[4];
+struct menuOption * prev;
+};
+
+void initMenu(void);
+
+# 61 "menu.c"
+void initMenu(void) {
+mBBNW.prev = &mOne;
+mBBN.prev = &mOne;
+mBBSW.prev = &mTwo;
+mBBS.prev = &mTwo;
+mBBW.prev = &mFour;
+mBNNN.prev = &mFourteen;
+mBNNW.prev = &mFourteen;
+mBNWW.prev = &mSeven;
+mBNW.prev = &mSeven;
+mBN.prev = &mSeven;
+mBSWW.prev = &mEight;
+mBSW.prev = &mEight;
+mBS.prev = &mEight;
+mBWWW.prev = &mFour;
+mBWW.prev = &mFour;
+mBW.prev = &mFour;
+mB.prev = &mFour;
+mW.prev = &mTwelve;
+mS.prev = &mTwelve;
+mN.prev = &mFifteen;
+
+
+mOne.prev = &mThirteen;
+mTwo.prev = &mFour;
+mFour.prev = &mThirteen;
+mSeven.prev = &mFourteen;
+mEight.prev = &mTen;
+mNine.prev = &mTen;
+mTen.prev = &mFourteen;
+mTwelve.prev = &mFifteen;
+mThirteen.prev = &mStart;
+mFourteen.prev = &mStart;
+mFifteen.prev = &mStart;
+mStart.prev = &mSets;
+
+
+mSteps.prev = &mSteps;
+mSets.prev = &mSteps;
+}

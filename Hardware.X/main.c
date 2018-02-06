@@ -40,9 +40,9 @@ const struct errorMessages {
 };
 
 struct inputParams{
-    int steps;
-    fS toFill[8];
-    int setMultiple[8];
+    int steps; // Number of assembly steps
+    fS toFill[8]; // Which fastener set goes in each compartment
+    int setMultiple[8]; // How many of each set in each compartment
 } params;  
 
 const char fastenerMatrix[20][4] = {
@@ -70,14 +70,7 @@ const char fastenerMatrix[20][4] = {
 
 /* Encoding of which compartments to fill in */
 const char assemblyStepEncoding[5] = {
-    /* Note that array indices are 5 below, compartment indices are 1 below*/
-    /*
-    0b10101010, // 4 steps: C 1,3,5,7
-    0b11011010, // 5 steps: C 1,2,4,5,7
-    0b11101110, // 6 steps: C 1,2,3,5,6,7
-    0b11111110, // 7 steps: C 1,2,3,4,5,6,7
-    0b11111111  // 8 steps: C 1,2,3,4,5,6,7,8*/
-    
+    /* Note that array indices are 5 below, compartment indices are 1 below*/    
     /* Because of the weird way I do things, these are backwards*/
     0b01010101, // 4 steps: C 7,5,3,1
     0b01011011, // 5 steps: C 7,5,4,2,1
@@ -95,7 +88,7 @@ int inputEntry(void) {
     int inputEntryStep = 0;
     int done = 0;
     
-    int i, numPressed, doneCompartment, numB, numN, numS, numW, found;
+    int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
     unsigned char pressed;
     
     while (!done) {
@@ -114,75 +107,115 @@ int inputEntry(void) {
                 inputEntryStep++;
             } else printErrorLCD(errMsgs.badEntry);
         } else if (inputEntryStep == 1) {
+            int stepID = 0;
+            // Turns out I used none of this
+            /* We use stepID to figure out which part of the compartment
+             * loading process we are asking for, as follows:
+             * stepID % 2 == 0: Asking which fastener set
+             * stepID % 2 == 1: Asking how many sets.
+             * By doing this, if we need to go back, we can check if stepID
+             * needs to be decremented, or if we need to go back an entire
+             * compartment.
+             */
+            
             /* Getting fastener set for each compartment */
             char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-            for (compartmentNum = 0; compartmentNum < params.steps; compartmentNum++) {
-                if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
+            for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
+                STARTCOMPARTMENT: if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
                     /* First, logic pertaining to which fastener set */
                     int setIsGood = 0;
-                    numB = 0;
-                    numN = 0;
-                    numS = 0;
-                    numW = 0;
-                    char fastenerString[32];
-                    strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-                    fastenerString[14] = compartmentNum + 1 + 48; // Replace 'x' with the compartment number
-                    
-                    printStringLCD(fastenerString);
-                    lcd_set_cursor(9, 1);
-                    doneCompartment = 0;
-                    
-                    while(doneCompartment < 4) {
-                        pressed = pollKeypad();
-                        if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-                            putch(pressed); // Put their selection to the LCD
-                            switch(pressed) {
-                                case 66:
-                                    numB++;
-                                    break;
-                                case 78:
-                                    numN++;
-                                    break;
-                                case 83:
-                                    numS++;
-                                    break;
-                                case 87:
-                                    numW++;
-                                    break;
-                                default:
-                                    break;
+                    while (!setIsGood) {
+                        numB = 0;
+                        numN = 0;
+                        numS = 0;
+                        numW = 0;
+                        char fastenerString[32];
+                        strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
+                        fastenerString[14] = compartmentNum + 1 + 48; // Replace 'x' with the compartment number
+
+                        printStringLCD(fastenerString);
+                        lcd_set_cursor(9, 1);
+                        doneCompartment = 0;
+
+                        while(doneCompartment < 4) {
+                            pressed = pollKeypad();
+                            if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
+                                putch(pressed); // Put their selection to the LCD
+                                if (pressed == 66) numB++;
+                                else if (pressed == 78) numN++;
+                                else if (pressed == 83) numS ++;
+                                else if (pressed == 87) numW++;
+                                doneCompartment++;
+                            } else if (pressed == 35) { // #: done
+                                doneCompartment = 4;
+                            } else if (pressed == 42) { // *: Go back
+                                compartmentNum--;
+                                stepID--;
+                                goto STARTCOMPARTMENT;
+//                                if (stepID % 2 == 0) { // Doing fasteners, need to go back a compartment
+//                                    compartmentNum--;
+//                                    stepID--;
+//                                    goto STARTCOMPARTMENT;
+//                                } else { // On the same compartment still
+//                                    stepID--;
+//                                }
                             }
-                            doneCompartment++;
-                        } else if (pressed == 35) { // #: done
-                            doneCompartment = 4;
-                        } else if (pressed == 42) { // *: Go back
-                            compartmentNum--;
-                            break;
+                        }
+
+                        /* Determine which fastener set we're dealing with */
+                        found = 0;
+                        for (i = 0; i < 20; i++) {
+                            if (fastenerMatrix[i][0] == numB && 
+                                fastenerMatrix[i][1] == numN &&
+                                fastenerMatrix[i][2] == numS &&
+                                fastenerMatrix[i][3] == numW) 
+                            {
+                                params.toFill[compartmentNum] = i; // i will correspond to the enum fS
+                                found = 1;
+                            }
+                        }  
+                        if (!found) {
+                            printErrorLCD(errMsgs.badEntry);
+                            // Compartment will be done again
+                            //compartmentNum--; // So that it does this compartment again
+                            continue;
+                        } else {
+                            setIsGood = 1;
+                            stepID++;
                         }
                     }
-                    
-                    /* Determine which fastener set we're dealing with */
-                    found = 0;
-                    for (i = 0; i < 20; i++) {
-                        if (fastenerMatrix[i][0] == numB && 
-                            fastenerMatrix[i][1] == numN &&
-                            fastenerMatrix[i][2] == numS &&
-                            fastenerMatrix[i][3] == numW) 
-                        {
-                            params.toFill[compartmentNum] == i; // i will correspond to the enum fS
-                            found = 1;
+                    /* Next, figure out how many multiples*/
+                    int doneMultiples = 0;
+                    while (!doneMultiples) {
+                        printStringLCD(inputEntryQuestions[2]);
+                        lcd_set_cursor(14, 1);
+
+                        pressed = pollKeypad();
+                        numPressed = pressed - 48;
+                        putch(pressed);
+                        __delay_ms(500); // For dramatic effect
+                        
+                        int sum = 0;
+                        for (i = 0; i < 4; i++) {
+                            sum += fastenerMatrix[params.toFill[compartmentNum]][i];
+                        };
+                        if (numPressed * sum > 4 || numPressed * sum <= 0) {
+                            printErrorLCD(errMsgs.tooManyFasteners);
+                        } else {
+                            params.setMultiple[compartmentNum] = numPressed;
+                            doneMultiples = 1;
                         }
-                    }  
-                    if (!found) {
-                        printErrorLCD(errMsgs.badEntry);
-                        compartmentNum--; // So that it does this compartment again
                     }
                 }
             }
-            inputEntryStep++;
+            done = 1;
+            // Right now on 4 steps, we are looping between C1 and C3
         }
+        
     }
-    
+    __lcd_clear();
+    __lcd_home();
+    printf("We done!");
 }
 
 void main(void) {

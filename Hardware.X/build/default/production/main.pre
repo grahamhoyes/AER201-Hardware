@@ -3968,7 +3968,7 @@ char compartmentLabel[2] = "C0";
 int inputEntryStep = 0;
 int done = 0;
 
-int i, numPressed, doneCompartment, numB, numN, numS, numW, found;
+int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
 unsigned char pressed;
 
 while (!done) {
@@ -3987,10 +3987,13 @@ params.steps = numPressed;
 inputEntryStep++;
 } else printErrorLCD(errMsgs.badEntry);
 } else if (inputEntryStep == 1) {
+int stepID = 0;
 
+# 129
 char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-for (compartmentNum = 0; compartmentNum < params.steps; compartmentNum++) {
-if ((compartmentsToFill >> compartmentNum) & 0b1) {
+
+for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
+STARTCOMPARTMENT: if ((compartmentsToFill >> compartmentNum) & 0b1) {
 
 int setIsGood = 0;
 while (!setIsGood) {
@@ -4010,27 +4013,21 @@ while(doneCompartment < 4) {
 pressed = pollKeypad();
 if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
 putch(pressed);
-switch(pressed) {
-case 66:
-numB++;
-break;
-case 78:
-numN++;
-break;
-case 83:
-numS++;
-break;
-case 87:
-numW++;
-break;
-default:
-break;
-}
+if (pressed == 66) numB++;
+else if (pressed == 78) numN++;
+else if (pressed == 83) numS ++;
+else if (pressed == 87) numW++;
+
+# 172
 doneCompartment++;
 } else if (pressed == 35) {
 doneCompartment = 4;
 } else if (pressed == 42) {
-break;
+compartmentNum--;
+stepID--;
+goto STARTCOMPARTMENT;
+
+# 186
 }
 }
 
@@ -4042,7 +4039,7 @@ fastenerMatrix[i][1] == numN &&
 fastenerMatrix[i][2] == numS &&
 fastenerMatrix[i][3] == numW)
 {
-params.toFill[compartmentNum] == i;
+params.toFill[compartmentNum] = i;
 found = 1;
 }
 }
@@ -4050,21 +4047,58 @@ if (!found) {
 printErrorLCD(errMsgs.badEntry);
 
 
+continue;
 } else {
 setIsGood = 1;
-}
-}
-}
-}
-inputEntryStep++;
+stepID++;
 }
 }
 
+int doneMultiples = 0;
+while (!doneMultiples) {
+printStringLCD(inputEntryQuestions[2]);
+lcd_set_cursor(14, 1);
+
+pressed = pollKeypad();
+numPressed = pressed - 48;
+putch(pressed);
+_delay((unsigned long)((500)*(40000000/4000.0)));
+
+int sum = 0;
+for (i = 0; i < 4; i++) {
+sum += fastenerMatrix[params.toFill[compartmentNum]][i];
+};
+if (numPressed * sum > 4 || numPressed * sum <= 0) {
+printErrorLCD(errMsgs.badEntry);
+} else {
+params.setMultiple[compartmentNum] = numPressed;
+doneMultiples = 1;
+}
+}
+} else {
+
+
+
+
+}
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+printf("cn: %d", compartmentNum);
+_delay((unsigned long)((2000)*(40000000/4000.0)));
+}
+done = 1;
+
+}
+
+}
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+printf("We done!");
 }
 
 void main(void) {
 
-# 197
+# 259
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4078,7 +4112,7 @@ TRISC = 0x00;
 TRISD = 0x00;
 TRISE = 0x00;
 
-# 214
+# 276
 initLCD();
 inputEntry();
 

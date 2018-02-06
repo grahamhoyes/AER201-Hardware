@@ -26,6 +26,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _strcpy `(*uc ~T0 @X0 0 ef2`*uc`*Cuc ]
 "75 lcd.h
 [v _lcd_set_cursor `(v ~T0 @X0 0 ef2`uc`uc ]
+"195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
+[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
 [p mainexit ]
 "878 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [v _LATA `Vuc ~T0 @X0 0 e@3977 ]
@@ -3521,9 +3523,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _numS `i ~T0 @X0 1 a ]
 [v _numW `i ~T0 @X0 1 a ]
 [v _found `i ~T0 @X0 1 a ]
+[v _numFasteners `i ~T0 @X0 1 a ]
 "99
 [v _pressed `uc ~T0 @X0 1 a ]
-[; ;main.c: 98: int i, numPressed, doneCompartment, numB, numN, numS, numW, found;
+[; ;main.c: 98: int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
 [; ;main.c: 99: unsigned char pressed;
 [; ;main.c: 101: while (!done) {
 "101
@@ -3573,319 +3576,418 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 272 ]
 [e $ ! == _inputEntryStep -> 1 `i 276  ]
 {
-"118
+"117
+[v _stepID `i ~T0 @X0 1 a ]
+[; ;main.c: 117: int stepID = 0;
+[e = _stepID -> 0 `i ]
+"129
 [v _compartmentsToFill `uc ~T0 @X0 1 a ]
-[; ;main.c: 118: char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
+[; ;main.c: 129: char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
 [e = _compartmentsToFill *U + &U _assemblyStepEncoding * -> -> - . _params 0 -> 4 `i `ui `ux -> -> # *U &U _assemblyStepEncoding `ui `ux ]
-[; ;main.c: 119: for (compartmentNum = 0; compartmentNum < params.steps; compartmentNum++) {
-"119
+[; ;main.c: 131: for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
+"131
 {
 [e = _compartmentNum -> 0 `i ]
-[e $U 280  ]
+[e $ < _compartmentNum -> 8 `i 277  ]
+[e $U 278  ]
 [e :U 277 ]
 {
-[; ;main.c: 120: if ((compartmentsToFill >> compartmentNum) & 0b1) {
-"120
+[; ;main.c: 132: STARTCOMPARTMENT: if ((compartmentsToFill >> compartmentNum) & 0b1) {
+"132
+[e :U 280 ]
 [e $ ! != & >> -> _compartmentsToFill `i _compartmentNum -> 1 `i -> 0 `i 281  ]
 {
-"122
+"134
 [v _setIsGood `i ~T0 @X0 1 a ]
-[; ;main.c: 122: int setIsGood = 0;
+[; ;main.c: 134: int setIsGood = 0;
 [e = _setIsGood -> 0 `i ]
-[; ;main.c: 123: while (!setIsGood) {
-"123
+[; ;main.c: 135: while (!setIsGood) {
+"135
 [e $U 282  ]
 [e :U 283 ]
 {
-[; ;main.c: 124: numB = 0;
-"124
-[e = _numB -> 0 `i ]
-[; ;main.c: 125: numN = 0;
-"125
-[e = _numN -> 0 `i ]
-[; ;main.c: 126: numS = 0;
-"126
-[e = _numS -> 0 `i ]
-[; ;main.c: 127: numW = 0;
-"127
-[e = _numW -> 0 `i ]
-"128
-[v _fastenerString `uc ~T0 @X0 -> 32 `i a ]
-[; ;main.c: 128: char fastenerString[32];
-[; ;main.c: 129: strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-"129
-[e ( _strcpy (2 , &U _fastenerString &U *U + &U _inputEntryQuestions * -> -> _inputEntryStep `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux ]
-[; ;main.c: 130: fastenerString[14] = compartmentNum + 1 + 48;
-"130
-[e = *U + &U _fastenerString * -> -> -> 14 `i `ui `ux -> -> # *U &U _fastenerString `ui `ux -> + + _compartmentNum -> 1 `i -> 48 `i `uc ]
-[; ;main.c: 132: printStringLCD(fastenerString);
-"132
-[e ( _printStringLCD (1 &U _fastenerString ]
-[; ;main.c: 133: lcd_set_cursor(9, 1);
-"133
-[e ( _lcd_set_cursor (2 , -> -> 9 `i `uc -> -> 1 `i `uc ]
-[; ;main.c: 134: doneCompartment = 0;
-"134
-[e = _doneCompartment -> 0 `i ]
-[; ;main.c: 136: while(doneCompartment < 4) {
+[; ;main.c: 136: numB = 0;
 "136
+[e = _numB -> 0 `i ]
+[; ;main.c: 137: numN = 0;
+"137
+[e = _numN -> 0 `i ]
+[; ;main.c: 138: numS = 0;
+"138
+[e = _numS -> 0 `i ]
+[; ;main.c: 139: numW = 0;
+"139
+[e = _numW -> 0 `i ]
+"140
+[v _fastenerString `uc ~T0 @X0 -> 32 `i a ]
+[; ;main.c: 140: char fastenerString[32];
+[; ;main.c: 141: strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
+"141
+[e ( _strcpy (2 , &U _fastenerString &U *U + &U _inputEntryQuestions * -> -> _inputEntryStep `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux ]
+[; ;main.c: 142: fastenerString[14] = compartmentNum + 1 + 48;
+"142
+[e = *U + &U _fastenerString * -> -> -> 14 `i `ui `ux -> -> # *U &U _fastenerString `ui `ux -> + + _compartmentNum -> 1 `i -> 48 `i `uc ]
+[; ;main.c: 144: printStringLCD(fastenerString);
+"144
+[e ( _printStringLCD (1 &U _fastenerString ]
+[; ;main.c: 145: lcd_set_cursor(9, 1);
+"145
+[e ( _lcd_set_cursor (2 , -> -> 9 `i `uc -> -> 1 `i `uc ]
+[; ;main.c: 146: doneCompartment = 0;
+"146
+[e = _doneCompartment -> 0 `i ]
+[; ;main.c: 148: while(doneCompartment < 4) {
+"148
 [e $U 285  ]
 [e :U 286 ]
 {
-[; ;main.c: 137: pressed = pollKeypad();
-"137
+[; ;main.c: 149: pressed = pollKeypad();
+"149
 [e = _pressed ( _pollKeypad ..  ]
-[; ;main.c: 138: if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-"138
+[; ;main.c: 150: if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
+"150
 [e $ ! || || || == -> _pressed `i -> 66 `i == -> _pressed `i -> 78 `i == -> _pressed `i -> 83 `i == -> _pressed `i -> 87 `i 288  ]
 {
-[; ;main.c: 139: putch(pressed);
-"139
-[e ( _putch (1 _pressed ]
-[; ;main.c: 140: switch(pressed) {
-"140
-[e $U 290  ]
-{
-[; ;main.c: 141: case 66:
-"141
-[e :U 291 ]
-[; ;main.c: 142: numB++;
-"142
-[e ++ _numB -> 1 `i ]
-[; ;main.c: 143: break;
-"143
-[e $U 289  ]
-[; ;main.c: 144: case 78:
-"144
-[e :U 292 ]
-[; ;main.c: 145: numN++;
-"145
-[e ++ _numN -> 1 `i ]
-[; ;main.c: 146: break;
-"146
-[e $U 289  ]
-[; ;main.c: 147: case 83:
-"147
-[e :U 293 ]
-[; ;main.c: 148: numS++;
-"148
-[e ++ _numS -> 1 `i ]
-[; ;main.c: 149: break;
-"149
-[e $U 289  ]
-[; ;main.c: 150: case 87:
-"150
-[e :U 294 ]
-[; ;main.c: 151: numW++;
+[; ;main.c: 151: putch(pressed);
 "151
-[e ++ _numW -> 1 `i ]
-[; ;main.c: 152: break;
+[e ( _putch (1 _pressed ]
+[; ;main.c: 152: if (pressed == 66) numB++;
 "152
-[e $U 289  ]
-[; ;main.c: 153: default:
+[e $ ! == -> _pressed `i -> 66 `i 289  ]
+[e ++ _numB -> 1 `i ]
+[e $U 290  ]
 "153
-[e :U 295 ]
-[; ;main.c: 154: break;
-"154
-[e $U 289  ]
-"155
-}
-[; ;main.c: 155: }
-[e $U 289  ]
-"140
-[e :U 290 ]
-[e [\ _pressed , $ -> -> 66 `i `uc 291
- , $ -> -> 78 `i `uc 292
- , $ -> -> 83 `i `uc 293
- , $ -> -> 87 `i `uc 294
- 295 ]
-"155
 [e :U 289 ]
-[; ;main.c: 156: doneCompartment++;
-"156
+[; ;main.c: 153: else if (pressed == 78) numN++;
+[e $ ! == -> _pressed `i -> 78 `i 291  ]
+[e ++ _numN -> 1 `i ]
+[e $U 292  ]
+"154
+[e :U 291 ]
+[; ;main.c: 154: else if (pressed == 83) numS ++;
+[e $ ! == -> _pressed `i -> 83 `i 293  ]
+[e ++ _numS -> 1 `i ]
+[e $U 294  ]
+"155
+[e :U 293 ]
+[; ;main.c: 155: else if (pressed == 87) numW++;
+[e $ ! == -> _pressed `i -> 87 `i 295  ]
+[e ++ _numW -> 1 `i ]
+[e :U 295 ]
+"172
+[e :U 294 ]
+[e :U 292 ]
+[e :U 290 ]
+[; ;main.c: 172: doneCompartment++;
 [e ++ _doneCompartment -> 1 `i ]
-"157
+"173
 }
-[; ;main.c: 157: } else if (pressed == 35) {
+[; ;main.c: 173: } else if (pressed == 35) {
 [e $U 296  ]
 [e :U 288 ]
 [e $ ! == -> _pressed `i -> 35 `i 297  ]
 {
-[; ;main.c: 158: doneCompartment = 4;
-"158
+[; ;main.c: 174: doneCompartment = 4;
+"174
 [e = _doneCompartment -> 4 `i ]
-"159
+"175
 }
-[; ;main.c: 159: } else if (pressed == 42) {
+[; ;main.c: 175: } else if (pressed == 42) {
 [e $U 298  ]
 [e :U 297 ]
 [e $ ! == -> _pressed `i -> 42 `i 299  ]
 {
-[; ;main.c: 160: break;
-"160
-[e $U 287  ]
-"161
+[; ;main.c: 176: compartmentNum--;
+"176
+[e -- _compartmentNum -> 1 `i ]
+[; ;main.c: 177: stepID--;
+"177
+[e -- _stepID -> 1 `i ]
+[; ;main.c: 178: goto STARTCOMPARTMENT;
+"178
+[e $U 280  ]
+"186
 }
 [e :U 299 ]
-"162
+"187
 [e :U 298 ]
 [e :U 296 ]
 }
 [e :U 285 ]
-"136
+"148
 [e $ < _doneCompartment -> 4 `i 286  ]
 [e :U 287 ]
-[; ;main.c: 161: }
-[; ;main.c: 162: }
-[; ;main.c: 165: found = 0;
-"165
+[; ;main.c: 186: }
+[; ;main.c: 187: }
+[; ;main.c: 190: found = 0;
+"190
 [e = _found -> 0 `i ]
-[; ;main.c: 166: for (i = 0; i < 20; i++) {
-"166
+[; ;main.c: 191: for (i = 0; i < 20; i++) {
+"191
 {
 [e = _i -> 0 `i ]
 [e $ < _i -> 20 `i 300  ]
 [e $U 301  ]
 [e :U 300 ]
 {
-[; ;main.c: 167: if (fastenerMatrix[i][0] == numB &&
-[; ;main.c: 168: fastenerMatrix[i][1] == numN &&
-[; ;main.c: 169: fastenerMatrix[i][2] == numS &&
-[; ;main.c: 170: fastenerMatrix[i][3] == numW)
-"170
+[; ;main.c: 192: if (fastenerMatrix[i][0] == numB &&
+[; ;main.c: 193: fastenerMatrix[i][1] == numN &&
+[; ;main.c: 194: fastenerMatrix[i][2] == numS &&
+[; ;main.c: 195: fastenerMatrix[i][3] == numW)
+"195
 [e $ ! && && && == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numB == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 1 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numN == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 2 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numS == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 3 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numW 303  ]
-[; ;main.c: 171: {
-"171
+[; ;main.c: 196: {
+"196
 {
-[; ;main.c: 172: params.toFill[compartmentNum] == i;
-"172
-[e == -> *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux `i _i ]
-[; ;main.c: 173: found = 1;
-"173
+[; ;main.c: 197: params.toFill[compartmentNum] = i;
+"197
+[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux -> _i `E3064 ]
+[; ;main.c: 198: found = 1;
+"198
 [e = _found -> 1 `i ]
-"174
+"199
 }
 [e :U 303 ]
-"175
+"200
 }
-"166
+"191
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 20 `i 300  ]
 [e :U 301 ]
-"175
+"200
 }
-[; ;main.c: 174: }
-[; ;main.c: 175: }
-[; ;main.c: 176: if (!found) {
-"176
+[; ;main.c: 199: }
+[; ;main.c: 200: }
+[; ;main.c: 201: if (!found) {
+"201
 [e $ ! ! != _found -> 0 `i 304  ]
 {
-[; ;main.c: 177: printErrorLCD(errMsgs.badEntry);
-"177
+[; ;main.c: 202: printErrorLCD(errMsgs.badEntry);
+"202
 [e ( _printErrorLCD (1 -> &U . _errMsgs 0 `*uc ]
-"180
+[; ;main.c: 205: continue;
+"205
+[e $U 282  ]
+"206
 }
-[; ;main.c: 180: } else {
+[; ;main.c: 206: } else {
 [e $U 305  ]
 [e :U 304 ]
 {
-[; ;main.c: 181: setIsGood = 1;
-"181
+[; ;main.c: 207: setIsGood = 1;
+"207
 [e = _setIsGood -> 1 `i ]
-"182
+[; ;main.c: 208: stepID++;
+"208
+[e ++ _stepID -> 1 `i ]
+"209
 }
 [e :U 305 ]
-"183
+"210
 }
 [e :U 282 ]
-"123
+"135
 [e $ ! != _setIsGood -> 0 `i 283  ]
 [e :U 284 ]
-"184
+"212
+[v _doneMultiples `i ~T0 @X0 1 a ]
+[; ;main.c: 209: }
+[; ;main.c: 210: }
+[; ;main.c: 212: int doneMultiples = 0;
+[e = _doneMultiples -> 0 `i ]
+[; ;main.c: 213: while (!doneMultiples) {
+"213
+[e $U 306  ]
+[e :U 307 ]
+{
+[; ;main.c: 214: printStringLCD(inputEntryQuestions[2]);
+"214
+[e ( _printStringLCD (1 -> &U *U + &U _inputEntryQuestions * -> -> -> 2 `i `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux `*uc ]
+[; ;main.c: 215: lcd_set_cursor(14, 1);
+"215
+[e ( _lcd_set_cursor (2 , -> -> 14 `i `uc -> -> 1 `i `uc ]
+[; ;main.c: 217: pressed = pollKeypad();
+"217
+[e = _pressed ( _pollKeypad ..  ]
+[; ;main.c: 218: numPressed = pressed - 48;
+"218
+[e = _numPressed - -> _pressed `i -> 48 `i ]
+[; ;main.c: 219: putch(pressed);
+"219
+[e ( _putch (1 _pressed ]
+[; ;main.c: 220: _delay((unsigned long)((500)*(40000000/4000.0)));
+"220
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"222
+[v _sum `i ~T0 @X0 1 a ]
+[; ;main.c: 222: int sum = 0;
+[e = _sum -> 0 `i ]
+[; ;main.c: 223: for (i = 0; i < 4; i++) {
+"223
+{
+[e = _i -> 0 `i ]
+[e $ < _i -> 4 `i 309  ]
+[e $U 310  ]
+[e :U 309 ]
+{
+[; ;main.c: 224: sum += fastenerMatrix[params.toFill[compartmentNum]][i];
+"224
+[e =+ _sum -> *U + &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> _i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i ]
+"225
 }
+"223
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 4 `i 309  ]
+[e :U 310 ]
+"225
+}
+[; ;main.c: 225: };
+[; ;main.c: 226: if (numPressed * sum > 4 || numPressed * sum <= 0) {
+"226
+[e $ ! || > * _numPressed _sum -> 4 `i <= * _numPressed _sum -> 0 `i 312  ]
+{
+[; ;main.c: 227: printErrorLCD(errMsgs.badEntry);
+"227
+[e ( _printErrorLCD (1 -> &U . _errMsgs 0 `*uc ]
+"228
+}
+[; ;main.c: 228: } else {
+[e $U 313  ]
+[e :U 312 ]
+{
+[; ;main.c: 229: params.setMultiple[compartmentNum] = numPressed;
+"229
+[e = *U + &U . _params 2 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 2 `ui `ux _numPressed ]
+[; ;main.c: 230: doneMultiples = 1;
+"230
+[e = _doneMultiples -> 1 `i ]
+"231
+}
+[e :U 313 ]
+"232
+}
+[e :U 306 ]
+"213
+[e $ ! != _doneMultiples -> 0 `i 307  ]
+[e :U 308 ]
+"233
+}
+[; ;main.c: 231: }
+[; ;main.c: 232: }
+[; ;main.c: 233: } else {
+[e $U 314  ]
 [e :U 281 ]
-"185
+{
+"238
 }
-"119
+[e :U 314 ]
+[; ;main.c: 238: }
+[; ;main.c: 239: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"239
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 240: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"240
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 241: printf("cn: %d", compartmentNum);
+"241
+[e ( _printf , (. :s 1C _compartmentNum ]
+[; ;main.c: 242: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"242
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"243
+}
+"131
 [e ++ _compartmentNum -> 1 `i ]
-[e :U 280 ]
-[e $ < _compartmentNum . _params 0 277  ]
+[e $ < _compartmentNum -> 8 `i 277  ]
 [e :U 278 ]
-"185
+"243
 }
-[; ;main.c: 182: }
-[; ;main.c: 183: }
-[; ;main.c: 184: }
-[; ;main.c: 185: }
-[; ;main.c: 186: inputEntryStep++;
-"186
-[e ++ _inputEntryStep -> 1 `i ]
-"187
+[; ;main.c: 243: }
+[; ;main.c: 244: done = 1;
+"244
+[e = _done -> 1 `i ]
+"246
 }
 [e :U 276 ]
-"188
+"248
 [e :U 275 ]
 }
 [e :U 269 ]
 "101
 [e $ ! != _done -> 0 `i 270  ]
 [e :U 271 ]
-[; ;main.c: 187: }
-[; ;main.c: 188: }
-[; ;main.c: 190: }
-"190
+[; ;main.c: 246: }
+[; ;main.c: 248: }
+[; ;main.c: 249: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"249
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 250: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"250
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 251: printf("We done!");
+"251
+[e ( _printf :s 2C ]
+[; ;main.c: 252: }
+"252
 [e :UE 268 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"192
+"254
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 192: void main(void) {
+[; ;main.c: 254: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 197: LATA = 0x00;
-"197
+[; ;main.c: 259: LATA = 0x00;
+"259
 [e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 198: LATB = 0x00;
-"198
+[; ;main.c: 260: LATB = 0x00;
+"260
 [e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 199: LATC = 0x00;
-"199
+[; ;main.c: 261: LATC = 0x00;
+"261
 [e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 200: LATD = 0x00;
-"200
+[; ;main.c: 262: LATD = 0x00;
+"262
 [e = _LATD -> -> 0 `i `uc ]
-[; ;main.c: 201: LATE = 0x00;
-"201
+[; ;main.c: 263: LATE = 0x00;
+"263
 [e = _LATE -> -> 0 `i `uc ]
-[; ;main.c: 204: TRISA = 0xFF;
-"204
+[; ;main.c: 266: TRISA = 0xFF;
+"266
 [e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 205: TRISB = 0xFF;
-"205
+[; ;main.c: 267: TRISB = 0xFF;
+"267
 [e = _TRISB -> -> 255 `i `uc ]
-[; ;main.c: 206: TRISC = 0x00;
-"206
+[; ;main.c: 268: TRISC = 0x00;
+"268
 [e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 207: TRISD = 0x00;
-"207
+[; ;main.c: 269: TRISD = 0x00;
+"269
 [e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 208: TRISE = 0x00;
-"208
+[; ;main.c: 270: TRISE = 0x00;
+"270
 [e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 214: initLCD();
-"214
+[; ;main.c: 276: initLCD();
+"276
 [e ( _initLCD ..  ]
-[; ;main.c: 215: inputEntry();
-"215
+[; ;main.c: 277: inputEntry();
+"277
 [e ( _inputEntry ..  ]
-[; ;main.c: 220: while(1);
-"220
-[e :U 308 ]
-[e :U 307 ]
-[e $U 308  ]
-[e :U 309 ]
-[; ;main.c: 221: }
-"221
-[e :UE 306 ]
+[; ;main.c: 282: while(1);
+"282
+[e :U 317 ]
+[e :U 316 ]
+[e $U 317  ]
+[e :U 318 ]
+[; ;main.c: 283: }
+"283
+[e :UE 315 ]
 }
+[p f _printf 8388736 ]
+[a 1C 99 110 58 32 37 100 0 ]
+[a 2C 87 101 32 100 111 110 101 33 0 ]

@@ -315,6 +315,21 @@ case 'd':
 case 'i':
 break;
 
+# 728
+case 's':
+
+# 734
+cp = (*(const char * *)__va_arg((*(const char * **)ap), (const char *)0));
+
+# 740
+if(!cp)
+cp = "(null)";
+
+# 777
+while(*cp)
+(putch(*cp++) );
+continue;
+
 # 802
 default:
 

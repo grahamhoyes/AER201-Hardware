@@ -9,9 +9,12 @@
 #include <string.h>
 #include "configBits.h"
 #include "lcd.h"
-#include "lcd_extras.h"
+#include "I2C.h"
+#include "helpers.h"
+#include "menu.h"
 #include "hardware.h"
 
+/* Global constant declarations */
 const char inputEntryQuestions[4][33] = { // Putting in an extra bit for the null terminator need to adjust code elsewhere
     "Assembly steps\n"        "*<-  (4-8)     \0",
     "Fasteners in Cx\n"       "*<-(BNSW)    ->#\0",
@@ -37,15 +40,10 @@ const struct errorMessages {
     "Too many washers\0",
     "Too many spacers\0",
     "No fasteners selected\0"
-};
+}; 
 
-struct inputParams{
-    int steps; // Number of assembly steps
-    fS toFill[8]; // Which fastener set goes in each compartment
-    int setMultiple[8]; // How many of each set in each compartment
-} params;  
-
-const char fastenerMatrix[20][4] = {
+const char fastenerMatrix[21][4] = {
+    {0,0,0,0}, // The default for an empty cell
     {1,0,0,0},
     {0,1,0,0},
     {0,0,1,0},
@@ -79,9 +77,14 @@ const char assemblyStepEncoding[5] = {
     0b11111111  // 8 steps: C 8,7,6,5,4,3,2,1
 };
 
+const unsigned char nanoAddr = 0b00010000; // Arduino address LSL 1
+
 int inputEntry(void) {
     __lcd_clear();
     __lcd_home();
+    
+    char message[] = "Started input entry\0";
+    //I2C_Send(nanoAddr, message);
     
     int compartmentNum = 0;
     char compartmentLabel[2] = "C0";
@@ -89,6 +92,7 @@ int inputEntry(void) {
     int done = 0;
     
     int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
+    int setIsGood, doneMultiples;
     unsigned char pressed;
     
     while (!done) {
@@ -106,31 +110,21 @@ int inputEntry(void) {
                 params.steps = numPressed;
                 inputEntryStep++;
             } else printErrorLCD(errMsgs.badEntry);
-        } else if (inputEntryStep == 1) {
-            int stepID = 0;
-            // Turns out I used none of this
-            /* We use stepID to figure out which part of the compartment
-             * loading process we are asking for, as follows:
-             * stepID % 2 == 0: Asking which fastener set
-             * stepID % 2 == 1: Asking how many sets.
-             * By doing this, if we need to go back, we can check if stepID
-             * needs to be decremented, or if we need to go back an entire
-             * compartment.
-             */
-            
+        } else if (inputEntryStep == 1) {            
             /* Getting fastener set for each compartment */
             char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
             for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
-                STARTCOMPARTMENT: if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
+                STARTCOMPARTMENT: 
+                if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
                     /* First, logic pertaining to which fastener set */
-                    int setIsGood = 0;
+                    setIsGood = 0;
                     while (!setIsGood) {
                         numB = 0;
                         numN = 0;
                         numS = 0;
                         numW = 0;
                         char fastenerString[32];
-                        strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
+                        strcpy(fastenerString, inputEntryQuestions[inputEntryStep]); // "Fasteners in Cx"
                         fastenerString[14] = compartmentNum + 1 + 48; // Replace 'x' with the compartment number
 
                         printStringLCD(fastenerString);
@@ -147,24 +141,16 @@ int inputEntry(void) {
                                 else if (pressed == 87) numW++;
                                 doneCompartment++;
                             } else if (pressed == 35) { // #: done
-                                doneCompartment = 4;
+                                if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
                             } else if (pressed == 42) { // *: Go back
                                 compartmentNum--;
-                                stepID--;
-                                goto STARTCOMPARTMENT;
-//                                if (stepID % 2 == 0) { // Doing fasteners, need to go back a compartment
-//                                    compartmentNum--;
-//                                    stepID--;
-//                                    goto STARTCOMPARTMENT;
-//                                } else { // On the same compartment still
-//                                    stepID--;
-//                                }
+                                goto STARTMULTIPLES;
                             }
                         }
 
                         /* Determine which fastener set we're dealing with */
                         found = 0;
-                        for (i = 0; i < 20; i++) {
+                        for (i = 0; i < 21; i++) {
                             if (fastenerMatrix[i][0] == numB && 
                                 fastenerMatrix[i][1] == numN &&
                                 fastenerMatrix[i][2] == numS &&
@@ -181,17 +167,22 @@ int inputEntry(void) {
                             continue;
                         } else {
                             setIsGood = 1;
-                            stepID++;
                         }
                     }
                     /* Next, figure out how many multiples*/
-                    int doneMultiples = 0;
+                    
+                    STARTMULTIPLES:
+                    doneMultiples = 0;
                     while (!doneMultiples) {
                         printStringLCD(inputEntryQuestions[2]);
                         lcd_set_cursor(14, 1);
 
                         pressed = pollKeypad();
                         numPressed = pressed - 48;
+                        
+                        if (pressed == 42) goto STARTCOMPARTMENT; // *: go back
+                        /* Caveat: If */
+                        
                         putch(pressed);
                         __delay_ms(500); // For dramatic effect
                         
@@ -206,6 +197,9 @@ int inputEntry(void) {
                             doneMultiples = 1;
                         }
                     }
+                } else {
+                    params.toFill[compartmentNum] = NONE;
+                    params.setMultiple[compartmentNum] = 0;
                 }
             }
             done = 1;
@@ -213,9 +207,6 @@ int inputEntry(void) {
         }
         
     }
-    __lcd_clear();
-    __lcd_home();
-    printf("We done!");
 }
 
 void main(void) {
@@ -237,14 +228,12 @@ void main(void) {
     TRISE = 0x00; // Outputs initially
     // </editor-fold>
     
-    /* Get current run machine configuration from user */
-    //inputEntry();
-    
     initLCD();
-    inputEntry();
     
-//    const char doneString[] = "All done!";
-//    printStringLCD(doneString);
+    __lcd_clear();
+    __lcd_home();
     
-    while(1);
+    hibernate();
+    mainMenu();
+    
 }

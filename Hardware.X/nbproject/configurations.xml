@@ -8,8 +8,8 @@
       <itemPath>I2C.h</itemPath>
       <itemPath>lcd.h</itemPath>
       <itemPath>hardware.h</itemPath>
-      <itemPath>menu.h</itemPath>
       <itemPath>lcd_extras.h</itemPath>
+      <itemPath>menu.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -21,9 +21,9 @@
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>lcd.c</itemPath>
-      <itemPath>menu.c</itemPath>
-      <itemPath>main_old.c</itemPath>
       <itemPath>lcd_extras.c</itemPath>
+      <itemPath>menu.c</itemPath>
+      <itemPath>pseudocode.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -139,7 +139,7 @@
         <property key="opt-xc8-linker-serial" value=""/>
         <property key="program-the-device-with-default-config-words" value="true"/>
       </HI-TECH-LINK>
-      <item path="I2C.c" ex="true" overriding="false">
+      <item path="I2C.c" ex="false" overriding="false">
         <HI-TECH-COMP>
         </HI-TECH-COMP>
         <HI-TECH-LINK>
@@ -147,7 +147,7 @@
         <XC8-config-global>
         </XC8-config-global>
       </item>
-      <item path="I2C.h" ex="true" overriding="false">
+      <item path="I2C.h" ex="false" overriding="false">
         <HI-TECH-COMP>
         </HI-TECH-COMP>
         <HI-TECH-LINK>
@@ -166,7 +166,7 @@
         <property key="stack-size-main" value="auto"/>
         <property key="stack-type" value="compiled"/>
       </XC8-config-global>
-      <item path="lcd_extras.c" ex="false" overriding="false">
+      <item path="helpers.c" ex="false" overriding="false">
         <HI-TECH-COMP>
         </HI-TECH-COMP>
         <HI-TECH-LINK>
@@ -174,15 +174,9 @@
         <XC8-config-global>
         </XC8-config-global>
       </item>
-      <item path="main_old.c" ex="true" overriding="false">
-        <HI-TECH-COMP>
-        </HI-TECH-COMP>
-        <HI-TECH-LINK>
-        </HI-TECH-LINK>
-        <XC8-config-global>
-        </XC8-config-global>
+      <item path="lcd_extras.h" ex="true" overriding="false">
       </item>
-      <item path="menu.c" ex="true" overriding="false">
+      <item path="pseudocode.c" ex="true" overriding="false">
         <HI-TECH-COMP>
         </HI-TECH-COMP>
         <HI-TECH-LINK>

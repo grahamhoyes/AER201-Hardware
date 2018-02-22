@@ -1,10 +1,12 @@
 #include "lcd.h"
-#include "lcd_extras.h"
+#include "I2C.h"
+#include "helpers.h"
 
-int printStringLCD(char *string) {
+/* This file contains various helper functions for sanity */
+
+void printStringLCD(char *string) {
     /* Input: char array pointer to a string of up to 32 digits to be printed
-     * to the LCD 
-     * Output: 0 if the whole string was printed, 1 if not
+     * to the LCD
      */
     
     int i;
@@ -76,4 +78,23 @@ char pollKeypad(void) {
         Nop();  // Apply breakpoint here to prevent compiler optimizations
         
         return keypadChars[keypress];
+}
+
+void I2C_Send(unsigned char address, char * data) {
+    /* Writes a sequence of bytes to the device currently addressed
+     * Arguments: address, the device to send to
+     *            data, pointer to data to write (null-terminated)
+     */
+    int i=0;
+    
+    I2C_Master_Start();  // Start condition
+    I2C_Master_Write(address); // 7-bit Slave address + write
+    
+    while (data[i] != 0) {
+        I2C_Master_Write(data[i]);
+        i++;
+    }
+    
+    I2C_Master_Stop();
+    return;
 }

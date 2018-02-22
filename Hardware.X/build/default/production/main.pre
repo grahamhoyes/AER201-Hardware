@@ -3875,23 +3875,46 @@ void lcd_set_cursor(unsigned char x, unsigned char y);
 void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 void lcd_shift_display(unsigned char numChars, unsigned char direction);
 
-# 11 "lcd_extras.h"
+# 22 "I2C.h"
+void I2C_Master_Init(const unsigned long c);
+void I2C_Master_Start(void);
+void I2C_Master_RepeatedStart(void);
+void I2C_Master_Stop(void);
+void I2C_Master_Write(unsigned byteToWrite);
+unsigned char I2C_Master_Read(unsigned char ackBit);
+
+# 11 "helpers.h"
 const char keypadChars[] = "123B456N789S*0#W";
 
-int printStringLCD(char * string);
+void printStringLCD(char * string);
 void printErrorLCD(char * string);
 char pollKeypad(void);
+void I2C_Send(unsigned char address, char * data);
+
+# 11 "menu.h"
+void hibernate(void);
+void mainMenu(void);
+void viewLogs(void);
 
 # 11 "hardware.h"
-typedef enum fs {B=0, N=1, S=2, W=3, BN=4, BS=5, BW=6, BBN=7, BBS=8, BBW=9, BNW=10,
-BSW=11, BWW=12, BNWW=13, BSWW=14, BBSW=15, BBNW=16, BNNW=17,
-BNNN=18, BWWW=19} fS;
+typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+BNNN=19, BWWW=20} fS;
 
+char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+"BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+"BNNN", "BWWW"};
+
+struct inputParams{
+int steps;
+fS toFill[8];
+int setMultiple[8];
+} params;
 
 
 int inputEntry(void);
 
-# 15 "main.c"
+# 18 "main.c"
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3919,13 +3942,8 @@ const char noFasteners[32];
 "No fasteners selected\0"
 };
 
-struct inputParams{
-int steps;
-fS toFill[8];
-int setMultiple[8];
-} params;
-
-const char fastenerMatrix[20][4] = {
+const char fastenerMatrix[21][4] = {
+{0,0,0,0},
 {1,0,0,0},
 {0,1,0,0},
 {0,0,1,0},
@@ -3951,7 +3969,7 @@ const char fastenerMatrix[20][4] = {
 
 const char assemblyStepEncoding[5] = {
 
-# 82
+
 0b01010101,
 0b01011011,
 0b01110111,
@@ -3959,9 +3977,14 @@ const char assemblyStepEncoding[5] = {
 0b11111111
 };
 
+const unsigned char nanoAddr = 0b00010000;
+
 int inputEntry(void) {
 lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+
+char message[] = "Started input entry\0";
+I2C_Send(nanoAddr, message);
 
 int compartmentNum = 0;
 char compartmentLabel[2] = "C0";
@@ -3969,6 +3992,7 @@ int inputEntryStep = 0;
 int done = 0;
 
 int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
+int setIsGood, doneMultiples;
 unsigned char pressed;
 
 while (!done) {
@@ -3987,15 +4011,13 @@ params.steps = numPressed;
 inputEntryStep++;
 } else printErrorLCD(errMsgs.badEntry);
 } else if (inputEntryStep == 1) {
-int stepID = 0;
 
-# 129
 char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-
 for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
-STARTCOMPARTMENT: if ((compartmentsToFill >> compartmentNum) & 0b1) {
+STARTCOMPARTMENT:
+if ((compartmentsToFill >> compartmentNum) & 0b1) {
 
-int setIsGood = 0;
+setIsGood = 0;
 while (!setIsGood) {
 numB = 0;
 numN = 0;
@@ -4017,23 +4039,18 @@ if (pressed == 66) numB++;
 else if (pressed == 78) numN++;
 else if (pressed == 83) numS ++;
 else if (pressed == 87) numW++;
-
-# 172
 doneCompartment++;
 } else if (pressed == 35) {
-doneCompartment = 4;
+if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
 } else if (pressed == 42) {
 compartmentNum--;
-stepID--;
-goto STARTCOMPARTMENT;
-
-# 186
+goto STARTMULTIPLES;
 }
 }
 
 
 found = 0;
-for (i = 0; i < 20; i++) {
+for (i = 0; i < 21; i++) {
 if (fastenerMatrix[i][0] == numB &&
 fastenerMatrix[i][1] == numN &&
 fastenerMatrix[i][2] == numS &&
@@ -4050,17 +4067,22 @@ printErrorLCD(errMsgs.badEntry);
 continue;
 } else {
 setIsGood = 1;
-stepID++;
 }
 }
 
-int doneMultiples = 0;
+
+STARTMULTIPLES:
+doneMultiples = 0;
 while (!doneMultiples) {
 printStringLCD(inputEntryQuestions[2]);
 lcd_set_cursor(14, 1);
 
 pressed = pollKeypad();
 numPressed = pressed - 48;
+
+if (pressed == 42) goto STARTCOMPARTMENT;
+
+
 putch(pressed);
 _delay((unsigned long)((500)*(40000000/4000.0)));
 
@@ -4069,36 +4091,27 @@ for (i = 0; i < 4; i++) {
 sum += fastenerMatrix[params.toFill[compartmentNum]][i];
 };
 if (numPressed * sum > 4 || numPressed * sum <= 0) {
-printErrorLCD(errMsgs.badEntry);
+printErrorLCD(errMsgs.tooManyFasteners);
 } else {
 params.setMultiple[compartmentNum] = numPressed;
 doneMultiples = 1;
 }
 }
 } else {
-
-
-
-
+params.toFill[compartmentNum] = NONE;
+params.setMultiple[compartmentNum] = 0;
 }
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("cn: %d", compartmentNum);
-_delay((unsigned long)((2000)*(40000000/4000.0)));
 }
 done = 1;
 
 }
 
 }
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("We done!");
 }
 
 void main(void) {
 
-# 259
+# 217
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4112,12 +4125,13 @@ TRISC = 0x00;
 TRISD = 0x00;
 TRISE = 0x00;
 
-# 276
+
 initLCD();
-inputEntry();
 
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 
+hibernate();
+mainMenu();
 
-
-while(1);
 }

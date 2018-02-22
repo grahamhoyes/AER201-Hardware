@@ -3,28 +3,52 @@
 [d edition pro ]
 [d chip 18F4620 ]
 [d frameptr 4065 ]
-"46 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
-[e E3064 fs `uc
-B 0
-N 1
-S 2
-W 3
-BN 4
-BS 5
-BW 6
-BBN 7
-BBS 8
-BBW 9
-BNW 10
-BSW 11
-BWW 12
-BNWW 13
-BSWW 14
-BBSW 15
-BBNW 16
-BNNW 17
-BNNN 18
-BWWW 19
+"23 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\hardware.h
+[e E3085 fs `uc
+NONE 0
+B 1
+N 2
+S 3
+W 4
+BN 5
+BS 6
+BW 7
+BBN 8
+BBS 9
+BBW 10
+BNW 11
+BSW 12
+BWW 13
+BNWW 14
+BSWW 15
+BBSW 16
+BBNW 17
+BNNW 18
+BNNN 19
+BWWW 20
+]
+[e E2989 fs `uc
+NONE 0
+B 1
+N 2
+S 3
+W 4
+BN 5
+BS 6
+BW 7
+BBN 8
+BBS 9
+BBW 10
+BNW 11
+BSW 12
+BWW 13
+BNWW 14
+BSWW 15
+BBSW 16
+BBNW 17
+BNNW 18
+BNNN 19
+BWWW 20
 ]
 "464 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
@@ -38,6 +62,8 @@ BWWW 19
 [v ___ftmul __ftmul `(f  1 e 3 0 ]
 "20 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftsub.c
 [v ___ftsub __ftsub `(f  1 e 3 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\lwmod.c
@@ -56,6 +82,22 @@ BWWW 19
 [v ___wmul __wmul `(ui  1 e 2 0 ]
 "15 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\Umul32.c
 [v ___lmul __lmul `(ul  1 e 4 0 ]
+"7 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
+[v _printStringLCD printStringLCD `(v  1 e 1 0 ]
+"62
+[v _printErrorLCD printErrorLCD `(v  1 e 1 0 ]
+"68
+[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
+"83
+[v _I2C_Send I2C_Send `(v  1 e 1 0 ]
+"51 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\I2C.c
+[v _I2C_Master_Wait I2C_Master_Wait `(v  1 s 1 I2C_Master_Wait ]
+"69
+[v _I2C_Master_Start I2C_Master_Start `(v  1 e 1 0 ]
+"95
+[v _I2C_Master_Stop I2C_Master_Stop `(v  1 e 1 0 ]
+"108
+[v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
 "12 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
 [v _lcdInst lcdInst `(v  1 e 1 0 ]
 "25
@@ -68,19 +110,19 @@ BWWW 19
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 1 0 ]
 "98
 [v _lcd_shift_cursor lcd_shift_cursor `(v  1 e 1 0 ]
-"4 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd_extras.c
-[v _printStringLCD printStringLCD `(i  1 e 2 0 ]
-"60
-[v _printErrorLCD printErrorLCD `(v  1 e 1 0 ]
-"66
-[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
-"89 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"82 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _inputEntry inputEntry `(i  1 e 2 0 ]
-"254
+"212
 [v _main main `(v  1 e 1 0 ]
+"6 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
+[v _hibernate hibernate `(v  1 e 1 0 ]
+"17
+[v _viewLogs viewLogs `(v  1 e 1 0 ]
+"25
+[v _mainMenu mainMenu `(v  1 e 1 0 ]
 "187 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [v _PORTB PORTB `VEuc  1 e 1 @3969 ]
-[s S320 . 1 `uc 1 RB0 1 0 :1:0 
+[s S519 . 1 `uc 1 RB0 1 0 :1:0 
 `uc 1 RB1 1 0 :1:1 
 `uc 1 RB2 1 0 :1:2 
 `uc 1 RB3 1 0 :1:3 
@@ -90,7 +132,7 @@ BWWW 19
 `uc 1 RB7 1 0 :1:7 
 ]
 "228
-[s S329 . 1 `uc 1 INT0 1 0 :1:0 
+[s S528 . 1 `uc 1 INT0 1 0 :1:0 
 `uc 1 INT1 1 0 :1:1 
 `uc 1 INT2 1 0 :1:2 
 `uc 1 CCP2 1 0 :1:3 
@@ -99,7 +141,7 @@ BWWW 19
 `uc 1 KBI2 1 0 :1:6 
 `uc 1 KBI3 1 0 :1:7 
 ]
-[s S338 . 1 `uc 1 AN12 1 0 :1:0 
+[s S537 . 1 `uc 1 AN12 1 0 :1:0 
 `uc 1 AN10 1 0 :1:1 
 `uc 1 AN8 1 0 :1:2 
 `uc 1 AN9 1 0 :1:3 
@@ -108,11 +150,11 @@ BWWW 19
 `uc 1 PGC 1 0 :1:6 
 `uc 1 PGD 1 0 :1:7 
 ]
-[s S347 . 1 `uc 1 . 1 0 :3:0 
+[s S546 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 CCP2_PA2 1 0 :1:3 
 ]
-[u S350 . 1 `S320 1 . 1 0 `S329 1 . 1 0 `S338 1 . 1 0 `S347 1 . 1 0 ]
-[v _PORTBbits PORTBbits `VES350  1 e 1 @3969 ]
+[u S549 . 1 `S519 1 . 1 0 `S528 1 . 1 0 `S537 1 . 1 0 `S546 1 . 1 0 ]
+[v _PORTBbits PORTBbits `VES549  1 e 1 @3969 ]
 "878
 [v _LATA LATA `VEuc  1 e 1 @3977 ]
 "990
@@ -121,7 +163,7 @@ BWWW 19
 [v _LATC LATC `VEuc  1 e 1 @3979 ]
 "1214
 [v _LATD LATD `VEuc  1 e 1 @3980 ]
-[s S170 . 1 `uc 1 LATD0 1 0 :1:0 
+[s S306 . 1 `uc 1 LATD0 1 0 :1:0 
 `uc 1 LATD1 1 0 :1:1 
 `uc 1 LATD2 1 0 :1:2 
 `uc 1 LATD3 1 0 :1:3 
@@ -131,7 +173,7 @@ BWWW 19
 `uc 1 LATD7 1 0 :1:7 
 ]
 "1241
-[s S179 . 1 `uc 1 LD0 1 0 :1:0 
+[s S315 . 1 `uc 1 LD0 1 0 :1:0 
 `uc 1 LD1 1 0 :1:1 
 `uc 1 LD2 1 0 :1:2 
 `uc 1 LD3 1 0 :1:3 
@@ -140,8 +182,8 @@ BWWW 19
 `uc 1 LD6 1 0 :1:6 
 `uc 1 LD7 1 0 :1:7 
 ]
-[u S188 . 1 `S170 1 . 1 0 `S179 1 . 1 0 ]
-[v _LATDbits LATDbits `VES188  1 e 1 @3980 ]
+[u S324 . 1 `S306 1 . 1 0 `S315 1 . 1 0 ]
+[v _LATDbits LATDbits `VES324  1 e 1 @3980 ]
 "1326
 [v _LATE LATE `VEuc  1 e 1 @3981 ]
 "1378
@@ -150,11 +192,68 @@ BWWW 19
 [v _TRISB TRISB `VEuc  1 e 1 @3987 ]
 "1822
 [v _TRISC TRISC `VEuc  1 e 1 @3988 ]
+[s S207 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 TRISC3 1 0 :1:3 
+`uc 1 TRISC4 1 0 :1:4 
+`uc 1 TRISC5 1 0 :1:5 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"1854
+[s S216 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 RC3 1 0 :1:3 
+`uc 1 RC4 1 0 :1:4 
+`uc 1 RC5 1 0 :1:5 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+[u S225 . 1 `S207 1 . 1 0 `S216 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES225  1 e 1 @3988 ]
 "2044
 [v _TRISD TRISD `VEuc  1 e 1 @3989 ]
 "2266
 [v _TRISE TRISE `VEuc  1 e 1 @3990 ]
-[s S218 . 1 `uc 1 RBIF 1 0 :1:0 
+"4667
+[v _SSPCON2 SSPCON2 `VEuc  1 e 1 @4037 ]
+[s S251 . 1 `uc 1 SEN 1 0 :1:0 
+`uc 1 RSEN 1 0 :1:1 
+`uc 1 PEN 1 0 :1:2 
+`uc 1 RCEN 1 0 :1:3 
+`uc 1 ACKEN 1 0 :1:4 
+`uc 1 ACKDT 1 0 :1:5 
+`uc 1 ACKSTAT 1 0 :1:6 
+`uc 1 GCEN 1 0 :1:7 
+]
+"4684
+[u S260 . 1 `S251 1 . 1 0 ]
+[v _SSPCON2bits SSPCON2bits `VES260  1 e 1 @4037 ]
+"4729
+[v _SSPCON1 SSPCON1 `VEuc  1 e 1 @4038 ]
+[s S181 . 1 `uc 1 SSPM 1 0 :4:0 
+`uc 1 CKP 1 0 :1:4 
+`uc 1 SSPEN 1 0 :1:5 
+`uc 1 SSPOV 1 0 :1:6 
+`uc 1 WCOL 1 0 :1:7 
+]
+"4749
+[s S187 . 1 `uc 1 SSPM0 1 0 :1:0 
+`uc 1 SSPM1 1 0 :1:1 
+`uc 1 SSPM2 1 0 :1:2 
+`uc 1 SSPM3 1 0 :1:3 
+]
+[u S192 . 1 `S181 1 . 1 0 `S187 1 . 1 0 ]
+[v _SSPCON1bits SSPCON1bits `VES192  1 e 1 @4038 ]
+"4799
+[v _SSPSTAT SSPSTAT `VEuc  1 e 1 @4039 ]
+"5020
+[v _SSPADD SSPADD `VEuc  1 e 1 @4040 ]
+"5027
+[v _SSPBUF SSPBUF `VEuc  1 e 1 @4041 ]
+[s S354 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INT0IF 1 0 :1:1 
 `uc 1 TMR0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
@@ -164,7 +263,7 @@ BWWW 19
 `uc 1 GIE_GIEH 1 0 :1:7 
 ]
 "6404
-[s S227 . 1 `uc 1 . 1 0 :1:0 
+[s S363 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 INT0F 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -173,102 +272,76 @@ BWWW 19
 `uc 1 PEIE 1 0 :1:6 
 `uc 1 GIE 1 0 :1:7 
 ]
-[s S236 . 1 `uc 1 . 1 0 :6:0 
+[s S372 . 1 `uc 1 . 1 0 :6:0 
 `uc 1 GIEL 1 0 :1:6 
 `uc 1 GIEH 1 0 :1:7 
 ]
-[u S240 . 1 `S218 1 . 1 0 `S227 1 . 1 0 `S236 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES240  1 e 1 @4082 ]
+[u S376 . 1 `S354 1 . 1 0 `S363 1 . 1 0 `S372 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES376  1 e 1 @4082 ]
 "354 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\doprnt.c
 [v _dpowers dpowers `C[5]ui  1 s 10 dpowers ]
+"15 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\hardware.h
+[v _fSLookup fSLookup `[21][5]uc  1 e 105 0 ]
+[s S43 inputParams 26 `i 1 steps 2 0 `[8]E3085 1 toFill 8 2 `[8]i 1 setMultiple 16 10 ]
+"23
+[v _params params `S43  1 e 26 0 ]
+"11 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.h
+[v _keypadChars keypadChars `C[17]uc  1 e 17 0 ]
 "10 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
 [v _LCDinterruptState LCDinterruptState `uc  1 s 1 LCDinterruptState ]
 "65 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.h
 [v _LCD_SIZE_VERT LCD_SIZE_VERT `Cuc  1 e 1 0 ]
-"11 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd_extras.h
-[v _keypadChars keypadChars `C[17]uc  1 e 17 0 ]
-"15 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"18 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _inputEntryQuestions inputEntryQuestions `C[4][33]uc  1 e 132 0 ]
-[s S21 errorMessages 224 `C[32]uc 1 badEntry 32 0 `C[32]uc 1 tooManyFasteners 32 32 `C[32]uc 1 tooManyBolts 32 64 `C[32]uc 1 tooManyNuts 32 96 `C[32]uc 1 tooManyWashers 32 128 `C[32]uc 1 tooManySpacers 32 160 `C[32]uc 1 noFasteners 32 192 ]
-"32
-[v _errMsgs errMsgs `CS21  1 e 224 0 ]
-[s S50 inputParams 26 `i 1 steps 2 0 `[8]E3064 1 toFill 8 2 `[8]i 1 setMultiple 16 10 ]
-"46
-[v _params params `S50  1 e 26 0 ]
-"48
-[v _fastenerMatrix fastenerMatrix `C[20][4]uc  1 e 80 0 ]
-"72
+[s S47 errorMessages 224 `C[32]uc 1 badEntry 32 0 `C[32]uc 1 tooManyFasteners 32 32 `C[32]uc 1 tooManyBolts 32 64 `C[32]uc 1 tooManyNuts 32 96 `C[32]uc 1 tooManyWashers 32 128 `C[32]uc 1 tooManySpacers 32 160 `C[32]uc 1 noFasteners 32 192 ]
+"35
+[v _errMsgs errMsgs `CS47  1 e 224 0 ]
+"45
+[v _fastenerMatrix fastenerMatrix `C[21][4]uc  1 e 84 0 ]
+"70
 [v _assemblyStepEncoding assemblyStepEncoding `C[5]uc  1 e 5 0 ]
-"254
+"80
+[v _nanoAddr nanoAddr `Cuc  1 e 1 0 ]
+"212
 [v _main main `(v  1 e 1 0 ]
 {
-"283
+"239
 } 0
-"89
-[v _inputEntry inputEntry `(i  1 e 2 0 ]
+"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
+[v _mainMenu mainMenu `(v  1 e 1 0 ]
 {
-"222
-[v inputEntry@sum sum `i  1 a 2 84 ]
-"140
-[v inputEntry@fastenerString fastenerString `[32]uc  1 a 32 29 ]
-"212
-[v inputEntry@doneMultiples doneMultiples `i  1 a 2 79 ]
-"134
-[v inputEntry@setIsGood setIsGood `i  1 a 2 77 ]
-"117
-[v inputEntry@stepID stepID `i  1 a 2 63 ]
-"129
-[v inputEntry@compartmentsToFill compartmentsToFill `uc  1 a 1 81 ]
-"98
-[v inputEntry@i i `i  1 a 2 92 ]
-"93
-[v inputEntry@compartmentNum compartmentNum `i  1 a 2 90 ]
-"98
-[v inputEntry@numPressed numPressed `i  1 a 2 88 ]
-"95
-[v inputEntry@inputEntryStep inputEntryStep `i  1 a 2 86 ]
-"98
-[v inputEntry@doneCompartment doneCompartment `i  1 a 2 82 ]
-[v inputEntry@found found `i  1 a 2 75 ]
-[v inputEntry@numW numW `i  1 a 2 73 ]
-[v inputEntry@numS numS `i  1 a 2 71 ]
-[v inputEntry@numN numN `i  1 a 2 69 ]
-[v inputEntry@numB numB `i  1 a 2 67 ]
-"96
-[v inputEntry@done done `i  1 a 2 65 ]
-"94
-[v inputEntry@compartmentLabel compartmentLabel `[2]uc  1 a 2 61 ]
-"99
-[v inputEntry@pressed pressed `uc  1 a 1 94 ]
-"93
-[v inputEntry@F3113 F3113 `[2]uc  1 s 2 F3113 ]
-"252
+"43
+[v mainMenu@i i `i  1 a 2 122 ]
+"26
+[v mainMenu@pressed pressed `i  1 a 2 120 ]
+"27
+[v mainMenu@needToPrint needToPrint `i  1 a 2 118 ]
+"57
 } 0
-"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\strcpy.c
-[v _strcpy strcpy `(*.39uc  1 e 2 0 ]
+"17
+[v _viewLogs viewLogs `(v  1 e 1 0 ]
 {
-"15
-[v strcpy@cp cp `*.39uc  1 a 2 10 ]
-"8
-[v strcpy@to to `*.39uc  1 p 2 6 ]
-[v strcpy@from from `*.25Cuc  1 p 2 8 ]
-"24
+"20
+[v viewLogs@pressed pressed `i  1 a 2 22 ]
+"23
 } 0
 "464 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
 {
 "528
-[v printf@val val `ui  1 a 2 21 ]
+[v printf@val val `ui  1 a 2 27 ]
+"530
+[v printf@cp cp `*.34Cuc  1 a 2 25 ]
 "466
-[v printf@ap ap `[1]*.39v  1 a 2 17 ]
+[v printf@ap ap `[1]*.39v  1 a 2 23 ]
 "499
-[v printf@c c `c  1 a 1 23 ]
+[v printf@c c `c  1 a 1 29 ]
 "506
-[v printf@prec prec `c  1 a 1 20 ]
+[v printf@prec prec `c  1 a 1 22 ]
 "508
-[v printf@flag flag `uc  1 a 1 19 ]
+[v printf@flag flag `uc  1 a 1 21 ]
 "464
-[v printf@f f `*.25Cuc  1 p 2 12 ]
+[v printf@f f `*.32Cuc  1 p 2 12 ]
 "1541
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\lwmod.c
@@ -293,44 +366,63 @@ BWWW 19
 [v ___lwdiv@divisor divisor `ui  1 p 2 2 ]
 "31
 } 0
-"60 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd_extras.c
+"82 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+[v _inputEntry inputEntry `(i  1 e 2 0 ]
+{
+"189
+[v inputEntry@sum sum `i  1 a 2 103 ]
+"126
+[v inputEntry@fastenerString fastenerString `[32]uc  1 a 32 50 ]
+"115
+[v inputEntry@compartmentsToFill compartmentsToFill `uc  1 a 1 92 ]
+"86
+[v inputEntry@message message `[21]uc  1 a 21 29 ]
+"94
+[v inputEntry@i i `i  1 a 2 111 ]
+"89
+[v inputEntry@compartmentNum compartmentNum `i  1 a 2 109 ]
+"94
+[v inputEntry@numPressed numPressed `i  1 a 2 107 ]
+"91
+[v inputEntry@inputEntryStep inputEntryStep `i  1 a 2 105 ]
+"94
+[v inputEntry@numW numW `i  1 a 2 101 ]
+[v inputEntry@numS numS `i  1 a 2 99 ]
+[v inputEntry@numN numN `i  1 a 2 97 ]
+[v inputEntry@numB numB `i  1 a 2 95 ]
+[v inputEntry@doneCompartment doneCompartment `i  1 a 2 93 ]
+"95
+[v inputEntry@doneMultiples doneMultiples `i  1 a 2 90 ]
+[v inputEntry@setIsGood setIsGood `i  1 a 2 88 ]
+"94
+[v inputEntry@found found `i  1 a 2 86 ]
+"92
+[v inputEntry@done done `i  1 a 2 84 ]
+"90
+[v inputEntry@compartmentLabel compartmentLabel `[2]uc  1 a 2 82 ]
+"96
+[v inputEntry@pressed pressed `uc  1 a 1 113 ]
+"84
+[v inputEntry@F3137 F3137 `[21]uc  1 s 21 F3137 ]
+"89
+[v inputEntry@F3140 F3140 `[2]uc  1 s 2 F3140 ]
+"210
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\strcpy.c
+[v _strcpy strcpy `(*.39uc  1 e 2 0 ]
+{
+"15
+[v strcpy@cp cp `*.39uc  1 a 2 10 ]
+"8
+[v strcpy@to to `*.39uc  1 p 2 6 ]
+[v strcpy@from from `*.32Cuc  1 p 2 8 ]
+"24
+} 0
+"62 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
 [v _printErrorLCD printErrorLCD `(v  1 e 1 0 ]
 {
-[v printErrorLCD@string string `*.25uc  1 p 2 21 ]
-"63
-} 0
-"4
-[v _printStringLCD printStringLCD `(i  1 e 2 0 ]
-{
-"10
-[v printStringLCD@i i `i  1 a 2 19 ]
-"13
-[v printStringLCD@newlineCharIndex newlineCharIndex `i  1 a 2 17 ]
-"12
-[v printStringLCD@newlineIndex newlineIndex `i  1 a 2 15 ]
-"14
-[v printStringLCD@spaceIndex spaceIndex `i  1 a 2 13 ]
-"11
-[v printStringLCD@j j `i  1 a 2 11 ]
-"4
-[v printStringLCD@string string `*.35uc  1 p 2 6 ]
-"58
-} 0
-"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
-[v _putch putch `(v  1 e 1 0 ]
-{
-[v putch@data data `uc  1 a 1 wreg ]
-[v putch@data data `uc  1 a 1 wreg ]
-"33
-[v putch@data data `uc  1 a 1 2 ]
-"36
-} 0
-"66 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd_extras.c
-[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
-{
-"71
-[v pollKeypad@keypress keypress `uc  1 a 1 0 ]
-"79
+[v printErrorLCD@string string `*.32uc  1 p 2 21 ]
+"65
 } 0
 "81 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 1 0 ]
@@ -367,6 +459,80 @@ BWWW 19
 [v ___wmul@multiplier multiplier `ui  1 p 2 0 ]
 [v ___wmul@multiplicand multiplicand `ui  1 p 2 2 ]
 "53
+} 0
+"83 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
+[v _I2C_Send I2C_Send `(v  1 e 1 0 ]
+{
+[v I2C_Send@address address `uc  1 a 1 wreg ]
+"88
+[v I2C_Send@i i `i  1 a 2 7 ]
+"83
+[v I2C_Send@address address `uc  1 a 1 wreg ]
+[v I2C_Send@data data `*.39uc  1 p 2 3 ]
+"88
+[v I2C_Send@address address `uc  1 a 1 6 ]
+"100
+} 0
+"108 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\I2C.c
+[v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
+{
+[v I2C_Master_Write@byteToWrite byteToWrite `ui  1 p 2 1 ]
+"118
+} 0
+"95
+[v _I2C_Master_Stop I2C_Master_Stop `(v  1 e 1 0 ]
+{
+"106
+} 0
+"69
+[v _I2C_Master_Start I2C_Master_Start `(v  1 e 1 0 ]
+{
+"80
+} 0
+"51
+[v _I2C_Master_Wait I2C_Master_Wait `(v  1 s 1 I2C_Master_Wait ]
+{
+"67
+} 0
+"6 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
+[v _hibernate hibernate `(v  1 e 1 0 ]
+{
+"8
+[v hibernate@pressed pressed `i  1 a 2 25 ]
+"15
+} 0
+"7 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
+[v _printStringLCD printStringLCD `(v  1 e 1 0 ]
+{
+"12
+[v printStringLCD@i i `i  1 a 2 19 ]
+"15
+[v printStringLCD@newlineCharIndex newlineCharIndex `i  1 a 2 17 ]
+"14
+[v printStringLCD@newlineIndex newlineIndex `i  1 a 2 15 ]
+"16
+[v printStringLCD@spaceIndex spaceIndex `i  1 a 2 13 ]
+"13
+[v printStringLCD@j j `i  1 a 2 11 ]
+"7
+[v printStringLCD@string string `*.34uc  1 p 2 6 ]
+"60
+} 0
+"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
+[v _putch putch `(v  1 e 1 0 ]
+{
+[v putch@data data `uc  1 a 1 wreg ]
+[v putch@data data `uc  1 a 1 wreg ]
+"33
+[v putch@data data `uc  1 a 1 2 ]
+"36
+} 0
+"68 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
+[v _pollKeypad pollKeypad `(uc  1 e 1 0 ]
+{
+"73
+[v pollKeypad@keypress keypress `uc  1 a 1 0 ]
+"81
 } 0
 "61 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\lcd.c
 [v _initLCD initLCD `(v  1 e 1 0 ]

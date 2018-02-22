@@ -1,5 +1,5 @@
 
-# 1 "lcd_extras.c"
+# 1 "helpers.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -3843,17 +3843,26 @@ void lcd_set_cursor(unsigned char x, unsigned char y);
 void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 void lcd_shift_display(unsigned char numChars, unsigned char direction);
 
-# 11 "lcd_extras.h"
+# 22 "I2C.h"
+void I2C_Master_Init(const unsigned long c);
+void I2C_Master_Start(void);
+void I2C_Master_RepeatedStart(void);
+void I2C_Master_Stop(void);
+void I2C_Master_Write(unsigned byteToWrite);
+unsigned char I2C_Master_Read(unsigned char ackBit);
+
+# 11 "helpers.h"
 const char keypadChars[] = "123B456N789S*0#W";
 
 void printStringLCD(char * string);
 void printErrorLCD(char * string);
 char pollKeypad(void);
+void I2C_Send(unsigned char address, char * data);
 
-# 4 "lcd_extras.c"
+# 7 "helpers.c"
 void printStringLCD(char *string) {
 
-# 9
+# 12
 int i;
 int j = 1;
 int newlineIndex = 16;
@@ -3885,7 +3894,7 @@ newlineIndex = spaceIndex;
 for (i = 0; i < 32; i++) {
 if (string[i] == 0) break;
 
-# 49
+# 52
 if (i == newlineIndex && j < LCD_SIZE_VERT) {
 j++;
 lcdInst(0xC0);;
@@ -3915,4 +3924,21 @@ while (PORTBbits.RB1 == 1) {continue;}
 __nop();
 
 return keypadChars[keypress];
+}
+
+void I2C_Send(unsigned char address, char * data) {
+
+# 88
+int i=0;
+
+I2C_Master_Start();
+I2C_Master_Write(address);
+
+while (data[i] != 0) {
+I2C_Master_Write(data[i]);
+i++;
+}
+
+I2C_Master_Stop();
+return;
 }

@@ -13,6 +13,7 @@
 #include "helpers.h"
 #include "menu.h"
 #include "hardware.h"
+#include "RTC.h"
 
 /* Global constant declarations */
 const char inputEntryQuestions[4][33] = { // Putting in an extra bit for the null terminator need to adjust code elsewhere
@@ -82,9 +83,8 @@ const unsigned char nanoAddr = 0b00010000; // Arduino address LSL 1
 int inputEntry(void) {
     __lcd_clear();
     __lcd_home();
-    
-    char message[] = "Started input entry\0";
-    //I2C_Send(nanoAddr, message);
+   
+    I2C_Send(nanoAddr, "Started input entry, hi\0");
     
     int compartmentNum = 0;
     char compartmentLabel[2] = "C0";
@@ -209,6 +209,59 @@ int inputEntry(void) {
     }
 }
 
+void packaging(int b, int n, int s, int w) {
+    // Activate all motors
+    LATBbits.LATB3 = 1;
+    LATCbits.LATC1 = 1;
+    LATCbits.LATC5 = 1;
+    LATCbits.LATC7 = 1;
+    
+    int numB=0, numN=0, numS=0, numW=0, done=0;
+    int currTime, timeB=0, timeN=0, timeS=0, timeW=0;
+    char resolution = 1;
+    
+    while (1) {
+        currTime = RTC_getSeconds();
+        
+        if (PORTAbits.RA0 == 1 && currTime > timeB + resolution) {
+            timeB = currTime;
+            numB++;
+        }
+        if (PORTAbits.RA1 == 1 && currTime > timeN + resolution) {
+            timeN = currTime;
+            numN++;
+        }
+        if (PORTAbits.RA2 == 1 && currTime > timeS + resolution) {
+            timeS = currTime;
+            numS++;
+        }
+        if (PORTAbits.RA3 == 1 && currTime > timeW + resolution) {
+            timeW = currTime;
+            numW++;
+        }
+        
+        if (numB >= b) {
+            LATBbits.LATB3 = 0; 
+            done++;
+        }
+        if (numN >= n) {
+            LATCbits.LATC5 = 0;
+            done++;
+        }
+        if (numS >= s) {
+            LATCbits.LATC5 = 0;
+            done++;
+        }
+        if (numW >= w) {
+            LATCbits.LATC7 = 0;
+            done++;
+        }
+        
+        if (done >= 3) break;
+    }
+    // Rotate Nema 17 45deg CW
+}
+
 void main(void) {
     // <editor-fold defaultstate="collapsed" desc="Machine Configuration">
     /* Write outputs to LATx, read inputs from PORTx depending if pin has been
@@ -222,11 +275,13 @@ void main(void) {
 
     /* Set the data direction registers */
     TRISA = 0xFF; // Inputs
-    TRISB = 0xFF; // Inputs, necessary for keypad
+    TRISB = 0b11110111; // Inputs, necessary for keypad
     TRISC = 0x00; // Outputs initially. RC4 and RC5 used for I2C communication.
     TRISD = 0x00; // Outputs initially
     TRISE = 0x00; // Outputs initially
     // </editor-fold>
+    
+    I2C_Master_Init(100000); // Start I2C with a 100khz clock
     
     initLCD();
     

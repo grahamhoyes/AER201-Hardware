@@ -1,115 +1,162 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "23 hardware.h
-[c E3085 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E3085 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
+[c E1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E1 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "19
-[s S266 `i 1 `E3085 -> 8 `i `i -> 8 `i ]
-[n S266 inputParams steps toFill setMultiple ]
-"28 main.c
-[s S267 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
-[n S267 errorMessages badEntry tooManyFasteners tooManyBolts tooManyNuts tooManyWashers tooManySpacers noFasteners ]
-"71 lcd.h
-[v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
-[v F2882 `(v ~T0 @X0 1 tf1`ul ]
-"164 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18.h
-[v __delay `JF2882 ~T0 @X0 0 e ]
-[p i __delay ]
-"16 helpers.h
-[v _I2C_Send `(v ~T0 @X0 0 ef2`uc`*uc ]
-"13
-[v _printStringLCD `(v ~T0 @X0 0 ef1`*uc ]
-"15
-[v _pollKeypad `(uc ~T0 @X0 0 ef ]
-"16 C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h
-[v _putch `(v ~T0 @X0 0 ef1`uc ]
-"14 helpers.h
-[v _printErrorLCD `(v ~T0 @X0 0 ef1`*uc ]
-"37 C:\Program Files (x86)\Microchip\xc8\v1.45\include\string.h
-[v _strcpy `(*uc ~T0 @X0 0 ef2`*uc`*Cuc ]
-"75 lcd.h
-[v _lcd_set_cursor `(v ~T0 @X0 0 ef2`uc`uc ]
-"996 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
-[s S41 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S41 . LATB0 LATB1 LATB2 LATB3 LATB4 LATB5 LATB6 LATB7 ]
-"1006
-[s S42 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S42 . LB0 LB1 LB2 LB3 LB4 LB5 LB6 LB7 ]
-"995
-[u S40 `S41 1 `S42 1 ]
-[n S40 . . . ]
-"1017
-[v _LATBbits `VS40 ~T0 @X0 0 e@3978 ]
-"1108
-[s S44 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S44 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
-"1118
-[s S45 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S45 . LC0 LC1 LC2 LC3 LC4 LC5 LC6 LC7 ]
-"1107
-[u S43 `S44 1 `S45 1 ]
-[n S43 . . . ]
-"1129
-[v _LATCbits `VS43 ~T0 @X0 0 e@3979 ]
-"12 RTC.h
-[v _RTC_getSeconds `(i ~T0 @X0 0 ef ]
-"56 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
-[s S2 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S2 . RA0 RA1 RA2 RA3 RA4 RA5 RA6 RA7 ]
-"66
-[s S3 :4 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S3 . . T0CKI AN4 ]
-"71
-[s S4 :5 `uc 1 :1 `uc 1 ]
-[n S4 . . SS ]
-"75
-[s S5 :5 `uc 1 :1 `uc 1 ]
-[n S5 . . NOT_SS ]
-"79
-[s S6 :5 `uc 1 :1 `uc 1 ]
-[n S6 . . nSS ]
-"83
-[s S7 :5 `uc 1 :1 `uc 1 ]
-[n S7 . . LVDIN ]
-"87
-[s S8 :5 `uc 1 :1 `uc 1 ]
-[n S8 . . HLVDIN ]
-"91
-[s S9 :1 `uc 1 :6 `uc 1 :1 `uc 1 ]
-[n S9 . ULPWUIN . RJPU ]
-"55
-[u S1 `S2 1 `S3 1 `S4 1 `S5 1 `S6 1 `S7 1 `S8 1 `S9 1 ]
-[n S1 . . . . . . . . . ]
-"97
-[v _PORTAbits `VS1 ~T0 @X0 0 e@3968 ]
-[p mainexit ]
-"878
-[v _LATA `Vuc ~T0 @X0 0 e@3977 ]
-"990
-[v _LATB `Vuc ~T0 @X0 0 e@3978 ]
-"1102
-[v _LATC `Vuc ~T0 @X0 0 e@3979 ]
-"1214
-[v _LATD `Vuc ~T0 @X0 0 e@3980 ]
-"1326
-[v _LATE `Vuc ~T0 @X0 0 e@3981 ]
-"1378
-[v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
-"1600
-[v _TRISB `Vuc ~T0 @X0 0 e@3987 ]
-"1822
-[v _TRISC `Vuc ~T0 @X0 0 e@3988 ]
-"2044
-[v _TRISD `Vuc ~T0 @X0 0 e@3989 ]
-"2266
-[v _TRISE `Vuc ~T0 @X0 0 e@3990 ]
-"22 I2C.h
-[v _I2C_Master_Init `(v ~T0 @X0 0 ef1`Cul ]
-"74 lcd.h
-[v _initLCD `(v ~T0 @X0 0 ef ]
-"11 menu.h
-[v _hibernate `(v ~T0 @X0 0 ef ]
-"12
-[v _mainMenu `(v ~T0 @X0 0 ef ]
+[s S1 `i 1 `E1 -> 8 `i `i -> 8 `i ]
+[n S1 inputParams steps toFill setMultiple ]
+"23 I2C.h
+[v _I2C_Master_Start `(v ~T0 @X0 0 ef ]
+"26
+[v _I2C_Master_Write `(v ~T0 @X0 0 ef1`ui ]
+"25
+[v _I2C_Master_Stop `(v ~T0 @X0 0 ef ]
+"27
+[v _I2C_Master_Read `(uc ~T0 @X0 0 ef1`uc ]
+[; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+[; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+[; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
+[v F25 `uc ~T0 @X0 -> 5 `i t ]
+"15 hardware.h
+[v _fSLookup `F25 ~T0 @X0 -> 21 `i e ]
+[i _fSLookup
+:U ..
+:U ..
+-> 78 `c
+-> 79 `c
+-> 78 `c
+-> 69 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 0 `c
+..
+:U ..
+-> 78 `c
+-> 0 `c
+..
+:U ..
+-> 83 `c
+-> 0 `c
+..
+:U ..
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 78 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 83 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 66 `c
+-> 78 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 66 `c
+-> 83 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 66 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 78 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 83 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 87 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 78 `c
+-> 78 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 83 `c
+-> 87 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 66 `c
+-> 83 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 66 `c
+-> 78 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 78 `c
+-> 78 `c
+-> 87 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 78 `c
+-> 78 `c
+-> 78 `c
+-> 0 `c
+..
+:U ..
+-> 66 `c
+-> 87 `c
+-> 87 `c
+-> 87 `c
+-> 0 `c
+..
+..
+]
+[; ;hardware.h: 15: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+[; ;hardware.h: 16: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+[; ;hardware.h: 17: "BNNN", "BWWW"};
+"23
+[v _params `S1 ~T0 @X0 1 e ]
+[; ;hardware.h: 19: struct inputParams{
+[; ;hardware.h: 20: int steps;
+[; ;hardware.h: 21: fS toFill[8];
+[; ;hardware.h: 22: int setMultiple[8];
+[; ;hardware.h: 23: } params;
+[; ;hardware.h: 26: int inputEntry(void);
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -2793,33 +2840,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic18.h: 164: extern __nonreentrant void _delay(unsigned long);
 [; ;pic18.h: 166: extern __nonreentrant void _delaywdt(unsigned long);
 [; ;pic18.h: 168: extern __nonreentrant void _delay3(unsigned char);
-[; ;__size_t.h: 4: typedef unsigned size_t;
-[; ;string.h: 14: extern void * memcpy(void *, const void *, size_t);
-[; ;string.h: 15: extern void * memmove(void *, const void *, size_t);
-[; ;string.h: 16: extern void * memset(void *, int, size_t);
-[; ;string.h: 36: extern char * strcat(char *, const char *);
-[; ;string.h: 37: extern char * strcpy(char *, const char *);
-[; ;string.h: 38: extern char * strncat(char *, const char *, size_t);
-[; ;string.h: 39: extern char * strncpy(char *, const char *, size_t);
-[; ;string.h: 40: extern char * strdup(const char *);
-[; ;string.h: 41: extern char * strtok(char *, const char *);
-[; ;string.h: 44: extern int memcmp(const void *, const void *, size_t);
-[; ;string.h: 45: extern int strcmp(const char *, const char *);
-[; ;string.h: 46: extern int stricmp(const char *, const char *);
-[; ;string.h: 47: extern int strncmp(const char *, const char *, size_t);
-[; ;string.h: 48: extern int strnicmp(const char *, const char *, size_t);
-[; ;string.h: 49: extern void * memchr(const void *, int, size_t);
-[; ;string.h: 50: extern size_t strcspn(const char *, const char *);
-[; ;string.h: 51: extern char * strpbrk(const char *, const char *);
-[; ;string.h: 52: extern size_t strspn(const char *, const char *);
-[; ;string.h: 53: extern char * strstr(const char *, const char *);
-[; ;string.h: 54: extern char * stristr(const char *, const char *);
-[; ;string.h: 55: extern char * strerror(int);
-[; ;string.h: 56: extern size_t strlen(const char *);
-[; ;string.h: 57: extern char * strchr(const char *, int);
-[; ;string.h: 58: extern char * strichr(const char *, int);
-[; ;string.h: 59: extern char * strrchr(const char *, int);
-[; ;string.h: 60: extern char * strrichr(const char *, int);
 "17 configBits.h
 [p x OSC=HSPLL ]
 "18
@@ -2886,1505 +2906,91 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p x EBTR3=OFF ]
 "69
 [p x EBTRB=OFF ]
-[; ;stdarg.h: 7: typedef void * va_list[1];
-[; ;stdarg.h: 10: extern void * __va_start(void);
-[; ;stdarg.h: 13: extern void * __va_arg(void *, ...);
-[; ;stdio.h: 43: struct __prbuf
-[; ;stdio.h: 44: {
-[; ;stdio.h: 45: char * ptr;
-[; ;stdio.h: 46: void (* func)(char);
-[; ;stdio.h: 47: };
-[; ;errno.h: 29: extern int errno;
-[; ;conio.h: 12: extern void init_uart(void);
-[; ;conio.h: 14: extern char getch(void);
-[; ;conio.h: 15: extern char getche(void);
-[; ;conio.h: 16: extern void putch(char);
-[; ;conio.h: 17: extern void ungetch(char);
-[; ;conio.h: 19: extern __bit kbhit(void);
-[; ;conio.h: 23: extern char * cgets(char *);
-[; ;conio.h: 24: extern void cputs(const char *);
-[; ;stdio.h: 88: extern int cprintf(char *, ...);
-[; ;stdio.h: 93: extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-[; ;stdio.h: 183: extern char * gets(char *);
-[; ;stdio.h: 184: extern int puts(const char *);
-[; ;stdio.h: 185: extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-[; ;stdio.h: 186: extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-[; ;stdio.h: 187: extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-[; ;stdio.h: 188: extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-[; ;stdio.h: 189: extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-[; ;stdio.h: 190: extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-[; ;stdio.h: 194: extern int sprintf(char *, const char *, ...);
-[; ;stdio.h: 195: extern int printf(const char *, ...);
-"60 lcd.h
-[v _LCD_HORZ_LIMIT `Cuc ~T0 @X0 1 e ]
-[i _LCD_HORZ_LIMIT
--> -> 40 `i `uc
-]
-[; ;lcd.h: 60: const unsigned char LCD_HORZ_LIMIT = 40;
-"61
-[v _LCD_VERT_LIMIT `Cuc ~T0 @X0 1 e ]
-[i _LCD_VERT_LIMIT
--> -> 2 `i `uc
-]
-[; ;lcd.h: 61: const unsigned char LCD_VERT_LIMIT = 2;
-"64
-[v _LCD_SIZE_HORZ `Cuc ~T0 @X0 1 e ]
-[i _LCD_SIZE_HORZ
--> -> 16 `i `uc
-]
-[; ;lcd.h: 64: const unsigned char LCD_SIZE_HORZ = 16;
-"65
-[v _LCD_SIZE_VERT `Cuc ~T0 @X0 1 e ]
-[i _LCD_SIZE_VERT
--> -> 2 `i `uc
-]
-[; ;lcd.h: 65: const unsigned char LCD_SIZE_VERT = 2;
-"67
-[v _LCD_RIGHT `Cuc ~T0 @X0 1 e ]
-[i _LCD_RIGHT
--> -> 1 `i `uc
-]
-[; ;lcd.h: 67: const unsigned char LCD_RIGHT = 1;
-"68
-[v _LCD_LEFT `Cuc ~T0 @X0 1 e ]
-[i _LCD_LEFT
--> -> 0 `i `uc
-]
-[; ;lcd.h: 68: const unsigned char LCD_LEFT = 0;
-[; ;lcd.h: 71: void lcdInst(char data);
-[; ;lcd.h: 72: void putch(char data);
-[; ;lcd.h: 73: void lcdNibble(char data);
-[; ;lcd.h: 74: void initLCD(void);
-[; ;lcd.h: 75: void lcd_set_cursor(unsigned char x, unsigned char y);
-[; ;lcd.h: 76: void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
-[; ;lcd.h: 77: void lcd_shift_display(unsigned char numChars, unsigned char direction);
 [; ;I2C.h: 22: void I2C_Master_Init(const unsigned long c);
 [; ;I2C.h: 23: void I2C_Master_Start(void);
 [; ;I2C.h: 24: void I2C_Master_RepeatedStart(void);
 [; ;I2C.h: 25: void I2C_Master_Stop(void);
 [; ;I2C.h: 26: void I2C_Master_Write(unsigned byteToWrite);
 [; ;I2C.h: 27: unsigned char I2C_Master_Read(unsigned char ackBit);
-"11 helpers.h
-[v _keypadChars `Cuc ~T0 @X0 -> 0 `x e ]
-[i _keypadChars
-:U ..
--> 49 `c
--> 50 `c
--> 51 `c
--> 66 `c
--> 52 `c
--> 53 `c
--> 54 `c
--> 78 `c
--> 55 `c
--> 56 `c
--> 57 `c
--> 83 `c
--> 42 `c
--> 48 `c
--> 35 `c
--> 87 `c
--> 0 `c
-..
-]
-[; ;helpers.h: 11: const char keypadChars[] = "123B456N789S*0#W";
-[; ;helpers.h: 13: void printStringLCD(char * string);
-[; ;helpers.h: 14: void printErrorLCD(char * string);
-[; ;helpers.h: 15: char pollKeypad(void);
-[; ;helpers.h: 16: void I2C_Send(unsigned char address, char * data);
-[; ;menu.h: 11: void hibernate(void);
-[; ;menu.h: 12: void mainMenu(void);
-[; ;menu.h: 13: void viewLogs(void);
-[; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
-[; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
-[; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
-[v F3109 `uc ~T0 @X0 -> 5 `i t ]
-"15 hardware.h
-[v _fSLookup `F3109 ~T0 @X0 -> 21 `i e ]
-[i _fSLookup
-:U ..
-:U ..
--> 78 `c
--> 79 `c
--> 78 `c
--> 69 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 0 `c
-..
-:U ..
--> 78 `c
--> 0 `c
-..
-:U ..
--> 83 `c
--> 0 `c
-..
-:U ..
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 78 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 83 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 66 `c
--> 78 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 66 `c
--> 83 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 66 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 78 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 83 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 87 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 78 `c
--> 78 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 83 `c
--> 87 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 66 `c
--> 83 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 66 `c
--> 78 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 78 `c
--> 78 `c
--> 87 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 78 `c
--> 78 `c
--> 78 `c
--> 0 `c
-..
-:U ..
--> 66 `c
--> 87 `c
--> 87 `c
--> 87 `c
--> 0 `c
-..
-..
-]
-[; ;hardware.h: 15: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
-[; ;hardware.h: 16: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
-[; ;hardware.h: 17: "BNNN", "BWWW"};
-"23
-[v _params `S266 ~T0 @X0 1 e ]
-[; ;hardware.h: 19: struct inputParams{
-[; ;hardware.h: 20: int steps;
-[; ;hardware.h: 21: fS toFill[8];
-[; ;hardware.h: 22: int setMultiple[8];
-[; ;hardware.h: 23: } params;
-[; ;hardware.h: 26: int inputEntry(void);
-[; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
-[; ;RTC.h: 12: int RTC_getSeconds(void);
-[v F3122 `Cuc ~T0 @X0 -> 33 `i t ]
-"19 main.c
-[v _inputEntryQuestions `F3122 ~T0 @X0 -> 4 `i e ]
-[i _inputEntryQuestions
-:U ..
-:U ..
--> 65 `c
--> 115 `c
--> 115 `c
--> 101 `c
--> 109 `c
--> 98 `c
--> 108 `c
--> 121 `c
--> 32 `c
--> 115 `c
--> 116 `c
--> 101 `c
--> 112 `c
--> 115 `c
--> 10 `c
--> 42 `c
--> 60 `c
--> 45 `c
--> 32 `c
--> 32 `c
--> 40 `c
--> 52 `c
--> 45 `c
--> 56 `c
--> 41 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 70 `c
--> 97 `c
--> 115 `c
--> 116 `c
--> 101 `c
--> 110 `c
--> 101 `c
--> 114 `c
--> 115 `c
--> 32 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 67 `c
--> 120 `c
--> 10 `c
--> 42 `c
--> 60 `c
--> 45 `c
--> 40 `c
--> 66 `c
--> 78 `c
--> 83 `c
--> 87 `c
--> 41 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 45 `c
--> 62 `c
--> 35 `c
--> 0 `c
-..
-:U ..
--> 72 `c
--> 111 `c
--> 119 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 115 `c
--> 101 `c
--> 116 `c
--> 115 `c
--> 63 `c
--> 10 `c
--> 42 `c
--> 60 `c
--> 45 `c
--> 32 `c
--> 32 `c
--> 40 `c
--> 49 `c
--> 45 `c
--> 52 `c
--> 41 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 67 `c
--> 111 `c
--> 110 `c
--> 102 `c
--> 105 `c
--> 114 `c
--> 109 `c
--> 63 `c
--> 10 `c
--> 42 `c
--> 60 `c
--> 45 `c
--> 32 `c
--> 32 `c
--> 40 `c
--> 65 `c
--> 58 `c
--> 89 `c
--> 47 `c
--> 66 `c
--> 58 `c
--> 78 `c
--> 41 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-..
-]
-[; ;main.c: 19: const char inputEntryQuestions[4][33] = {
-[; ;main.c: 20: "Assembly steps\n" "*<-  (4-8)     \0",
-[; ;main.c: 21: "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
-[; ;main.c: 22: "How many sets?\n" "*<-  (1-4)     \0",
-[; ;main.c: 23: "Confirm?\n" "*<-  (A:Y/B:N) \0"
-[; ;main.c: 24: };
+"11 RTC.c
+[v _RTC_getTime `(v ~T0 @X0 1 ef1`*uc ]
+{
+[; ;RTC.c: 11: void RTC_getTime(unsigned char * time) {
+[e :U _RTC_getTime ]
+[v _time `*uc ~T0 @X0 1 r1 ]
+[f ]
+[; ;RTC.c: 13: I2C_Master_Start();
+"13
+[e ( _I2C_Master_Start ..  ]
+[; ;RTC.c: 14: I2C_Master_Write(0b11010000);
+"14
+[e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
+[; ;RTC.c: 15: I2C_Master_Write(0x00);
+"15
+[e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
+[; ;RTC.c: 16: I2C_Master_Stop();
+"16
+[e ( _I2C_Master_Stop ..  ]
+"19
+[v _i `uc ~T0 @X0 1 a ]
+[; ;RTC.c: 19: char i;
+[; ;RTC.c: 21: I2C_Master_Start();
+"21
+[e ( _I2C_Master_Start ..  ]
+[; ;RTC.c: 22: I2C_Master_Write(0b11010001);
+"22
+[e ( _I2C_Master_Write (1 -> -> 209 `i `ui ]
+[; ;RTC.c: 24: for (i = 0; i < 6; i++) {
+"24
+{
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 267  ]
+[e $U 268  ]
+[e :U 267 ]
+{
+[; ;RTC.c: 25: time[i] = I2C_Master_Read(0);
+"25
+[e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
 "26
-[v _LCDMenuIcons `Cuc ~T0 @X0 -> 16 `i e ]
-[i _LCDMenuIcons
-:U ..
--> 42 `c
--> 60 `c
--> 45 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 40 `c
--> 32 `c
--> 45 `c
--> 32 `c
--> 41 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 0 `c
-..
-]
-[; ;main.c: 26: const char LCDMenuIcons[16] = "*<-   ( - )    \0";
+}
+"24
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 267  ]
+[e :U 268 ]
+"26
+}
+[; ;RTC.c: 26: }
+[; ;RTC.c: 27: time[6] = I2C_Master_Read(1);
+"27
+[e = *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
+[; ;RTC.c: 28: I2C_Master_Stop();
+"28
+[e ( _I2C_Master_Stop ..  ]
+[; ;RTC.c: 29: }
+"29
+[e :UE 266 ]
+}
+"31
+[v _RTC_getSeconds `(i ~T0 @X0 1 ef ]
+{
+[; ;RTC.c: 31: int RTC_getSeconds(void) {
+[e :U _RTC_getSeconds ]
+[f ]
+"35
+[v _time `uc ~T0 @X0 -> 7 `i a ]
+[; ;RTC.c: 35: unsigned char time[7];
+[; ;RTC.c: 36: RTC_getTime(time);
 "36
-[v _errMsgs `CS267 ~T0 @X0 1 e ]
-[i _errMsgs
-:U ..
-:U ..
-:U ..
--> 73 `c
--> 110 `c
--> 118 `c
--> 97 `c
--> 108 `c
--> 105 `c
--> 100 `c
--> 32 `c
--> 101 `c
--> 110 `c
--> 116 `c
--> 114 `c
--> 121 `c
--> 10 `c
--> 80 `c
--> 108 `c
--> 101 `c
--> 97 `c
--> 115 `c
--> 101 `c
--> 32 `c
--> 116 `c
--> 114 `c
--> 121 `c
--> 32 `c
--> 97 `c
--> 103 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 84 `c
--> 111 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 102 `c
--> 97 `c
--> 115 `c
--> 116 `c
--> 101 `c
--> 110 `c
--> 101 `c
--> 114 `c
--> 115 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 84 `c
--> 111 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 98 `c
--> 111 `c
--> 108 `c
--> 116 `c
--> 115 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 84 `c
--> 111 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 110 `c
--> 117 `c
--> 116 `c
--> 115 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 84 `c
--> 111 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 119 `c
--> 97 `c
--> 115 `c
--> 104 `c
--> 101 `c
--> 114 `c
--> 115 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 84 `c
--> 111 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 110 `c
--> 121 `c
--> 32 `c
--> 115 `c
--> 112 `c
--> 97 `c
--> 99 `c
--> 101 `c
--> 114 `c
--> 115 `c
--> 0 `c
--> 0 `c
-..
-:U ..
--> 78 `c
--> 111 `c
--> 32 `c
--> 102 `c
--> 97 `c
--> 115 `c
--> 116 `c
--> 101 `c
--> 110 `c
--> 101 `c
--> 114 `c
--> 115 `c
--> 32 `c
--> 115 `c
--> 101 `c
--> 108 `c
--> 101 `c
--> 99 `c
--> 116 `c
--> 101 `c
--> 100 `c
--> 0 `c
--> 0 `c
-..
-..
-..
-]
-[; ;main.c: 28: const struct errorMessages {
-[; ;main.c: 29: const char badEntry[32];
-[; ;main.c: 30: const char tooManyFasteners[32];
-[; ;main.c: 31: const char tooManyBolts[32];
-[; ;main.c: 32: const char tooManyNuts[32];
-[; ;main.c: 33: const char tooManyWashers[32];
-[; ;main.c: 34: const char tooManySpacers[32];
-[; ;main.c: 35: const char noFasteners[32];
-[; ;main.c: 36: } errMsgs = {
-[; ;main.c: 37: "Invalid entry\nPlease try again\0",
-[; ;main.c: 38: "Too many fasteners\0",
-[; ;main.c: 39: "Too many bolts\0",
-[; ;main.c: 40: "Too many nuts\0",
-[; ;main.c: 41: "Too many washers\0",
-[; ;main.c: 42: "Too many spacers\0",
-[; ;main.c: 43: "No fasteners selected\0"
-[; ;main.c: 44: };
-[v F3134 `Cuc ~T0 @X0 -> 4 `i t ]
-"46
-[v _fastenerMatrix `F3134 ~T0 @X0 -> 21 `i e ]
-[i _fastenerMatrix
-:U ..
-:U ..
-"47
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"48
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"49
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"50
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"51
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"52
--> -> 1 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"53
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"54
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"55
--> -> 2 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"56
--> -> 2 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"57
--> -> 2 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"58
--> -> 1 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"59
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"60
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 2 `i `uc
-..
-:U ..
-"61
--> -> 1 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 2 `i `uc
-..
-:U ..
-"62
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 2 `i `uc
-..
-:U ..
-"63
--> -> 2 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"64
--> -> 2 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"65
--> -> 1 `i `uc
--> -> 2 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"66
--> -> 1 `i `uc
--> -> 3 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"67
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 3 `i `uc
-..
-..
-]
-[; ;main.c: 46: const char fastenerMatrix[21][4] = {
-[; ;main.c: 47: {0,0,0,0},
-[; ;main.c: 48: {1,0,0,0},
-[; ;main.c: 49: {0,1,0,0},
-[; ;main.c: 50: {0,0,1,0},
-[; ;main.c: 51: {0,0,0,1},
-[; ;main.c: 52: {1,1,0,0},
-[; ;main.c: 53: {1,0,1,0},
-[; ;main.c: 54: {1,0,0,1},
-[; ;main.c: 55: {2,1,0,0},
-[; ;main.c: 56: {2,0,1,0},
-[; ;main.c: 57: {2,0,0,1},
-[; ;main.c: 58: {1,1,0,1},
-[; ;main.c: 59: {1,0,1,1},
-[; ;main.c: 60: {1,0,0,2},
-[; ;main.c: 61: {1,1,0,2},
-[; ;main.c: 62: {1,0,1,2},
-[; ;main.c: 63: {2,0,1,1},
-[; ;main.c: 64: {2,1,0,1},
-[; ;main.c: 65: {1,2,0,1},
-[; ;main.c: 66: {1,3,0,0},
-[; ;main.c: 67: {1,0,0,3}
-[; ;main.c: 68: };
-"71
-[v _assemblyStepEncoding `Cuc ~T0 @X0 -> 5 `i e ]
-[i _assemblyStepEncoding
-:U ..
-"74
--> -> 85 `i `uc
-"75
--> -> 91 `i `uc
-"76
--> -> 119 `i `uc
-"77
--> -> 127 `i `uc
-"79
--> -> 255 `i `uc
-..
-]
-[; ;main.c: 71: const char assemblyStepEncoding[5] = {
-[; ;main.c: 74: 0b01010101,
-[; ;main.c: 75: 0b01011011,
-[; ;main.c: 76: 0b01110111,
-[; ;main.c: 77: 0b01111111,
-[; ;main.c: 78: 0b11111111
-[; ;main.c: 79: };
-"81
-[v _nanoAddr `Cuc ~T0 @X0 1 e ]
-[i _nanoAddr
--> -> 16 `i `uc
-]
-[; ;main.c: 81: const unsigned char nanoAddr = 0b00010000;
-"83
-[v _inputEntry `(i ~T0 @X0 1 ef ]
-{
-[; ;main.c: 83: int inputEntry(void) {
-[e :U _inputEntry ]
-[f ]
-[; ;main.c: 84: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"84
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 85: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"85
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 87: I2C_Send(nanoAddr, "Started input entry, hi\0");
-"87
-[e ( _I2C_Send (2 , _nanoAddr -> :s 1C `*uc ]
-"89
-[v _compartmentNum `i ~T0 @X0 1 a ]
-[; ;main.c: 89: int compartmentNum = 0;
-[e = _compartmentNum -> 0 `i ]
-[v F3142 `uc ~T0 @X0 -> 2 `i s ]
-[i F3142
-:U ..
--> 67 `c
--> 48 `c
-..
-]
-"90
-[v _compartmentLabel `uc ~T0 @X0 -> 2 `i a ]
-[; ;main.c: 90: char compartmentLabel[2] = "C0";
-[e = _compartmentLabel F3142 ]
-"91
-[v _inputEntryStep `i ~T0 @X0 1 a ]
-[; ;main.c: 91: int inputEntryStep = 0;
-[e = _inputEntryStep -> 0 `i ]
-"92
-[v _done `i ~T0 @X0 1 a ]
-[; ;main.c: 92: int done = 0;
-[e = _done -> 0 `i ]
-"94
-[v _i `i ~T0 @X0 1 a ]
-[v _numPressed `i ~T0 @X0 1 a ]
-[v _doneCompartment `i ~T0 @X0 1 a ]
-[v _numB `i ~T0 @X0 1 a ]
-[v _numN `i ~T0 @X0 1 a ]
-[v _numS `i ~T0 @X0 1 a ]
-[v _numW `i ~T0 @X0 1 a ]
-[v _found `i ~T0 @X0 1 a ]
-[v _numFasteners `i ~T0 @X0 1 a ]
-"95
-[v _setIsGood `i ~T0 @X0 1 a ]
-[v _doneMultiples `i ~T0 @X0 1 a ]
-"96
-[v _pressed `uc ~T0 @X0 1 a ]
-[; ;main.c: 94: int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
-[; ;main.c: 95: int setIsGood, doneMultiples;
-[; ;main.c: 96: unsigned char pressed;
-[; ;main.c: 98: while (!done) {
-"98
-[e $U 269  ]
-[e :U 270 ]
-{
-[; ;main.c: 100: if (inputEntryStep == 0) {
-"100
-[e $ ! == _inputEntryStep -> 0 `i 272  ]
-{
-[; ;main.c: 101: printStringLCD(inputEntryQuestions[inputEntryStep]);
-"101
-[e ( _printStringLCD (1 -> &U *U + &U _inputEntryQuestions * -> -> _inputEntryStep `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux `*uc ]
-[; ;main.c: 103: pressed = pollKeypad();
-"103
-[e = _pressed ( _pollKeypad ..  ]
-[; ;main.c: 104: numPressed = pressed - 48;
-"104
-[e = _numPressed - -> _pressed `i -> 48 `i ]
-[; ;main.c: 106: putch(pressed);
-"106
-[e ( _putch (1 _pressed ]
-[; ;main.c: 107: _delay((unsigned long)((500)*(40000000/4000.0)));
-"107
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 109: if (numPressed >= 4 && numPressed <= 8) {
-"109
-[e $ ! && >= _numPressed -> 4 `i <= _numPressed -> 8 `i 273  ]
-{
-[; ;main.c: 110: params.steps = numPressed;
-"110
-[e = . _params 0 _numPressed ]
-[; ;main.c: 111: inputEntryStep++;
-"111
-[e ++ _inputEntryStep -> 1 `i ]
-"112
+[e ( _RTC_getTime (1 &U _time ]
+"38
+[v _seconds `i ~T0 @X0 1 a ]
+[; ;RTC.c: 38: int seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+[e = _seconds + + + -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i * -> 60 `i -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * -> 60 `i -> 60 `i -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * * -> 60 `i -> 60 `i -> 24 `i -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i ]
+[; ;RTC.c: 39: return seconds;
+"39
+[e ) _seconds ]
+[e $UE 270  ]
+[; ;RTC.c: 40: }
+"40
+[e :UE 270 ]
 }
-[; ;main.c: 112: } else printErrorLCD(errMsgs.badEntry);
-[e $U 274  ]
-[e :U 273 ]
-[e ( _printErrorLCD (1 -> &U . _errMsgs 0 `*uc ]
-[e :U 274 ]
-"113
-}
-[; ;main.c: 113: } else if (inputEntryStep == 1) {
-[e $U 275  ]
-[e :U 272 ]
-[e $ ! == _inputEntryStep -> 1 `i 276  ]
-{
-"115
-[v _compartmentsToFill `uc ~T0 @X0 1 a ]
-[; ;main.c: 115: char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-[e = _compartmentsToFill *U + &U _assemblyStepEncoding * -> -> - . _params 0 -> 4 `i `ui `ux -> -> # *U &U _assemblyStepEncoding `ui `ux ]
-[; ;main.c: 116: for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
-"116
-{
-[e = _compartmentNum -> 0 `i ]
-[e $ < _compartmentNum -> 8 `i 277  ]
-[e $U 278  ]
-[e :U 277 ]
-{
-[; ;main.c: 117: STARTCOMPARTMENT:
-"117
-[e :U 280 ]
-[; ;main.c: 118: if ((compartmentsToFill >> compartmentNum) & 0b1) {
-"118
-[e $ ! != & >> -> _compartmentsToFill `i _compartmentNum -> 1 `i -> 0 `i 281  ]
-{
-[; ;main.c: 120: setIsGood = 0;
-"120
-[e = _setIsGood -> 0 `i ]
-[; ;main.c: 121: while (!setIsGood) {
-"121
-[e $U 282  ]
-[e :U 283 ]
-{
-[; ;main.c: 122: numB = 0;
-"122
-[e = _numB -> 0 `i ]
-[; ;main.c: 123: numN = 0;
-"123
-[e = _numN -> 0 `i ]
-[; ;main.c: 124: numS = 0;
-"124
-[e = _numS -> 0 `i ]
-[; ;main.c: 125: numW = 0;
-"125
-[e = _numW -> 0 `i ]
-"126
-[v _fastenerString `uc ~T0 @X0 -> 32 `i a ]
-[; ;main.c: 126: char fastenerString[32];
-[; ;main.c: 127: strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-"127
-[e ( _strcpy (2 , &U _fastenerString &U *U + &U _inputEntryQuestions * -> -> _inputEntryStep `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux ]
-[; ;main.c: 128: fastenerString[14] = compartmentNum + 1 + 48;
-"128
-[e = *U + &U _fastenerString * -> -> -> 14 `i `ui `ux -> -> # *U &U _fastenerString `ui `ux -> + + _compartmentNum -> 1 `i -> 48 `i `uc ]
-[; ;main.c: 130: printStringLCD(fastenerString);
-"130
-[e ( _printStringLCD (1 &U _fastenerString ]
-[; ;main.c: 131: lcd_set_cursor(9, 1);
-"131
-[e ( _lcd_set_cursor (2 , -> -> 9 `i `uc -> -> 1 `i `uc ]
-[; ;main.c: 132: doneCompartment = 0;
-"132
-[e = _doneCompartment -> 0 `i ]
-[; ;main.c: 134: while(doneCompartment < 4) {
-"134
-[e $U 285  ]
-[e :U 286 ]
-{
-[; ;main.c: 135: pressed = pollKeypad();
-"135
-[e = _pressed ( _pollKeypad ..  ]
-[; ;main.c: 136: if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-"136
-[e $ ! || || || == -> _pressed `i -> 66 `i == -> _pressed `i -> 78 `i == -> _pressed `i -> 83 `i == -> _pressed `i -> 87 `i 288  ]
-{
-[; ;main.c: 137: putch(pressed);
-"137
-[e ( _putch (1 _pressed ]
-[; ;main.c: 138: if (pressed == 66) numB++;
-"138
-[e $ ! == -> _pressed `i -> 66 `i 289  ]
-[e ++ _numB -> 1 `i ]
-[e $U 290  ]
-"139
-[e :U 289 ]
-[; ;main.c: 139: else if (pressed == 78) numN++;
-[e $ ! == -> _pressed `i -> 78 `i 291  ]
-[e ++ _numN -> 1 `i ]
-[e $U 292  ]
-"140
-[e :U 291 ]
-[; ;main.c: 140: else if (pressed == 83) numS ++;
-[e $ ! == -> _pressed `i -> 83 `i 293  ]
-[e ++ _numS -> 1 `i ]
-[e $U 294  ]
-"141
-[e :U 293 ]
-[; ;main.c: 141: else if (pressed == 87) numW++;
-[e $ ! == -> _pressed `i -> 87 `i 295  ]
-[e ++ _numW -> 1 `i ]
-[e :U 295 ]
-"142
-[e :U 294 ]
-[e :U 292 ]
-[e :U 290 ]
-[; ;main.c: 142: doneCompartment++;
-[e ++ _doneCompartment -> 1 `i ]
-"143
-}
-[; ;main.c: 143: } else if (pressed == 35) {
-[e $U 296  ]
-[e :U 288 ]
-[e $ ! == -> _pressed `i -> 35 `i 297  ]
-{
-[; ;main.c: 144: if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
-"144
-[e $ ! || || || != _numB -> 0 `i != _numN -> 0 `i != _numS -> 0 `i != _numW -> 0 `i 298  ]
-[e = _doneCompartment -> 4 `i ]
-[e :U 298 ]
-"145
-}
-[; ;main.c: 145: } else if (pressed == 42) {
-[e $U 299  ]
-[e :U 297 ]
-[e $ ! == -> _pressed `i -> 42 `i 300  ]
-{
-[; ;main.c: 146: compartmentNum--;
-"146
-[e -- _compartmentNum -> 1 `i ]
-[; ;main.c: 147: goto STARTMULTIPLES;
-"147
-[e $U 301  ]
-"148
-}
-[e :U 300 ]
-"149
-[e :U 299 ]
-[e :U 296 ]
-}
-[e :U 285 ]
-"134
-[e $ < _doneCompartment -> 4 `i 286  ]
-[e :U 287 ]
-[; ;main.c: 148: }
-[; ;main.c: 149: }
-[; ;main.c: 152: found = 0;
-"152
-[e = _found -> 0 `i ]
-[; ;main.c: 153: for (i = 0; i < 21; i++) {
-"153
-{
-[e = _i -> 0 `i ]
-[e $ < _i -> 21 `i 302  ]
-[e $U 303  ]
-[e :U 302 ]
-{
-[; ;main.c: 154: if (fastenerMatrix[i][0] == numB &&
-[; ;main.c: 155: fastenerMatrix[i][1] == numN &&
-[; ;main.c: 156: fastenerMatrix[i][2] == numS &&
-[; ;main.c: 157: fastenerMatrix[i][3] == numW)
-"157
-[e $ ! && && && == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numB == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 1 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numN == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 2 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numS == -> *U + &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> -> 3 `i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> -> _i `ui `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i _numW 305  ]
-[; ;main.c: 158: {
-"158
-{
-[; ;main.c: 159: params.toFill[compartmentNum] = i;
-"159
-[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux -> _i `E3085 ]
-[; ;main.c: 160: found = 1;
-"160
-[e = _found -> 1 `i ]
-"161
-}
-[e :U 305 ]
-"162
-}
-"153
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 21 `i 302  ]
-[e :U 303 ]
-"162
-}
-[; ;main.c: 161: }
-[; ;main.c: 162: }
-[; ;main.c: 163: if (!found) {
-"163
-[e $ ! ! != _found -> 0 `i 306  ]
-{
-[; ;main.c: 164: printErrorLCD(errMsgs.badEntry);
-"164
-[e ( _printErrorLCD (1 -> &U . _errMsgs 0 `*uc ]
-[; ;main.c: 167: continue;
-"167
-[e $U 282  ]
-"168
-}
-[; ;main.c: 168: } else {
-[e $U 307  ]
-[e :U 306 ]
-{
-[; ;main.c: 169: setIsGood = 1;
-"169
-[e = _setIsGood -> 1 `i ]
-"170
-}
-[e :U 307 ]
-"171
-}
-[e :U 282 ]
-"121
-[e $ ! != _setIsGood -> 0 `i 283  ]
-[e :U 284 ]
-[; ;main.c: 170: }
-[; ;main.c: 171: }
-[; ;main.c: 174: STARTMULTIPLES:
-"174
-[e :U 301 ]
-[; ;main.c: 175: doneMultiples = 0;
-"175
-[e = _doneMultiples -> 0 `i ]
-[; ;main.c: 176: while (!doneMultiples) {
-"176
-[e $U 308  ]
-[e :U 309 ]
-{
-[; ;main.c: 177: printStringLCD(inputEntryQuestions[2]);
-"177
-[e ( _printStringLCD (1 -> &U *U + &U _inputEntryQuestions * -> -> -> 2 `i `ui `ux -> * -> # *U &U *U &U _inputEntryQuestions `ui -> -> 33 `i `ui `ux `*uc ]
-[; ;main.c: 178: lcd_set_cursor(14, 1);
-"178
-[e ( _lcd_set_cursor (2 , -> -> 14 `i `uc -> -> 1 `i `uc ]
-[; ;main.c: 180: pressed = pollKeypad();
-"180
-[e = _pressed ( _pollKeypad ..  ]
-[; ;main.c: 181: numPressed = pressed - 48;
-"181
-[e = _numPressed - -> _pressed `i -> 48 `i ]
-[; ;main.c: 183: if (pressed == 42) goto STARTCOMPARTMENT;
-"183
-[e $ ! == -> _pressed `i -> 42 `i 311  ]
-[e $U 280  ]
-[e :U 311 ]
-[; ;main.c: 186: putch(pressed);
-"186
-[e ( _putch (1 _pressed ]
-[; ;main.c: 187: _delay((unsigned long)((500)*(40000000/4000.0)));
-"187
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"189
-[v _sum `i ~T0 @X0 1 a ]
-[; ;main.c: 189: int sum = 0;
-[e = _sum -> 0 `i ]
-[; ;main.c: 190: for (i = 0; i < 4; i++) {
-"190
-{
-[e = _i -> 0 `i ]
-[e $ < _i -> 4 `i 312  ]
-[e $U 313  ]
-[e :U 312 ]
-{
-[; ;main.c: 191: sum += fastenerMatrix[params.toFill[compartmentNum]][i];
-"191
-[e =+ _sum -> *U + &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux * -> -> _i `ui `ux -> -> # *U &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `ui `ux `i ]
-"192
-}
-"190
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 4 `i 312  ]
-[e :U 313 ]
-"192
-}
-[; ;main.c: 192: };
-[; ;main.c: 193: if (numPressed * sum > 4 || numPressed * sum <= 0) {
-"193
-[e $ ! || > * _numPressed _sum -> 4 `i <= * _numPressed _sum -> 0 `i 315  ]
-{
-[; ;main.c: 194: printErrorLCD(errMsgs.tooManyFasteners);
-"194
-[e ( _printErrorLCD (1 -> &U . _errMsgs 1 `*uc ]
-"195
-}
-[; ;main.c: 195: } else {
-[e $U 316  ]
-[e :U 315 ]
-{
-[; ;main.c: 196: params.setMultiple[compartmentNum] = numPressed;
-"196
-[e = *U + &U . _params 2 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 2 `ui `ux _numPressed ]
-[; ;main.c: 197: doneMultiples = 1;
-"197
-[e = _doneMultiples -> 1 `i ]
-"198
-}
-[e :U 316 ]
-"199
-}
-[e :U 308 ]
-"176
-[e $ ! != _doneMultiples -> 0 `i 309  ]
-[e :U 310 ]
-"200
-}
-[; ;main.c: 198: }
-[; ;main.c: 199: }
-[; ;main.c: 200: } else {
-[e $U 317  ]
-[e :U 281 ]
-{
-[; ;main.c: 201: params.toFill[compartmentNum] = NONE;
-"201
-[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux . `E3085 0 ]
-[; ;main.c: 202: params.setMultiple[compartmentNum] = 0;
-"202
-[e = *U + &U . _params 2 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 2 `ui `ux -> 0 `i ]
-"203
-}
-[e :U 317 ]
-"204
-}
-"116
-[e ++ _compartmentNum -> 1 `i ]
-[e $ < _compartmentNum -> 8 `i 277  ]
-[e :U 278 ]
-"204
-}
-[; ;main.c: 203: }
-[; ;main.c: 204: }
-[; ;main.c: 205: done = 1;
-"205
-[e = _done -> 1 `i ]
-"207
-}
-[e :U 276 ]
-"209
-[e :U 275 ]
-}
-[e :U 269 ]
-"98
-[e $ ! != _done -> 0 `i 270  ]
-[e :U 271 ]
-[; ;main.c: 207: }
-[; ;main.c: 209: }
-[; ;main.c: 210: }
-"210
-[e :UE 268 ]
-}
-"212
-[v _packaging `(v ~T0 @X0 1 ef4`i`i`i`i ]
-{
-[; ;main.c: 212: void packaging(int b, int n, int s, int w) {
-[e :U _packaging ]
-[v _b `i ~T0 @X0 1 r1 ]
-[v _n `i ~T0 @X0 1 r2 ]
-[v _s `i ~T0 @X0 1 r3 ]
-[v _w `i ~T0 @X0 1 r4 ]
-[f ]
-[; ;main.c: 214: LATBbits.LATB3 = 1;
-"214
-[e = . . _LATBbits 0 3 -> -> 1 `i `uc ]
-[; ;main.c: 215: LATCbits.LATC1 = 1;
-"215
-[e = . . _LATCbits 0 1 -> -> 1 `i `uc ]
-[; ;main.c: 216: LATCbits.LATC5 = 1;
-"216
-[e = . . _LATCbits 0 5 -> -> 1 `i `uc ]
-[; ;main.c: 217: LATCbits.LATC7 = 1;
-"217
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-"219
-[v _numB `i ~T0 @X0 1 a ]
-[; ;main.c: 219: int numB=0, numN=0, numS=0, numW=0, done=0;
-[e = _numB -> 0 `i ]
-[v _numN `i ~T0 @X0 1 a ]
-[e = _numN -> 0 `i ]
-[v _numS `i ~T0 @X0 1 a ]
-[e = _numS -> 0 `i ]
-[v _numW `i ~T0 @X0 1 a ]
-[e = _numW -> 0 `i ]
-[v _done `i ~T0 @X0 1 a ]
-[e = _done -> 0 `i ]
-"220
-[v _currTime `i ~T0 @X0 1 a ]
-[v _timeB `i ~T0 @X0 1 a ]
-[; ;main.c: 220: int currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-[e = _timeB -> 0 `i ]
-[v _timeN `i ~T0 @X0 1 a ]
-[e = _timeN -> 0 `i ]
-[v _timeS `i ~T0 @X0 1 a ]
-[e = _timeS -> 0 `i ]
-[v _timeW `i ~T0 @X0 1 a ]
-[e = _timeW -> 0 `i ]
-"221
-[v _resolution `uc ~T0 @X0 1 a ]
-[; ;main.c: 221: char resolution = 1;
-[e = _resolution -> -> 1 `i `uc ]
-[; ;main.c: 223: while (1) {
-"223
-[e :U 320 ]
-{
-[; ;main.c: 224: currTime = RTC_getSeconds();
-"224
-[e = _currTime ( _RTC_getSeconds ..  ]
-[; ;main.c: 226: if (PORTAbits.RA0 == 1 && currTime > timeB + resolution) {
-"226
-[e $ ! && == -> . . _PORTAbits 0 0 `i -> 1 `i > _currTime + _timeB -> _resolution `i 322  ]
-{
-[; ;main.c: 227: timeB = currTime;
-"227
-[e = _timeB _currTime ]
-[; ;main.c: 228: numB++;
-"228
-[e ++ _numB -> 1 `i ]
-"229
-}
-[e :U 322 ]
-[; ;main.c: 229: }
-[; ;main.c: 230: if (PORTAbits.RA1 == 1 && currTime > timeN + resolution) {
-"230
-[e $ ! && == -> . . _PORTAbits 0 1 `i -> 1 `i > _currTime + _timeN -> _resolution `i 323  ]
-{
-[; ;main.c: 231: timeN = currTime;
-"231
-[e = _timeN _currTime ]
-[; ;main.c: 232: numN++;
-"232
-[e ++ _numN -> 1 `i ]
-"233
-}
-[e :U 323 ]
-[; ;main.c: 233: }
-[; ;main.c: 234: if (PORTAbits.RA2 == 1 && currTime > timeS + resolution) {
-"234
-[e $ ! && == -> . . _PORTAbits 0 2 `i -> 1 `i > _currTime + _timeS -> _resolution `i 324  ]
-{
-[; ;main.c: 235: timeS = currTime;
-"235
-[e = _timeS _currTime ]
-[; ;main.c: 236: numS++;
-"236
-[e ++ _numS -> 1 `i ]
-"237
-}
-[e :U 324 ]
-[; ;main.c: 237: }
-[; ;main.c: 238: if (PORTAbits.RA3 == 1 && currTime > timeW + resolution) {
-"238
-[e $ ! && == -> . . _PORTAbits 0 3 `i -> 1 `i > _currTime + _timeW -> _resolution `i 325  ]
-{
-[; ;main.c: 239: timeW = currTime;
-"239
-[e = _timeW _currTime ]
-[; ;main.c: 240: numW++;
-"240
-[e ++ _numW -> 1 `i ]
-"241
-}
-[e :U 325 ]
-[; ;main.c: 241: }
-[; ;main.c: 243: if (numB >= b) {
-"243
-[e $ ! >= _numB _b 326  ]
-{
-[; ;main.c: 244: LATBbits.LATB3 = 0;
-"244
-[e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
-[; ;main.c: 245: done++;
-"245
-[e ++ _done -> 1 `i ]
-"246
-}
-[e :U 326 ]
-[; ;main.c: 246: }
-[; ;main.c: 247: if (numN >= n) {
-"247
-[e $ ! >= _numN _n 327  ]
-{
-[; ;main.c: 248: LATCbits.LATC5 = 0;
-"248
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-[; ;main.c: 249: done++;
-"249
-[e ++ _done -> 1 `i ]
-"250
-}
-[e :U 327 ]
-[; ;main.c: 250: }
-[; ;main.c: 251: if (numS >= s) {
-"251
-[e $ ! >= _numS _s 328  ]
-{
-[; ;main.c: 252: LATCbits.LATC5 = 0;
-"252
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-[; ;main.c: 253: done++;
-"253
-[e ++ _done -> 1 `i ]
-"254
-}
-[e :U 328 ]
-[; ;main.c: 254: }
-[; ;main.c: 255: if (numW >= w) {
-"255
-[e $ ! >= _numW _w 329  ]
-{
-[; ;main.c: 256: LATCbits.LATC7 = 0;
-"256
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
-[; ;main.c: 257: done++;
-"257
-[e ++ _done -> 1 `i ]
-"258
-}
-[e :U 329 ]
-[; ;main.c: 258: }
-[; ;main.c: 260: if (done >= 3) break;
-"260
-[e $ ! >= _done -> 3 `i 330  ]
-[e $U 321  ]
-[e :U 330 ]
-"261
-}
-[e :U 319 ]
-"223
-[e $U 320  ]
-[e :U 321 ]
-[; ;main.c: 261: }
-[; ;main.c: 263: }
-"263
-[e :UE 318 ]
-}
-[v $root$_main `(v ~T0 @X0 0 e ]
-"265
-[v _main `(v ~T0 @X0 1 ef ]
-{
-[; ;main.c: 265: void main(void) {
-[e :U _main ]
-[f ]
-[; ;main.c: 270: LATA = 0x00;
-"270
-[e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 271: LATB = 0x00;
-"271
-[e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 272: LATC = 0x00;
-"272
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 273: LATD = 0x00;
-"273
-[e = _LATD -> -> 0 `i `uc ]
-[; ;main.c: 274: LATE = 0x00;
-"274
-[e = _LATE -> -> 0 `i `uc ]
-[; ;main.c: 277: TRISA = 0xFF;
-"277
-[e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 278: TRISB = 0b11110111;
-"278
-[e = _TRISB -> -> 247 `i `uc ]
-[; ;main.c: 279: TRISC = 0x00;
-"279
-[e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 280: TRISD = 0x00;
-"280
-[e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 281: TRISE = 0x00;
-"281
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 284: I2C_Master_Init(100000);
-"284
-[e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
-[; ;main.c: 286: initLCD();
-"286
-[e ( _initLCD ..  ]
-[; ;main.c: 288: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"288
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 289: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"289
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 291: hibernate();
-"291
-[e ( _hibernate ..  ]
-[; ;main.c: 292: mainMenu();
-"292
-[e ( _mainMenu ..  ]
-[; ;main.c: 294: }
-"294
-[e :UE 331 ]
-}
-[a 1C 83 116 97 114 116 101 100 32 105 110 112 117 116 32 101 110 116 114 121 44 32 104 105 0 0 ]
-

@@ -1,5 +1,23 @@
 
-# 1 "main.c"
+# 1 "RTC.c"
+
+# 11 "hardware.h"
+typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+BNNN=19, BWWW=20} fS;
+
+char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+"BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+"BNNN", "BWWW"};
+
+struct inputParams{
+int steps;
+fS toFill[8];
+int setMultiple[8];
+} params;
+
+
+int inputEntry(void);
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -3704,41 +3722,6 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
-typedef unsigned size_t;
-
-# 14 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\string.h"
-extern void * memcpy(void *, const void *, size_t);
-extern void * memmove(void *, const void *, size_t);
-extern void * memset(void *, int, size_t);
-
-# 36
-extern char * strcat(char *, const char *);
-extern char * strcpy(char *, const char *);
-extern char * strncat(char *, const char *, size_t);
-extern char * strncpy(char *, const char *, size_t);
-extern char * strdup(const char *);
-extern char * strtok(char *, const char *);
-
-
-extern int memcmp(const void *, const void *, size_t);
-extern int strcmp(const char *, const char *);
-extern int stricmp(const char *, const char *);
-extern int strncmp(const char *, const char *, size_t);
-extern int strnicmp(const char *, const char *, size_t);
-extern void * memchr(const void *, int, size_t);
-extern size_t strcspn(const char *, const char *);
-extern char * strpbrk(const char *, const char *);
-extern size_t strspn(const char *, const char *);
-extern char * strstr(const char *, const char *);
-extern char * stristr(const char *, const char *);
-extern char * strerror(int);
-extern size_t strlen(const char *);
-extern char * strchr(const char *, int);
-extern char * strichr(const char *, int);
-extern char * strrchr(const char *, int);
-extern char * strrichr(const char *, int);
-
 
 # 17 "configBits.h"
 #pragma config OSC = HSPLL
@@ -3795,86 +3778,6 @@ extern char * strrichr(const char *, int);
 
 #pragma config EBTRB = OFF
 
-# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
-typedef void * va_list[1];
-
-#pragma intrinsic(__va_start)
-extern void * __va_start(void);
-
-#pragma intrinsic(__va_arg)
-extern void * __va_arg(void *, ...);
-
-# 43 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
-struct __prbuf
-{
-char * ptr;
-void (* func)(char);
-};
-
-# 29 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\errno.h"
-extern int errno;
-
-# 12 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h"
-extern void init_uart(void);
-
-extern char getch(void);
-extern char getche(void);
-extern void putch(char);
-extern void ungetch(char);
-
-extern __bit kbhit(void);
-
-# 23
-extern char * cgets(char *);
-extern void cputs(const char *);
-
-# 88 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
-extern int cprintf(char *, ...);
-#pragma printf_check(cprintf)
-
-
-
-extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-
-
-# 180
-#pragma printf_check(vprintf) const
-#pragma printf_check(vsprintf) const
-
-extern char * gets(char *);
-extern int puts(const char *);
-extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-
-#pragma printf_check(printf) const
-#pragma printf_check(sprintf) const
-extern int sprintf(char *, const char *, ...);
-extern int printf(const char *, ...);
-
-# 60 "lcd.h"
-const unsigned char LCD_HORZ_LIMIT = 40;
-const unsigned char LCD_VERT_LIMIT = 2;
-
-
-const unsigned char LCD_SIZE_HORZ = 16;
-const unsigned char LCD_SIZE_VERT = 2;
-
-const unsigned char LCD_RIGHT = 1;
-const unsigned char LCD_LEFT = 0;
-
-
-void lcdInst(char data);
-void putch(char data);
-void lcdNibble(char data);
-void initLCD(void);
-void lcd_set_cursor(unsigned char x, unsigned char y);
-void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
-void lcd_shift_display(unsigned char numChars, unsigned char direction);
-
 # 22 "I2C.h"
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);
@@ -3883,313 +3786,34 @@ void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned byteToWrite);
 unsigned char I2C_Master_Read(unsigned char ackBit);
 
-# 11 "helpers.h"
-const char keypadChars[] = "123B456N789S*0#W";
+# 11 "RTC.c"
+void RTC_getTime(unsigned char * time) {
 
-void printStringLCD(char * string);
-void printErrorLCD(char * string);
-char pollKeypad(void);
-void I2C_Send(unsigned char address, char * data);
-
-# 11 "menu.h"
-void hibernate(void);
-void mainMenu(void);
-void viewLogs(void);
-
-# 11 "hardware.h"
-typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
-BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
-BNNN=19, BWWW=20} fS;
-
-char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
-"BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
-"BNNN", "BWWW"};
-
-struct inputParams{
-int steps;
-fS toFill[8];
-int setMultiple[8];
-} params;
+I2C_Master_Start();
+I2C_Master_Write(0b11010000);
+I2C_Master_Write(0x00);
+I2C_Master_Stop();
 
 
-int inputEntry(void);
+char i;
 
-# 11 "RTC.h"
-void RTC_getTime(unsigned char * time);
-int RTC_getSeconds(void);
+I2C_Master_Start();
+I2C_Master_Write(0b11010001);
 
-# 19 "main.c"
-const char inputEntryQuestions[4][33] = {
-"Assembly steps\n" "*<-  (4-8)     \0",
-"Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
-"How many sets?\n" "*<-  (1-4)     \0",
-"Confirm?\n" "*<-  (A:Y/B:N) \0"
-};
-
-const char LCDMenuIcons[16] = "*<-   ( - )    \0";
-
-const struct errorMessages {
-const char badEntry[32];
-const char tooManyFasteners[32];
-const char tooManyBolts[32];
-const char tooManyNuts[32];
-const char tooManyWashers[32];
-const char tooManySpacers[32];
-const char noFasteners[32];
-} errMsgs = {
-"Invalid entry\nPlease try again\0",
-"Too many fasteners\0",
-"Too many bolts\0",
-"Too many nuts\0",
-"Too many washers\0",
-"Too many spacers\0",
-"No fasteners selected\0"
-};
-
-const char fastenerMatrix[21][4] = {
-{0,0,0,0},
-{1,0,0,0},
-{0,1,0,0},
-{0,0,1,0},
-{0,0,0,1},
-{1,1,0,0},
-{1,0,1,0},
-{1,0,0,1},
-{2,1,0,0},
-{2,0,1,0},
-{2,0,0,1},
-{1,1,0,1},
-{1,0,1,1},
-{1,0,0,2},
-{1,1,0,2},
-{1,0,1,2},
-{2,0,1,1},
-{2,1,0,1},
-{1,2,0,1},
-{1,3,0,0},
-{1,0,0,3}
-};
-
-
-const char assemblyStepEncoding[5] = {
-
-
-0b01010101,
-0b01011011,
-0b01110111,
-0b01111111,
-0b11111111
-};
-
-const unsigned char nanoAddr = 0b00010000;
-
-int inputEntry(void) {
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-
-I2C_Send(nanoAddr, "Started input entry, hi\0");
-
-int compartmentNum = 0;
-char compartmentLabel[2] = "C0";
-int inputEntryStep = 0;
-int done = 0;
-
-int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
-int setIsGood, doneMultiples;
-unsigned char pressed;
-
-while (!done) {
-
-if (inputEntryStep == 0) {
-printStringLCD(inputEntryQuestions[inputEntryStep]);
-
-pressed = pollKeypad();
-numPressed = pressed - 48;
-
-putch(pressed);
-_delay((unsigned long)((500)*(40000000/4000.0)));
-
-if (numPressed >= 4 && numPressed <= 8) {
-params.steps = numPressed;
-inputEntryStep++;
-} else printErrorLCD(errMsgs.badEntry);
-} else if (inputEntryStep == 1) {
-
-char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
-STARTCOMPARTMENT:
-if ((compartmentsToFill >> compartmentNum) & 0b1) {
-
-setIsGood = 0;
-while (!setIsGood) {
-numB = 0;
-numN = 0;
-numS = 0;
-numW = 0;
-char fastenerString[32];
-strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-fastenerString[14] = compartmentNum + 1 + 48;
-
-printStringLCD(fastenerString);
-lcd_set_cursor(9, 1);
-doneCompartment = 0;
-
-while(doneCompartment < 4) {
-pressed = pollKeypad();
-if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-putch(pressed);
-if (pressed == 66) numB++;
-else if (pressed == 78) numN++;
-else if (pressed == 83) numS ++;
-else if (pressed == 87) numW++;
-doneCompartment++;
-} else if (pressed == 35) {
-if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
-} else if (pressed == 42) {
-compartmentNum--;
-goto STARTMULTIPLES;
+for (i = 0; i < 6; i++) {
+time[i] = I2C_Master_Read(0);
 }
+time[6] = I2C_Master_Read(1);
+I2C_Master_Stop();
 }
 
+int RTC_getSeconds(void) {
 
-found = 0;
-for (i = 0; i < 21; i++) {
-if (fastenerMatrix[i][0] == numB &&
-fastenerMatrix[i][1] == numN &&
-fastenerMatrix[i][2] == numS &&
-fastenerMatrix[i][3] == numW)
-{
-params.toFill[compartmentNum] = i;
-found = 1;
-}
-}
-if (!found) {
-printErrorLCD(errMsgs.badEntry);
+# 35
+unsigned char time[7];
+RTC_getTime(time);
 
-
-continue;
-} else {
-setIsGood = 1;
-}
+int seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+return seconds;
 }
 
-
-STARTMULTIPLES:
-doneMultiples = 0;
-while (!doneMultiples) {
-printStringLCD(inputEntryQuestions[2]);
-lcd_set_cursor(14, 1);
-
-pressed = pollKeypad();
-numPressed = pressed - 48;
-
-if (pressed == 42) goto STARTCOMPARTMENT;
-
-
-putch(pressed);
-_delay((unsigned long)((500)*(40000000/4000.0)));
-
-int sum = 0;
-for (i = 0; i < 4; i++) {
-sum += fastenerMatrix[params.toFill[compartmentNum]][i];
-};
-if (numPressed * sum > 4 || numPressed * sum <= 0) {
-printErrorLCD(errMsgs.tooManyFasteners);
-} else {
-params.setMultiple[compartmentNum] = numPressed;
-doneMultiples = 1;
-}
-}
-} else {
-params.toFill[compartmentNum] = NONE;
-params.setMultiple[compartmentNum] = 0;
-}
-}
-done = 1;
-
-}
-
-}
-}
-
-void packaging(int b, int n, int s, int w) {
-
-LATBbits.LATB3 = 1;
-LATCbits.LATC1 = 1;
-LATCbits.LATC5 = 1;
-LATCbits.LATC7 = 1;
-
-int numB=0, numN=0, numS=0, numW=0, done=0;
-int currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-char resolution = 1;
-
-while (1) {
-currTime = RTC_getSeconds();
-
-if (PORTAbits.RA0 == 1 && currTime > timeB + resolution) {
-timeB = currTime;
-numB++;
-}
-if (PORTAbits.RA1 == 1 && currTime > timeN + resolution) {
-timeN = currTime;
-numN++;
-}
-if (PORTAbits.RA2 == 1 && currTime > timeS + resolution) {
-timeS = currTime;
-numS++;
-}
-if (PORTAbits.RA3 == 1 && currTime > timeW + resolution) {
-timeW = currTime;
-numW++;
-}
-
-if (numB >= b) {
-LATBbits.LATB3 = 0;
-done++;
-}
-if (numN >= n) {
-LATCbits.LATC5 = 0;
-done++;
-}
-if (numS >= s) {
-LATCbits.LATC5 = 0;
-done++;
-}
-if (numW >= w) {
-LATCbits.LATC7 = 0;
-done++;
-}
-
-if (done >= 3) break;
-}
-
-}
-
-void main(void) {
-
-# 270
-LATA = 0x00;
-LATB = 0x00;
-LATC = 0x00;
-LATD = 0x00;
-LATE = 0x00;
-
-
-TRISA = 0xFF;
-TRISB = 0b11110111;
-TRISC = 0x00;
-TRISD = 0x00;
-TRISE = 0x00;
-
-
-I2C_Master_Init(100000);
-
-initLCD();
-
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-
-hibernate();
-mainMenu();
-
-}

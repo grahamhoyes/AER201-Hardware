@@ -1,4 +1,7 @@
-
 Hardware.X/main_old.c
 Hardware.X/menu_old.c
 Hardware.X/menu_old.h
+Hardware.X/dist/
+Hardware.X/nbproject/
+Hardware.X/debug
+Hardware.X/build

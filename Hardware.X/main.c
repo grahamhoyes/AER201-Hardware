@@ -5,6 +5,9 @@
  * Created on January 20, 2018, 6:27 PM
  */
 
+/* TODO
+ * Make a proper function for debouncing and counting IR break beam sensor
+ */
 #include <xc.h>
 #include <string.h>
 #include "configBits.h"
@@ -14,6 +17,11 @@
 #include "menu.h"
 #include "hardware.h"
 #include "RTC.h"
+
+#define maxB 20
+#define maxN 25
+#define maxS 20
+#define maxW 35
 
 /* Global constant declarations */
 const char inputEntryQuestions[4][33] = { // Putting in an extra bit for the null terminator need to adjust code elsewhere
@@ -79,6 +87,10 @@ const char assemblyStepEncoding[5] = {
 };
 
 const unsigned char nanoAddr = 0b00010000; // Arduino address LSL 1
+
+struct amounts dispensed = {0, 0, 0, 0};
+
+struct amounts extras = {0, 0, 0, 0};
 
 int inputEntry(void) {
     __lcd_clear();
@@ -192,6 +204,7 @@ int inputEntry(void) {
                         };
                         if (numPressed * sum > 4 || numPressed * sum <= 0) {
                             printErrorLCD(errMsgs.tooManyFasteners);
+                        // There is also a max number of B, N, S, W in each compartment, need to check for that as well here
                         } else {
                             params.setMultiple[compartmentNum] = numPressed;
                             doneMultiples = 1;
@@ -209,57 +222,157 @@ int inputEntry(void) {
     }
 }
 
-void packaging(int b, int n, int s, int w) {
+void packageCompartment(char b, char n, char s, char w) {
     // Activate all motors
     LATBbits.LATB3 = 1;
     LATCbits.LATC1 = 1;
     LATCbits.LATC5 = 1;
     LATCbits.LATC7 = 1;
+    I2C_Send(nanoAddr, "\1Starting\0");
     
-    int numB=0, numN=0, numS=0, numW=0, done=0;
-    int currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-    char resolution = 1;
+    int numB=0, numN=0, numS=0, numW=0;
+    int doneB=0, doneN=0, doneS=0, doneW=0;
+    long currTime, timeB=0, timeN=0, timeS=0, timeW=0;
+    char resolution = 5;
+    __lcd_clear();
+    __lcd_home();
+    printf("Now counting");
+    __delay_ms(2000);
     
     while (1) {
         currTime = RTC_getSeconds();
+        char currTimeString[33];
+        sprintf(currTimeString, "%li", currTime);
+        currTimeString[32] = "\0"; // Null-terminate
+        __lcd_clear();
+        __lcd_home();
+        printf(currTimeString);
+        __delay_ms(2000);
+        I2C_Send(nanoAddr, currTimeString);
         
-        if (PORTAbits.RA0 == 1 && currTime > timeB + resolution) {
+        if (PORTAbits.RA0 == 0 && currTime > timeB + resolution) {
             timeB = currTime;
             numB++;
+            dispensed.b++;
+            I2C_Send(nanoAddr, "\1Bolt Counted\0");
         }
-        if (PORTAbits.RA1 == 1 && currTime > timeN + resolution) {
+        if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
             timeN = currTime;
             numN++;
+            dispensed.n++;
+            I2C_Send(nanoAddr, "\1Nut Counted\0");
         }
-        if (PORTAbits.RA2 == 1 && currTime > timeS + resolution) {
+        if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
             timeS = currTime;
             numS++;
+            dispensed.s++;
+            I2C_Send(nanoAddr, "\1Spacer Counted\0");
         }
-        if (PORTAbits.RA3 == 1 && currTime > timeW + resolution) {
+        if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
             timeW = currTime;
             numW++;
+            dispensed.w++;
+            I2C_Send(nanoAddr, "\1Washer Counted\0");
         }
         
         if (numB >= b) {
             LATBbits.LATB3 = 0; 
-            done++;
+            doneB=1;
         }
         if (numN >= n) {
             LATCbits.LATC5 = 0;
-            done++;
+            doneN=1;
         }
         if (numS >= s) {
             LATCbits.LATC5 = 0;
-            done++;
+            doneS=1;
         }
         if (numW >= w) {
             LATCbits.LATC7 = 0;
-            done++;
+            doneW=1;
         }
         
-        if (done >= 3) break;
+        if (doneB && doneN && doneS && doneW) {
+            I2C_Send(nanoAddr, "\1Done compartment\0");
+            break;
+        }
     }
+    //I2C_Send(nanoAddr, "Done\0");
     // Rotate Nema 17 45deg CW
+    I2C_Send(nanoAddr, 2); // We should actually wait until this completes, approx 4 * 50 ms * 200/8
+    __delay_ms(5000); // Yeah, we'll want to speed this up after testing
+}
+
+void packaging(void) {
+    int compartmentNum;
+    /* We start packaging with Compartment 8, then 7, etc. down to 1
+     * This is C, so compartments are actually zero-indexed in the code
+     */
+    for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
+        if (params.toFill[compartmentNum-1] == NONE) break;
+        char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
+        packageCompartment(set[0], set[1], set[2], set[3]);
+    }
+}
+
+void clearing(void) {
+    /* This function involves a lot of coordination between the PIC and 
+     * Arduino. For now, we're keeping track of how long motor operations
+     * on the Arduino take, and delaying for the appropriate time here.*/
+    
+    I2C_Send(nanoAddr, 3); // Rotate Nema 17 359.5 deg CW, step micro servo over first dispensing bin
+    
+    int i;
+    int spinTime=100; // Change this in practice
+    
+    LATBbits.LATB3 = 1; // DCB-F pin
+    for (i = 0; i < spinTime; i++) {
+        // Every 25 milliseconds, check if a bolt is passed and count it
+        if (PORTAbits.RA0 == 0) {
+            extras.b++;
+        }
+        if (extras.b + dispensed.b == maxB) break;
+        __delay_ms(25);
+    }
+    LATBbits.LATB3 = 0;
+    
+    I2C_Send(nanoAddr, 4); // Step micro servo over second dispensing bin
+    
+    LATCbits.LATC1 = 1; // DCN-F pin
+    for (i = 0; i < spinTime; i++) {
+        if (PORTAbits.RA1 == 0) {
+            extras.n++;
+        }
+        if (extras.n + dispensed.n == maxN) break;
+        __delay_ms(25);
+    }
+    LATCbits.LATC1 = 0;
+    
+    I2C_Send(nanoAddr, 5); // Step micro servo over third dispensing bin
+    
+    LATCbits.LATC5 = 1; // DCS-F pin
+    for (i = 0; i < spinTime; i++) {
+        if (PORTAbits.RA2 == 0) {
+            extras.s++;
+        }
+        if (extras.s + dispensed.s == maxS) break;
+        __delay_ms(25);
+    }   
+    LATCbits.LATC5 = 0;
+    
+    I2C_Send(nanoAddr, 6); // Step micro servo over fourth dispensing bin
+    
+    LATCbits.LATC7 = 1; // DCW-F pin
+    for (i = 0; i < spinTime; i++) {
+        if (PORTAbits.RA3 == 0) {
+            extras.w++;
+        }
+        if (extras.w + dispensed.w == maxW) break;
+    }
+    LATCbits.LATC7 = 0;
+    
+    I2C_Send(nanoAddr, 7); // Unset box
+    // Retract 28BYJ stepper and DC motor holding box down
 }
 
 void main(void) {
@@ -288,7 +401,11 @@ void main(void) {
     __lcd_clear();
     __lcd_home();
     
-    hibernate();
-    mainMenu();
+    //hibernate();
+    //mainMenu();
+    printf("\1Counting");
+    I2C_Send(nanoAddr, "\1This is a test\0");
+    packageCompartment(4, 4, 4, 4);
+    while(1);
     
 }

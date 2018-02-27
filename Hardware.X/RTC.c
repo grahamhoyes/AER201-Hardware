@@ -7,6 +7,7 @@
 
 #include "hardware.h"
 #include "I2C.h"
+#include "RTC.h"
 
 void RTC_getTime(unsigned char * time) {
     /* Reset RTC memory pointer */
@@ -28,14 +29,14 @@ void RTC_getTime(unsigned char * time) {
     I2C_Master_Stop(); // Stop
 }
 
-int RTC_getSeconds(void) {
-    /*  Returns: The number of seconds since the start of the month 
+long RTC_getSeconds(void) {
+    /*  Returns: The number of seconds since the start of the day 
      */
     
     unsigned char time[7];
     RTC_getTime(time);
     
-    int seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+    long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
     return seconds;
 }
 

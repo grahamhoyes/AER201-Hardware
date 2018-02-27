@@ -3871,6 +3871,13 @@ fS toFill[8];
 int setMultiple[8];
 } params;
 
+struct amounts {
+int b;
+int n;
+int s;
+int w;
+};
+
 
 int inputEntry(void);
 

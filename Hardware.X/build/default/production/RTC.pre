@@ -16,6 +16,13 @@ fS toFill[8];
 int setMultiple[8];
 } params;
 
+struct amounts {
+int b;
+int n;
+int s;
+int w;
+};
+
 
 int inputEntry(void);
 
@@ -3786,7 +3793,11 @@ void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned byteToWrite);
 unsigned char I2C_Master_Read(unsigned char ackBit);
 
-# 11 "RTC.c"
+# 11 "RTC.h"
+void RTC_getTime(unsigned char * time);
+long RTC_getSeconds(void);
+
+# 12 "RTC.c"
 void RTC_getTime(unsigned char * time) {
 
 I2C_Master_Start();
@@ -3807,13 +3818,13 @@ time[6] = I2C_Master_Read(1);
 I2C_Master_Stop();
 }
 
-int RTC_getSeconds(void) {
+long RTC_getSeconds(void) {
 
-# 35
+# 36
 unsigned char time[7];
 RTC_getTime(time);
 
-int seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
 return seconds;
 }
 

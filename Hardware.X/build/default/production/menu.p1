@@ -11,7 +11,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _pollKeypad `(uc ~T0 @X0 0 ef ]
 "16 C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h
 [v _putch `(v ~T0 @X0 0 ef1`uc ]
-"26 hardware.h
+"33 hardware.h
 [v _inputEntry `(i ~T0 @X0 0 ef ]
 "195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
@@ -3017,7 +3017,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 21: fS toFill[8];
 [; ;hardware.h: 22: int setMultiple[8];
 [; ;hardware.h: 23: } params;
-[; ;hardware.h: 26: int inputEntry(void);
+[; ;hardware.h: 25: struct amounts {
+[; ;hardware.h: 26: int b;
+[; ;hardware.h: 27: int n;
+[; ;hardware.h: 28: int s;
+[; ;hardware.h: 29: int w;
+[; ;hardware.h: 30: };
+[; ;hardware.h: 33: int inputEntry(void);
 "6 menu.c
 [v _hibernate `(v ~T0 @X0 1 ef ]
 {
@@ -3032,32 +3038,32 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;menu.c: 8: int pressed;
 [; ;menu.c: 9: while (1) {
 "9
-[e :U 269 ]
+[e :U 270 ]
 {
 [; ;menu.c: 10: pressed = pollKeypad();
 "10
 [e = _pressed -> ( _pollKeypad ..  `i ]
 [; ;menu.c: 11: if (pressed - 48 == 1) {
 "11
-[e $ ! == - _pressed -> 48 `i -> 1 `i 271  ]
+[e $ ! == - _pressed -> 48 `i -> 1 `i 272  ]
 {
 [; ;menu.c: 12: return;
 "12
-[e $UE 267  ]
+[e $UE 268  ]
 "13
 }
-[e :U 271 ]
+[e :U 272 ]
 "14
 }
-[e :U 268 ]
+[e :U 269 ]
 "9
-[e $U 269  ]
-[e :U 270 ]
+[e $U 270  ]
+[e :U 271 ]
 [; ;menu.c: 13: }
 [; ;menu.c: 14: }
 [; ;menu.c: 15: }
 "15
-[e :UE 267 ]
+[e :UE 268 ]
 }
 "17
 [v _viewLogs `(v ~T0 @X0 1 ef ]
@@ -3070,7 +3076,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _printStringLCD (1 -> :s 2C `*uc ]
 [; ;menu.c: 19: while (1) {
 "19
-[e :U 274 ]
+[e :U 275 ]
 {
 "20
 [v _pressed `i ~T0 @X0 1 a ]
@@ -3078,19 +3084,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _pressed -> ( _pollKeypad ..  `i ]
 [; ;menu.c: 21: if (pressed == 42) return;
 "21
-[e $ ! == _pressed -> 42 `i 276  ]
-[e $UE 272  ]
-[e :U 276 ]
+[e $ ! == _pressed -> 42 `i 277  ]
+[e $UE 273  ]
+[e :U 277 ]
 "22
 }
-[e :U 273 ]
+[e :U 274 ]
 "19
-[e $U 274  ]
-[e :U 275 ]
+[e $U 275  ]
+[e :U 276 ]
 [; ;menu.c: 22: }
 [; ;menu.c: 23: }
 "23
-[e :UE 272 ]
+[e :UE 273 ]
 }
 "25
 [v _mainMenu `(v ~T0 @X0 1 ef ]
@@ -3107,11 +3113,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _needToPrint -> 1 `i ]
 [; ;menu.c: 29: while (1) {
 "29
-[e :U 279 ]
+[e :U 280 ]
 {
 [; ;menu.c: 30: if (needToPrint) {
 "30
-[e $ ! != _needToPrint -> 0 `i 281  ]
+[e $ ! != _needToPrint -> 0 `i 282  ]
 {
 [; ;menu.c: 31: printStringLCD("0:Sleep 1:Begin \n2: View Logs");
 "31
@@ -3121,7 +3127,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _needToPrint -> 0 `i ]
 "33
 }
-[e :U 281 ]
+[e :U 282 ]
 [; ;menu.c: 33: }
 [; ;menu.c: 34: pressed = pollKeypad();
 "34
@@ -3131,7 +3137,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _putch (1 -> _pressed `uc ]
 [; ;menu.c: 36: if (pressed - 48 == 0) {
 "36
-[e $ ! == - _pressed -> 48 `i -> 0 `i 282  ]
+[e $ ! == - _pressed -> 48 `i -> 0 `i 283  ]
 {
 [; ;menu.c: 37: hibernate();
 "37
@@ -3142,9 +3148,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 "39
 }
 [; ;menu.c: 39: } else if (pressed - 48 == 1) {
-[e $U 283  ]
-[e :U 282 ]
-[e $ ! == - _pressed -> 48 `i -> 1 `i 284  ]
+[e $U 284  ]
+[e :U 283 ]
+[e $ ! == - _pressed -> 48 `i -> 1 `i 285  ]
 {
 [; ;menu.c: 40: inputEntry();
 "40
@@ -3160,15 +3166,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;menu.c: 43: int i;
 [; ;menu.c: 44: while(1) {
 "44
-[e :U 286 ]
+[e :U 287 ]
 {
 [; ;menu.c: 45: for (i = 0; i < 8; i++) {
 "45
 {
 [e = _i -> 0 `i ]
-[e $ < _i -> 8 `i 288  ]
-[e $U 289  ]
-[e :U 288 ]
+[e $ < _i -> 8 `i 289  ]
+[e $U 290  ]
+[e :U 289 ]
 {
 [; ;menu.c: 46: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 "46
@@ -3188,24 +3194,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "45
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 8 `i 288  ]
-[e :U 289 ]
+[e $ < _i -> 8 `i 289  ]
+[e :U 290 ]
 "50
 }
 "51
 }
-[e :U 285 ]
+[e :U 286 ]
 "44
-[e $U 286  ]
-[e :U 287 ]
+[e $U 287  ]
+[e :U 288 ]
 "52
 }
 [; ;menu.c: 50: }
 [; ;menu.c: 51: }
 [; ;menu.c: 52: } else if (pressed - 48 == 2) {
-[e $U 291  ]
-[e :U 284 ]
-[e $ ! == - _pressed -> 48 `i -> 2 `i 292  ]
+[e $U 292  ]
+[e :U 285 ]
+[e $ ! == - _pressed -> 48 `i -> 2 `i 293  ]
 {
 [; ;menu.c: 53: viewLogs();
 "53
@@ -3215,20 +3221,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _needToPrint -> 1 `i ]
 "55
 }
-[e :U 292 ]
+[e :U 293 ]
 "56
-[e :U 291 ]
-[e :U 283 ]
+[e :U 292 ]
+[e :U 284 ]
 }
-[e :U 278 ]
+[e :U 279 ]
 "29
-[e $U 279  ]
-[e :U 280 ]
+[e $U 280  ]
+[e :U 281 ]
 [; ;menu.c: 55: }
 [; ;menu.c: 56: }
 [; ;menu.c: 57: }
 "57
-[e :UE 277 ]
+[e :UE 278 ]
 }
 [p f _printf 8650880 ]
 [a 3C 48 58 83 108 101 101 112 32 49 58 66 101 103 105 110 32 10 50 58 32 86 105 101 119 32 76 111 103 115 0 ]

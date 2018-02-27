@@ -9,7 +9,7 @@
 #define	RTC_H
 
 void RTC_getTime(unsigned char * time);
-int RTC_getSeconds(void);
+long RTC_getSeconds(void);
 
 #endif	/* RTC_H */
 

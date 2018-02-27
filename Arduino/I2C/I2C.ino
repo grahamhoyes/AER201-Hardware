@@ -6,10 +6,17 @@ void setup() {
 
   Serial.begin(9600); // For communication with PC
   Serial.println("We're live");
+
+  pinMode(8, INPUT);
+  pinMode(9, OUTPUT);
 }
 
 void loop() {
-  
+  if (digitalRead(8) == HIGH) {
+    digitalWrite(9, LOW);
+  } else {
+    digitalWrite(9, HIGH);
+  }
 }
 
 void receiveEvent(int numBytes) {
@@ -21,3 +28,5 @@ void receiveEvent(int numBytes) {
   }
   Serial.print("\n");
 }
+
+

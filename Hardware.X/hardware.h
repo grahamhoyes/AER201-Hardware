@@ -21,6 +21,13 @@ struct inputParams{
     fS toFill[8]; // Which fastener set goes in each compartment
     int setMultiple[8]; // How many of each set in each compartment
 } params; 
+
+struct amounts { // For storing counts of things
+    int b;
+    int n;
+    int s;
+    int w;
+};
 /*************************Public Function Declarations*************************/
 //int printStringLCD(char *string);
 int inputEntry(void);

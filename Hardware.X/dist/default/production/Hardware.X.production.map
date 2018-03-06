@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.45\dat\en_msgs.txt -cs \
   -h+dist/default/production\Hardware.X.production.sym \
   --cmf=dist/default/production\Hardware.X.production.cmf -z -Q18F4620 \
-  -oC:\Users\Graham\AppData\Local\Temp\sbfk.2 \
+  -oC:\Users\Graham\AppData\Local\Temp\she4.2 \
   -Mdist/default/production/Hardware.X.production.map -E1 -ver=XC8 \
   -ASTACK=01FBh-0f7fh -pstack=STACK -ACODE=00h-0FFFFh -ACONST=00h-0FFFFh \
   -ASMALLCONST=01000h-010FFhx240 -AMEDIUMCONST=01000h-0FFFFh \
@@ -25,7 +25,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\Graham\AppData\Local\Temp\sbfk.obj \
+  C:\Users\Graham\AppData\Local\Temp\she4.obj \
   dist/default/production\Hardware.X.production.obj 
 
 Object code version is 3.11
@@ -38,7 +38,7 @@ Call graph: (short form)
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Graham\AppData\Local\Temp\sbfk.obj
+C:\Users\Graham\AppData\Local\Temp\she4.obj
                 init                                  E        E        4        4       0
                 reset_vec                             0        0        4        0       0
                 idloc                            200000   200000        8   200000       0
@@ -805,8 +805,8 @@ clearing@i                      cstackBANK0  000084
 clearing@spinTime               cstackBANK0  000082
 end_of_initialization           cinit        001D5C
 hibernate@pressed               cstackBANK0  00008E
-inputEntry@F3164                dataBANK0    0000F7
-inputEntry@F3185                dataBANK1    000122
+inputEntry@F3167                dataBANK0    0000F7
+inputEntry@F3188                dataBANK1    000122
 inputEntry@compartmentLabel     cstackBANK0  0000CA
 inputEntry@compartmentNum       cstackBANK0  0000E5
 inputEntry@compartmentsToFill   cstackBANK0  0000CC
@@ -847,7 +847,7 @@ mainMenu@needToPrint            cstackBANK1  0001F5
 mainMenu@pressed                cstackBANK1  0001F7
 mainMenu@startTime              cstackBANK1  0001ED
 mainMenu@totalTime              cstackBANK1  0001E9
-packaging@F3228                 dataBANK1    000100
+packaging@F3188                 dataBANK1    000100
 packaging@compartmentNum        cstackBANK1  0001E7
 packaging@msg                   cstackBANK1  0001A3
 packaging@msg2                  cstackBANK1  0001C5
@@ -883,7 +883,7 @@ FUNCTION INFORMATION:
 
  *************** function _main *****************
  Defined at:
-		line 426 in file "main.c"
+		line 209 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -916,7 +916,7 @@ Total ram usage:        1 bytes
 
  *************** function _mainMenu *****************
  Defined at:
-		line 28 in file "menu.c"
+		line 174 in file "menu.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -962,7 +962,7 @@ Total ram usage:       22 bytes
 
  *************** function _viewLogs *****************
  Defined at:
-		line 20 in file "menu.c"
+		line 22 in file "menu.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -997,7 +997,7 @@ Total ram usage:        3 bytes
  Parameters:    Size  Location     Type
   f               2   29[BANK0 ] PTR const unsigned char 
 		 -> STR_22(16), STR_21(11), STR_20(12), STR_19(9), 
-		 -> STR_17(19), packageCompartment@currTimeString(33), STR_3(13), 
+		 -> STR_17(19), packageCompartment@currTimeString(33), STR_1(13), 
  Auto vars:     Size  Location     Type
   pb              4   41[BANK0 ] struct __prbuf
   ap              2   39[BANK0 ] PTR void [1]
@@ -1028,7 +1028,7 @@ Total ram usage:       16 bytes
 
  *************** function _packaging *****************
  Defined at:
-		line 322 in file "main.c"
+		line 105 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1068,7 +1068,7 @@ Total ram usage:       76 bytes
   wh              2   29[BANK0 ] PTR unsigned char 
 		 -> packaging@msg2(32), packageCompartment@currTimeString(33), 
   f               2   31[BANK0 ] PTR const unsigned char 
-		 -> STR_13(22), STR_4(4), 
+		 -> STR_11(22), STR_2(4), 
  Auto vars:     Size  Location     Type
   pb              4   43[BANK0 ] struct __prbuf
   ap              2   41[BANK0 ] PTR void [1]
@@ -1105,8 +1105,8 @@ Total ram usage:       18 bytes
 		 -> sprintf@pb(4), printf@pb(4), 
   f               2   15[BANK0 ] PTR const unsigned char 
 		 -> STR_22(16), STR_21(11), STR_20(12), STR_19(9), 
-		 -> STR_17(19), STR_13(22), STR_4(4), packageCompartment@currTimeString(33), 
-		 -> STR_3(13), 
+		 -> STR_17(19), STR_11(22), STR_2(4), packageCompartment@currTimeString(33), 
+		 -> STR_1(13), 
   ap              2   17[BANK0 ] PTR PTR void 
 		 -> sprintf@ap(2), printf@ap(2), 
  Auto vars:     Size  Location     Type
@@ -1179,7 +1179,7 @@ Total ram usage:        9 bytes
 
  *************** function _inputEntry *****************
  Defined at:
-		line 98 in file "main.c"
+		line 30 in file "menu.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1367,7 +1367,7 @@ Total ram usage:        3 bytes
 
  *************** function _hibernate *****************
  Defined at:
-		line 9 in file "menu.c"
+		line 11 in file "menu.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1402,8 +1402,8 @@ Total ram usage:        6 bytes
 		line 7 in file "helpers.c"
  Parameters:    Size  Location     Type
   string          2   44[COMRAM] PTR unsigned char 
-		 -> STR_16(30), STR_15(26), STR_14(17), inputEntry@fastenerString(32), 
-		 -> inputEntryQuestions(132), errMsgs.noFasteners(32), errMsgs.tooManySpacers(32), errMsgs.tooManyWashers(32), 
+		 -> STR_16(30), inputEntry@fastenerString(32), inputEntryQuestions(132), STR_13(26), 
+		 -> STR_12(17), errMsgs.noFasteners(32), errMsgs.tooManySpacers(32), errMsgs.tooManyWashers(32), 
 		 -> errMsgs.tooManyNuts(32), errMsgs.tooManyBolts(32), errMsgs.tooManyFasteners(32), errMsgs.badEntry(32), 
 		 -> errMsgs(224), 
  Auto vars:     Size  Location     Type
@@ -1432,9 +1432,9 @@ Total ram usage:       15 bytes
 		_lcdInst
 		_putch
  This function is called by:
-		_inputEntry
 		_hibernate
 		_viewLogs
+		_inputEntry
 		_mainMenu
 		_printErrorLCD
  This function uses a non-reentrant model
@@ -1500,16 +1500,16 @@ Total ram usage:        1 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_inputEntry
 		_hibernate
 		_viewLogs
+		_inputEntry
 		_mainMenu
  This function uses a non-reentrant model
 
 
  *************** function _clearing *****************
  Defined at:
-		line 351 in file "main.c"
+		line 134 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1544,10 +1544,10 @@ Total ram usage:        6 bytes
  Parameters:    Size  Location     Type
   address         1    wreg     unsigned char 
   data            2   41[COMRAM] PTR unsigned char 
-		 -> STR_18(21), packaging@msg2(32), packaging@msg(34), STR_12(7), 
-		 -> STR_11(33), RAM(3967), STR_10(19), STR_9(17), 
-		 -> STR_8(17), STR_7(14), STR_6(15), packageCompartment@currTimeString(33), 
-		 -> STR_2(14), inputEntry@msg(24), STR_1(25), 
+		 -> STR_18(21), STR_15(14), inputEntry@msg(24), STR_14(25), 
+		 -> packaging@msg2(32), packaging@msg(34), STR_10(7), STR_9(33), 
+		 -> RAM(3967), STR_8(19), STR_7(17), STR_6(17), 
+		 -> STR_5(14), STR_4(15), packageCompartment@currTimeString(33), 
  Auto vars:     Size  Location     Type
   address         1   46[COMRAM] unsigned char 
   i               2   47[COMRAM] int 
@@ -1572,9 +1572,9 @@ Total ram usage:        8 bytes
 		_I2C_Master_Stop
 		_I2C_Master_Write
  This function is called by:
-		_inputEntry
 		_packaging
 		_clearing
+		_inputEntry
 		_mainMenu
 		_packageCompartment
  This function uses a non-reentrant model
@@ -1893,11 +1893,11 @@ Total ram usage:        1 bytes
  This function calls:
 		_lcdNibble
  This function is called by:
-		_inputEntry
 		_main
 		_initLCD
 		_lcd_set_cursor
 		_lcd_shift_cursor
+		_inputEntry
 		_mainMenu
 		_printStringLCD
 		_packageCompartment
@@ -2002,7 +2002,7 @@ Total ram usage:       13 bytes
 
  *************** function _interruptHandler *****************
  Defined at:
-		line 419 in file "main.c"
+		line 202 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -2203,9 +2203,10 @@ helpers.c estimated size: 942
 menu.c
 		_viewLogs      		CODE           	1F3C	0000	39
 		_hibernate     		CODE           	1E36	0000	61
+		_inputEntry    		CODE           	0012	0000	1791
 		_mainMenu      		CODE           	0BC4	0000	779
 
-menu.c estimated size: 879
+menu.c estimated size: 2670
 
 lcd.c
 		_putch         		CODE           	1FEE	0000	21
@@ -2232,9 +2233,8 @@ main.c
 		_main          		CODE           	1B5E	0000	119
 		_clearing      		CODE           	1192	0000	625
 		_interruptHandler		CODE           	0008	0000	169
-		_inputEntry    		CODE           	0012	0000	1791
 
-main.c estimated size: 3135
+main.c estimated size: 1344
 
 RTC.c
 		_RTC_getTime   		CODE           	1BD4	0000	115

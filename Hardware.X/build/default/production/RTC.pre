@@ -23,7 +23,70 @@ int s;
 int w;
 } extras, dispensed;
 
-void inputEntry(void);
+# 45
+const char inputEntryQuestions[4][33] = {
+"Assembly steps\n" "*<-  (4-8)     \0",
+"Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
+"How many sets?\n" "*<-  (1-4)     \0",
+"Confirm?\n" "*<-  (A:Y/B:N) \0"
+};
+
+const char LCDMenuIcons[16] = "*<-   ( - )    \0";
+
+const struct errorMessages {
+const char badEntry[32];
+const char tooManyFasteners[32];
+const char tooManyBolts[32];
+const char tooManyNuts[32];
+const char tooManyWashers[32];
+const char tooManySpacers[32];
+const char noFasteners[32];
+} errMsgs = {
+"Invalid entry\nPlease try again\0",
+"Too many fasteners\0",
+"Too many bolts\0",
+"Too many nuts\0",
+"Too many washers\0",
+"Too many spacers\0",
+"No fasteners selected\0"
+};
+
+const char fastenerMatrix[21][4] = {
+{0,0,0,0},
+{1,0,0,0},
+{0,1,0,0},
+{0,0,1,0},
+{0,0,0,1},
+{1,1,0,0},
+{1,0,1,0},
+{1,0,0,1},
+{2,1,0,0},
+{2,0,1,0},
+{2,0,0,1},
+{1,1,0,1},
+{1,0,1,1},
+{1,0,0,2},
+{1,1,0,2},
+{1,0,1,2},
+{2,0,1,1},
+{2,1,0,1},
+{1,2,0,1},
+{1,3,0,0},
+{1,0,0,3}
+};
+
+
+const char assemblyStepEncoding[5] = {
+
+
+0b01010101,
+0b01011011,
+0b01110111,
+0b01111111,
+0b11111111
+};
+
+
 void packageCompartment(char b, char n, char s, char w);
 void packaging(void);
 void clearing(void);

@@ -3895,6 +3895,7 @@ char pollKeypad(void);
 void I2C_Send(unsigned char address, char * data);
 
 # 11 "menu.h"
+void inputEntry(void);
 void hibernate(void);
 void mainMenu(void);
 void viewLogs(void);
@@ -3921,21 +3922,7 @@ int s;
 int w;
 } extras, dispensed;
 
-void inputEntry(void);
-void packageCompartment(char b, char n, char s, char w);
-void packaging(void);
-void clearing(void);
-
-# 11 "RTC.h"
-void RTC_getTime(unsigned char * time);
-long RTC_getSeconds(void);
-
-# 11 "timer.h"
-void tic(void);
-float tock(void);
-void tmr0_ISR(void);
-
-# 35 "main.c"
+# 45
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3999,150 +3986,20 @@ const char assemblyStepEncoding[5] = {
 };
 
 
-void inputEntry(void) {
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+void packageCompartment(char b, char n, char s, char w);
+void packaging(void);
+void clearing(void);
 
-I2C_Send(nanoAddr, "Started input entry, hi\0");
+# 11 "RTC.h"
+void RTC_getTime(unsigned char * time);
+long RTC_getSeconds(void);
 
-int compartmentNum = 0;
-char compartmentLabel[2] = "C0";
-int inputEntryStep = 0;
-int done = 0;
+# 11 "timer.h"
+void tic(void);
+float tock(void);
+void tmr0_ISR(void);
 
-int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
-int setIsGood, doneMultiples;
-unsigned char pressed;
-
-while (!done) {
-
-if (inputEntryStep == 0) {
-printStringLCD(inputEntryQuestions[inputEntryStep]);
-
-pressed = pollKeypad();
-numPressed = pressed - 48;
-
-putch(pressed);
-_delay((unsigned long)((500)*(40000000/4000.0)));
-
-if (numPressed >= 4 && numPressed <= 8) {
-params.steps = numPressed;
-inputEntryStep++;
-} else printErrorLCD(errMsgs.badEntry);
-} else if (inputEntryStep == 1) {
-
-char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
-STARTCOMPARTMENT:
-if ((compartmentsToFill >> compartmentNum) & 0b1) {
-char msg[] = "\1Started compartment x\0";
-msg[21] = compartmentNum + 1 + 48;
-I2C_Send(nanoAddr, msg);
-
-setIsGood = 0;
-while (!setIsGood) {
-numB = 0;
-numN = 0;
-numS = 0;
-numW = 0;
-char fastenerString[32];
-strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-fastenerString[14] = compartmentNum + 1 + 48;
-
-printStringLCD(fastenerString);
-lcd_set_cursor(9, 1);
-doneCompartment = 0;
-
-while(doneCompartment < 4) {
-pressed = pollKeypad();
-if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-putch(pressed);
-if (pressed == 66) numB++;
-else if (pressed == 78) numN++;
-else if (pressed == 83) numS ++;
-else if (pressed == 87) numW++;
-doneCompartment++;
-} else if (pressed == 35) {
-if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
-} else if (pressed == 42) {
-compartmentNum--;
-goto STARTMULTIPLES;
-}
-}
-
-
-found = 0;
-for (i = 0; i < 21; i++) {
-if (fastenerMatrix[i][0] == numB &&
-fastenerMatrix[i][1] == numN &&
-fastenerMatrix[i][2] == numS &&
-fastenerMatrix[i][3] == numW)
-{
-params.toFill[compartmentNum] = i;
-found = 1;
-}
-}
-if (!found) {
-printErrorLCD(errMsgs.badEntry);
-
-
-continue;
-} else {
-setIsGood = 1;
-}
-}
-
-
-STARTMULTIPLES:
-doneMultiples = 0;
-while (!doneMultiples) {
-printStringLCD(inputEntryQuestions[2]);
-lcd_set_cursor(14, 1);
-
-pressed = pollKeypad();
-numPressed = pressed - 48;
-
-if (pressed == 42) goto STARTCOMPARTMENT;
-
-
-putch(pressed);
-_delay((unsigned long)((500)*(40000000/4000.0)));
-
-int sum = 0;
-for (i = 0; i < 4; i++) {
-sum += fastenerMatrix[params.toFill[compartmentNum]][i];
-};
-if (numPressed * sum > 4) {
-printErrorLCD(errMsgs.tooManyFasteners);
-} else if (numPressed * sum <= 0) {
-printErrorLCD(errMsgs.noFasteners);
-
-
-
-} else if (numB * numPressed > 2) {
-printErrorLCD(errMsgs.tooManyBolts);
-} else if (numN * numPressed > 3) {
-printErrorLCD(errMsgs.tooManyNuts);
-} else if (numS * numPressed > 2) {
-printErrorLCD(errMsgs.tooManySpacers);
-} else if (numW * numPressed > 4) {
-printErrorLCD(errMsgs.tooManyWashers);
-} else {
-params.setMultiple[compartmentNum] = numPressed;
-doneMultiples = 1;
-}
-}
-} else {
-params.toFill[compartmentNum] = NONE;
-params.setMultiple[compartmentNum] = 0;
-}
-}
-done = 1;
-I2C_Send(nanoAddr, "\1Done inputs\0");
-}
-}
-}
-
+# 25 "main.c"
 void packageCompartment(char b, char n, char s, char w) {
 
 LATBbits.LATB3 = 1;
@@ -4226,7 +4083,7 @@ _delay((unsigned long)((5000)*(40000000/4000.0)));
 void packaging(void) {
 int compartmentNum;
 
-# 328
+# 111
 dispensed.b = 0;
 dispensed.n = 0;
 dispensed.s = 0;
@@ -4252,7 +4109,7 @@ I2C_Send(nanoAddr, msg2);
 
 void clearing(void) {
 
-# 356
+# 139
 I2C_Send(nanoAddr, 3);
 
 int i;
@@ -4325,7 +4182,7 @@ tmr0_ISR();
 
 void main(void) {
 
-# 431
+# 214
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;

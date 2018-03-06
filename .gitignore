@@ -5,3 +5,5 @@ Hardware.X/dist/
 Hardware.X/nbproject/
 Hardware.X/debug/
 Hardware.X/build/
+*.p1
+*.pre

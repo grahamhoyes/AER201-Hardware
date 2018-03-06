@@ -27,10 +27,12 @@ struct amounts { // For storing counts of things
     int n;
     int s;
     int w;
-};
+} extras, dispensed;
 /*************************Public Function Declarations*************************/
-//int printStringLCD(char *string);
-int inputEntry(void);
+void inputEntry(void);
+void packageCompartment(char b, char n, char s, char w);
+void packaging(void);
+void clearing(void);
 
 #endif	/* HARDWARE_H */
 

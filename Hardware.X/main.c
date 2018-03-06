@@ -17,11 +17,19 @@
 #include "menu.h"
 #include "hardware.h"
 #include "RTC.h"
+#include "timer.h"
 
-#define maxB 20
-#define maxN 25
-#define maxS 20
-#define maxW 35
+// Total supplied maximums
+#define maxSuppliedB 20
+#define maxSuppliedN 25
+#define maxSuppliedS 20
+#define maxSuppliedW 35
+
+// Compartmental maximums
+#define maxCompB 2
+#define maxCompN 3
+#define maxCompS 2
+#define maxCompW 4
 
 /* Global constant declarations */
 const char inputEntryQuestions[4][33] = { // Putting in an extra bit for the null terminator need to adjust code elsewhere
@@ -86,13 +94,8 @@ const char assemblyStepEncoding[5] = {
     0b11111111  // 8 steps: C 8,7,6,5,4,3,2,1
 };
 
-const unsigned char nanoAddr = 0b00010000; // Arduino address LSL 1
-
-struct amounts dispensed = {0, 0, 0, 0};
-
-struct amounts extras = {0, 0, 0, 0};
-
-int inputEntry(void) {
+// This should go in menu.c
+void inputEntry(void) {
     __lcd_clear();
     __lcd_home();
    
@@ -128,6 +131,9 @@ int inputEntry(void) {
             for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
                 STARTCOMPARTMENT: 
                 if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
+                    char msg[] = "\1Started compartment x\0";
+                    msg[21] = compartmentNum + 1 + 48;
+                    I2C_Send(nanoAddr, msg);
                     /* First, logic pertaining to which fastener set */
                     setIsGood = 0;
                     while (!setIsGood) {
@@ -202,9 +208,21 @@ int inputEntry(void) {
                         for (i = 0; i < 4; i++) {
                             sum += fastenerMatrix[params.toFill[compartmentNum]][i];
                         };
-                        if (numPressed * sum > 4 || numPressed * sum <= 0) {
+                        if (numPressed * sum > 4) {
                             printErrorLCD(errMsgs.tooManyFasteners);
-                        // There is also a max number of B, N, S, W in each compartment, need to check for that as well here
+                        } else if (numPressed * sum <= 0) {
+                            printErrorLCD(errMsgs.noFasteners);
+                            
+                        // Using numB, etc. here (and elsewhere) prevents us from going backwards.
+                        // Solution: either always go back to start of compartment, or store these in an array somewhere
+                        } else if (numB * numPressed > maxCompB) {
+                            printErrorLCD(errMsgs.tooManyBolts);
+                        } else if (numN * numPressed > maxCompN) {
+                            printErrorLCD(errMsgs.tooManyNuts);
+                        } else if (numS * numPressed > maxCompS) {
+                            printErrorLCD(errMsgs.tooManySpacers);
+                        } else if (numW * numPressed > maxCompW) {
+                            printErrorLCD(errMsgs.tooManyWashers);
                         } else {
                             params.setMultiple[compartmentNum] = numPressed;
                             doneMultiples = 1;
@@ -216,9 +234,8 @@ int inputEntry(void) {
                 }
             }
             done = 1;
-            // Right now on 4 steps, we are looping between C1 and C3
+            I2C_Send(nanoAddr, "\1Done inputs\0");
         }
-        
     }
 }
 
@@ -228,7 +245,6 @@ void packageCompartment(char b, char n, char s, char w) {
     LATCbits.LATC1 = 1;
     LATCbits.LATC5 = 1;
     LATCbits.LATC7 = 1;
-    I2C_Send(nanoAddr, "\1Starting\0");
     
     int numB=0, numN=0, numS=0, numW=0;
     int doneB=0, doneN=0, doneS=0, doneW=0;
@@ -308,10 +324,27 @@ void packaging(void) {
     /* We start packaging with Compartment 8, then 7, etc. down to 1
      * This is C, so compartments are actually zero-indexed in the code
      */
+    
+    dispensed.b = 0;
+    dispensed.n = 0;
+    dispensed.s = 0;
+    dispensed.w = 0;
+    
+    I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+    
     for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-        if (params.toFill[compartmentNum-1] == NONE) break;
+        I2C_Send(nanoAddr, "\1Loop\0");
+        char msg[] = "\1Started packaging compartment x\0";
+        msg[31] = compartmentNum + 48;
+        I2C_Send(nanoAddr, msg);
+        // This is the line that breaks things
+        //if (params.toFill[compartmentNum-1] == 0) break; // Skip compartments that are to be empty
         char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
-        packageCompartment(set[0], set[1], set[2], set[3]);
+        char msg2[32];
+        sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0], set[1], set[2], set[3]);
+        I2C_Send(nanoAddr, msg2);
+        
+        //packageCompartment(set[0], set[1], set[2], set[3]);
     }
 }
 
@@ -325,54 +358,69 @@ void clearing(void) {
     int i;
     int spinTime=100; // Change this in practice
     
+    extras.b = 0;
+    extras.n = 0;
+    extras.s = 0;
+    extras.w = 0;
+    
     LATBbits.LATB3 = 1; // DCB-F pin
     for (i = 0; i < spinTime; i++) {
         // Every 25 milliseconds, check if a bolt is passed and count it
         if (PORTAbits.RA0 == 0) {
             extras.b++;
         }
-        if (extras.b + dispensed.b == maxB) break;
+        if (extras.b + dispensed.b == maxSuppliedB) break;
         __delay_ms(25);
     }
     LATBbits.LATB3 = 0;
     
     I2C_Send(nanoAddr, 4); // Step micro servo over second dispensing bin
+    __delay_ms(5000); // These delays should probably be a wait until complete message from the Arduino
     
     LATCbits.LATC1 = 1; // DCN-F pin
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA1 == 0) {
             extras.n++;
         }
-        if (extras.n + dispensed.n == maxN) break;
+        if (extras.n + dispensed.n == maxSuppliedN) break;
         __delay_ms(25);
     }
     LATCbits.LATC1 = 0;
     
     I2C_Send(nanoAddr, 5); // Step micro servo over third dispensing bin
+    __delay_ms(5000);
     
     LATCbits.LATC5 = 1; // DCS-F pin
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA2 == 0) {
             extras.s++;
         }
-        if (extras.s + dispensed.s == maxS) break;
+        if (extras.s + dispensed.s == maxSuppliedS) break;
         __delay_ms(25);
     }   
     LATCbits.LATC5 = 0;
     
     I2C_Send(nanoAddr, 6); // Step micro servo over fourth dispensing bin
+    __delay_ms(5000);
     
     LATCbits.LATC7 = 1; // DCW-F pin
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA3 == 0) {
             extras.w++;
         }
-        if (extras.w + dispensed.w == maxW) break;
+        if (extras.w + dispensed.w == maxSuppliedW) break;
     }
     LATCbits.LATC7 = 0;
     
     I2C_Send(nanoAddr, 7); // Unset box
     // Retract 28BYJ stepper and DC motor holding box down
+}
+
+void interrupt interruptHandler(void) {
+    if (T0IE && T0IF) {
+        T0IF = 0;
+        tmr0_ISR();
+    } 
 }
 
 void main(void) {
@@ -401,11 +449,11 @@ void main(void) {
     __lcd_clear();
     __lcd_home();
     
-    //hibernate();
-    //mainMenu();
-    printf("\1Counting");
-    I2C_Send(nanoAddr, "\1This is a test\0");
-    packageCompartment(4, 4, 4, 4);
+    hibernate();
+    mainMenu();
+    //printf("\1Counting");
+    //I2C_Send(nanoAddr, "\1This is a test\0");
+    //packageCompartment(4, 4, 4, 4);
     while(1);
     
 }

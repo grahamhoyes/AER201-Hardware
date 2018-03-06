@@ -1,26 +1,37 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "23 hardware.h
-[c E2989 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E2989 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
+[c E3006 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E3006 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "19
-[s S266 `i 1 `E2989 -> 8 `i `i -> 8 `i ]
+[s S266 `i 1 `E3006 -> 8 `i `i -> 8 `i ]
 [n S266 inputParams steps toFill setMultiple ]
+"25
+[s S267 `i 1 `i 1 `i 1 `i 1 ]
+[n S267 amounts b n s w ]
 "13 helpers.h
 [v _printStringLCD `(v ~T0 @X0 0 ef1`*uc ]
 "15
 [v _pollKeypad `(uc ~T0 @X0 0 ef ]
 "16 C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h
 [v _putch `(v ~T0 @X0 0 ef1`uc ]
-"33 hardware.h
-[v _inputEntry `(i ~T0 @X0 0 ef ]
-"195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
+"32 hardware.h
+[v _inputEntry `(v ~T0 @X0 0 ef ]
+"12 RTC.h
+[v _RTC_getSeconds `(l ~T0 @X0 0 ef ]
+"71 lcd.h
+[v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
 [v F2888 `(v ~T0 @X0 1 tf1`ul ]
 "164 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18.h
 [v __delay `JF2888 ~T0 @X0 0 e ]
 [p i __delay ]
-"71 lcd.h
-[v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
+"195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
+[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
+"16 helpers.h
+[v _I2C_Send `(v ~T0 @X0 0 ef2`uc`*uc ]
+"34 hardware.h
+[v _packaging `(v ~T0 @X0 0 ef ]
+"35
+[v _clearing `(v ~T0 @X0 0 ef ]
 [; ;menu.h: 11: void hibernate(void);
 [; ;menu.h: 12: void mainMenu(void);
 [; ;menu.h: 13: void viewLogs(void);
@@ -2846,6 +2857,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;lcd.h: 75: void lcd_set_cursor(unsigned char x, unsigned char y);
 [; ;lcd.h: 76: void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 [; ;lcd.h: 77: void lcd_shift_display(unsigned char numChars, unsigned char direction);
+"21 I2C.h
+[v _nanoAddr `Cuc ~T0 @X0 1 e ]
+[i _nanoAddr
+-> -> 16 `i `uc
+]
+[; ;I2C.h: 21: const unsigned char nanoAddr = 0b00010000;
+[; ;I2C.h: 24: void I2C_Master_Init(const unsigned long c);
+[; ;I2C.h: 25: void I2C_Master_Start(void);
+[; ;I2C.h: 26: void I2C_Master_RepeatedStart(void);
+[; ;I2C.h: 27: void I2C_Master_Stop(void);
+[; ;I2C.h: 28: void I2C_Master_Write(unsigned byteToWrite);
+[; ;I2C.h: 29: unsigned char I2C_Master_Read(unsigned char ackBit);
 "11 helpers.h
 [v _keypadChars `Cuc ~T0 @X0 -> 0 `x e ]
 [i _keypadChars
@@ -2874,12 +2897,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;helpers.h: 14: void printErrorLCD(char * string);
 [; ;helpers.h: 15: char pollKeypad(void);
 [; ;helpers.h: 16: void I2C_Send(unsigned char address, char * data);
+[; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
+[; ;RTC.h: 12: long RTC_getSeconds(void);
 [; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
 [; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
 [; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
-[v F3013 `uc ~T0 @X0 -> 5 `i t ]
+[v F3030 `uc ~T0 @X0 -> 5 `i t ]
 "15 hardware.h
-[v _fSLookup `F3013 ~T0 @X0 -> 21 `i e ]
+[v _fSLookup `F3030 ~T0 @X0 -> 21 `i e ]
 [i _fSLookup
 :U ..
 :U ..
@@ -3017,228 +3042,290 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 21: fS toFill[8];
 [; ;hardware.h: 22: int setMultiple[8];
 [; ;hardware.h: 23: } params;
+"30
+[v _extras `S267 ~T0 @X0 1 e ]
+[v _dispensed `S267 ~T0 @X0 1 e ]
 [; ;hardware.h: 25: struct amounts {
 [; ;hardware.h: 26: int b;
 [; ;hardware.h: 27: int n;
 [; ;hardware.h: 28: int s;
 [; ;hardware.h: 29: int w;
-[; ;hardware.h: 30: };
-[; ;hardware.h: 33: int inputEntry(void);
-"6 menu.c
+[; ;hardware.h: 30: } extras, dispensed;
+[; ;hardware.h: 32: void inputEntry(void);
+[; ;hardware.h: 33: void packageCompartment(char b, char n, char s, char w);
+[; ;hardware.h: 34: void packaging(void);
+[; ;hardware.h: 35: void clearing(void);
+"9 menu.c
 [v _hibernate `(v ~T0 @X0 1 ef ]
 {
-[; ;menu.c: 6: void hibernate(void) {
+[; ;menu.c: 9: void hibernate(void) {
 [e :U _hibernate ]
 [f ]
-[; ;menu.c: 7: printStringLCD("Press 1 to begin");
-"7
+[; ;menu.c: 10: printStringLCD("Press 1 to begin");
+"10
 [e ( _printStringLCD (1 -> :s 1C `*uc ]
-"8
+"11
 [v _pressed `i ~T0 @X0 1 a ]
-[; ;menu.c: 8: int pressed;
-[; ;menu.c: 9: while (1) {
-"9
+[; ;menu.c: 11: int pressed;
+[; ;menu.c: 12: while (1) {
+"12
 [e :U 270 ]
 {
-[; ;menu.c: 10: pressed = pollKeypad();
-"10
+[; ;menu.c: 13: pressed = pollKeypad();
+"13
 [e = _pressed -> ( _pollKeypad ..  `i ]
-[; ;menu.c: 11: if (pressed - 48 == 1) {
-"11
+[; ;menu.c: 14: if (pressed - 48 == 1) {
+"14
 [e $ ! == - _pressed -> 48 `i -> 1 `i 272  ]
 {
-[; ;menu.c: 12: return;
-"12
+[; ;menu.c: 15: return;
+"15
 [e $UE 268  ]
-"13
+"16
 }
 [e :U 272 ]
-"14
+"17
 }
 [e :U 269 ]
-"9
+"12
 [e $U 270  ]
 [e :U 271 ]
-[; ;menu.c: 13: }
-[; ;menu.c: 14: }
-[; ;menu.c: 15: }
-"15
+[; ;menu.c: 16: }
+[; ;menu.c: 17: }
+[; ;menu.c: 18: }
+"18
 [e :UE 268 ]
 }
-"17
+"20
 [v _viewLogs `(v ~T0 @X0 1 ef ]
 {
-[; ;menu.c: 17: void viewLogs() {
+[; ;menu.c: 20: void viewLogs() {
 [e :U _viewLogs ]
 [f ]
-[; ;menu.c: 18: printStringLCD("Not there yet\n* to return");
-"18
+[; ;menu.c: 21: printStringLCD("Not there yet\n* to return");
+"21
 [e ( _printStringLCD (1 -> :s 2C `*uc ]
-[; ;menu.c: 19: while (1) {
-"19
+[; ;menu.c: 22: while (1) {
+"22
 [e :U 275 ]
 {
-"20
+"23
 [v _pressed `i ~T0 @X0 1 a ]
-[; ;menu.c: 20: int pressed = pollKeypad();
+[; ;menu.c: 23: int pressed = pollKeypad();
 [e = _pressed -> ( _pollKeypad ..  `i ]
-[; ;menu.c: 21: if (pressed == 42) return;
-"21
+[; ;menu.c: 24: if (pressed == 42) return;
+"24
 [e $ ! == _pressed -> 42 `i 277  ]
 [e $UE 273  ]
 [e :U 277 ]
-"22
+"25
 }
 [e :U 274 ]
-"19
+"22
 [e $U 275  ]
 [e :U 276 ]
-[; ;menu.c: 22: }
-[; ;menu.c: 23: }
-"23
+[; ;menu.c: 25: }
+[; ;menu.c: 26: }
+"26
 [e :UE 273 ]
 }
-"25
+"28
 [v _mainMenu `(v ~T0 @X0 1 ef ]
 {
-[; ;menu.c: 25: void mainMenu(void) {
+[; ;menu.c: 28: void mainMenu(void) {
 [e :U _mainMenu ]
 [f ]
-"26
-[v _pressed `i ~T0 @X0 1 a ]
-"27
-[v _needToPrint `i ~T0 @X0 1 a ]
-[; ;menu.c: 26: int pressed;
-[; ;menu.c: 27: int needToPrint = 1;
-[e = _needToPrint -> 1 `i ]
-[; ;menu.c: 29: while (1) {
 "29
+[v _pressed `i ~T0 @X0 1 a ]
+"30
+[v _needToPrint `i ~T0 @X0 1 a ]
+[; ;menu.c: 29: int pressed;
+[; ;menu.c: 30: int needToPrint = 1;
+[e = _needToPrint -> 1 `i ]
+[; ;menu.c: 32: while (1) {
+"32
 [e :U 280 ]
 {
-[; ;menu.c: 30: if (needToPrint) {
-"30
+[; ;menu.c: 33: if (needToPrint) {
+"33
 [e $ ! != _needToPrint -> 0 `i 282  ]
 {
-[; ;menu.c: 31: printStringLCD("0:Sleep 1:Begin \n2: View Logs");
-"31
+[; ;menu.c: 34: printStringLCD("0:Sleep 1:Begin \n2: View Logs");
+"34
 [e ( _printStringLCD (1 -> :s 3C `*uc ]
-[; ;menu.c: 32: needToPrint = 0;
-"32
+[; ;menu.c: 35: needToPrint = 0;
+"35
 [e = _needToPrint -> 0 `i ]
-"33
+"36
 }
 [e :U 282 ]
-[; ;menu.c: 33: }
-[; ;menu.c: 34: pressed = pollKeypad();
-"34
+[; ;menu.c: 36: }
+[; ;menu.c: 37: pressed = pollKeypad();
+"37
 [e = _pressed -> ( _pollKeypad ..  `i ]
-[; ;menu.c: 35: putch(pressed);
-"35
+[; ;menu.c: 38: putch(pressed);
+"38
 [e ( _putch (1 -> _pressed `uc ]
-[; ;menu.c: 36: if (pressed - 48 == 0) {
-"36
+[; ;menu.c: 39: if (pressed - 48 == 0) {
+"39
 [e $ ! == - _pressed -> 48 `i -> 0 `i 283  ]
 {
-[; ;menu.c: 37: hibernate();
-"37
+[; ;menu.c: 40: hibernate();
+"40
 [e ( _hibernate ..  ]
-[; ;menu.c: 38: needToPrint = 1;
-"38
+[; ;menu.c: 41: needToPrint = 1;
+"41
 [e = _needToPrint -> 1 `i ]
-"39
+"42
 }
-[; ;menu.c: 39: } else if (pressed - 48 == 1) {
+[; ;menu.c: 42: } else if (pressed - 48 == 1) {
 [e $U 284  ]
 [e :U 283 ]
 [e $ ! == - _pressed -> 48 `i -> 1 `i 285  ]
 {
-[; ;menu.c: 40: inputEntry();
-"40
-[e ( _inputEntry ..  ]
-[; ;menu.c: 41: printf("Summary:");
-"41
-[e ( _printf :s 4C ]
-[; ;menu.c: 42: _delay((unsigned long)((1000)*(40000000/4000.0)));
-"42
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 43: inputEntry();
 "43
-[v _i `i ~T0 @X0 1 a ]
-[; ;menu.c: 43: int i;
-[; ;menu.c: 44: while(1) {
+[e ( _inputEntry ..  ]
 "44
+[v _startTime `l ~T0 @X0 1 a ]
+[; ;menu.c: 44: long startTime = RTC_getSeconds();
+[e = _startTime ( _RTC_getSeconds ..  ]
+[; ;menu.c: 45: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"45
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 46: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"46
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 47: printf("Starting packaging");
+"47
+[e ( _printf :s 4C ]
+[; ;menu.c: 48: I2C_Send(nanoAddr, "\1Starting packaging\0");
+"48
+[e ( _I2C_Send (2 , _nanoAddr -> :s 5C `*uc ]
+[; ;menu.c: 49: packaging();
+"49
+[e ( _packaging ..  ]
+[; ;menu.c: 50: clearing();
+"50
+[e ( _clearing ..  ]
+"51
+[v _endTime `l ~T0 @X0 1 a ]
+[; ;menu.c: 51: long endTime = RTC_getSeconds();
+[e = _endTime ( _RTC_getSeconds ..  ]
+"52
+[v _totalTime `l ~T0 @X0 1 a ]
+[; ;menu.c: 52: long totalTime = endTime - startTime;
+[e = _totalTime - _endTime _startTime ]
+[; ;menu.c: 54: printf("Summary:");
+"54
+[e ( _printf :s 6C ]
+[; ;menu.c: 55: _delay((unsigned long)((1000)*(40000000/4000.0)));
+"55
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"56
+[v _i `i ~T0 @X0 1 a ]
+[; ;menu.c: 56: int i;
+[; ;menu.c: 57: while(1) {
+"57
 [e :U 287 ]
 {
-[; ;menu.c: 45: for (i = 0; i < 8; i++) {
-"45
+[; ;menu.c: 58: for (i = 0; i < 8; i++) {
+"58
 {
 [e = _i -> 0 `i ]
 [e $ < _i -> 8 `i 289  ]
 [e $U 290  ]
 [e :U 289 ]
 {
-[; ;menu.c: 46: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"46
+[; ;menu.c: 59: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"59
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 47: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"47
+[; ;menu.c: 60: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"60
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 48: printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
-"48
-[e ( _printf , , , (. :s 5C + _i -> 1 `i -> &U *U + &U _fSLookup * -> *U + &U . _params 1 * -> -> _i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fSLookup `ui -> -> 5 `i `ui `ux `*Cuc *U + &U . _params 2 * -> -> _i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
-[; ;menu.c: 49: _delay((unsigned long)((2000)*(40000000/4000.0)));
-"49
+[; ;menu.c: 61: printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
+"61
+[e ( _printf , , , (. :s 7C + _i -> 1 `i -> &U *U + &U _fSLookup * -> *U + &U . _params 1 * -> -> _i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fSLookup `ui -> -> 5 `i `ui `ux `*Cuc *U + &U . _params 2 * -> -> _i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
+[; ;menu.c: 62: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"62
 [e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"50
+"63
 }
-"45
+"58
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 8 `i 289  ]
 [e :U 290 ]
-"50
+"63
 }
-"51
+[; ;menu.c: 63: }
+[; ;menu.c: 65: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"65
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 66: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"66
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 67: printf("Remaining:");
+"67
+[e ( _printf :s 8C ]
+[; ;menu.c: 68: lcdInst(0xC0);;
+"68
+[e ( _lcdInst (1 -> -> 192 `i `uc ]
+[; ;menu.c: 69: printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+"69
+[e ( _printf , , , , (. :s 9C . _extras 0 . _extras 1 . _extras 2 . _extras 3 ]
+[; ;menu.c: 70: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"70
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"72
 }
 [e :U 286 ]
-"44
+"57
 [e $U 287  ]
 [e :U 288 ]
-"52
+"73
 }
-[; ;menu.c: 50: }
-[; ;menu.c: 51: }
-[; ;menu.c: 52: } else if (pressed - 48 == 2) {
+[; ;menu.c: 72: }
+[; ;menu.c: 73: } else if (pressed - 48 == 2) {
 [e $U 292  ]
 [e :U 285 ]
 [e $ ! == - _pressed -> 48 `i -> 2 `i 293  ]
 {
-[; ;menu.c: 53: viewLogs();
-"53
+[; ;menu.c: 74: viewLogs();
+"74
 [e ( _viewLogs ..  ]
-[; ;menu.c: 54: needToPrint = 1;
-"54
+[; ;menu.c: 75: needToPrint = 1;
+"75
 [e = _needToPrint -> 1 `i ]
-"55
+"76
 }
 [e :U 293 ]
-"56
+"77
 [e :U 292 ]
 [e :U 284 ]
 }
 [e :U 279 ]
-"29
+"32
 [e $U 280  ]
 [e :U 281 ]
-[; ;menu.c: 55: }
-[; ;menu.c: 56: }
-[; ;menu.c: 57: }
-"57
+[; ;menu.c: 76: }
+[; ;menu.c: 77: }
+[; ;menu.c: 78: }
+"78
 [e :UE 278 ]
 }
 [p f _printf 8650880 ]
 [a 3C 48 58 83 108 101 101 112 32 49 58 66 101 103 105 110 32 10 50 58 32 86 105 101 119 32 76 111 103 115 0 ]
 [a 2C 78 111 116 32 116 104 101 114 101 32 121 101 116 10 42 32 116 111 32 114 101 116 117 114 110 0 ]
 [a 1C 80 114 101 115 115 32 49 32 116 111 32 98 101 103 105 110 0 ]
-[a 5C 67 37 100 58 32 37 115 32 120 37 100 0 ]
-[a 4C 83 117 109 109 97 114 121 58 0 ]
+[a 4C 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 ]
+[a 7C 67 37 100 58 32 37 115 32 120 37 100 0 ]
+[a 9C 66 37 100 32 78 37 100 32 83 37 100 32 87 37 100 0 ]
+[a 6C 83 117 109 109 97 114 121 58 0 ]
+[a 8C 82 101 109 97 105 110 105 110 103 58 0 ]
+[a 5C 1 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 0 ]

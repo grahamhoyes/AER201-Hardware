@@ -21,10 +21,12 @@ int b;
 int n;
 int s;
 int w;
-};
+} extras, dispensed;
 
-
-int inputEntry(void);
+void inputEntry(void);
+void packageCompartment(char b, char n, char s, char w);
+void packaging(void);
+void clearing(void);
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -3785,7 +3787,10 @@ extern __nonreentrant void _delay3(unsigned char);
 
 #pragma config EBTRB = OFF
 
-# 22 "I2C.h"
+# 21 "I2C.h"
+const unsigned char nanoAddr = 0b00010000;
+
+
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);
 void I2C_Master_RepeatedStart(void);

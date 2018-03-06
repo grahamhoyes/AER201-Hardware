@@ -135,18 +135,24 @@ void receiveEvent(int numBytes) {
   } else if (x == 2) { // Instruction to rotate the NEMA17 45 deg CW
     digitalWrite(NEMADirPin, CW);
     rotateNEMA(45.0);
+    Serial.println("Rotated the stepper");
   } else if (x == 3) { // Instruction to rotate the NEMA17 359.5 deg CW and step Micro Servo over first bin
     digitalWrite(NEMADirPin, CW);
     rotateNEMA(359.5); // This will get truncated down to 359 deg in reality
+    Serial.println("Rotated the stepper");
     microServo.write(POS1);
   } else if (x == 4) { // Instruction to step micro servo over second dispensing bin
     microServo.write(POS2);
+    Serial.println("Servo over bin 2");
   } else if (x == 5) { // Instruction to step micro servo over third dispensing bin
     microServo.write(POS3);  
+    Serial.println("Servo over bin 3");
   } else if (x == 6) { // Instruction to step micro servo over fourth dispensing bin
     microServo.write(POS4);  
+    Serial.println("Servo over bin 4");
   } else if (x == 7) { // Instruction to release the box and reset the micro servo
     boxUnsetting();
+    Serial.println("Box removed");
   } else {
     Serial.print(char(x));
     for (count = 1; count < numBytes; count++) {

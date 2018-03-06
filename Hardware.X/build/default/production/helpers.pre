@@ -3843,7 +3843,10 @@ void lcd_set_cursor(unsigned char x, unsigned char y);
 void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 void lcd_shift_display(unsigned char numChars, unsigned char direction);
 
-# 22 "I2C.h"
+# 21 "I2C.h"
+const unsigned char nanoAddr = 0b00010000;
+
+
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);
 void I2C_Master_RepeatedStart(void);

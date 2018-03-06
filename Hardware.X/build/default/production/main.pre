@@ -3875,7 +3875,10 @@ void lcd_set_cursor(unsigned char x, unsigned char y);
 void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 void lcd_shift_display(unsigned char numChars, unsigned char direction);
 
-# 22 "I2C.h"
+# 21 "I2C.h"
+const unsigned char nanoAddr = 0b00010000;
+
+
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);
 void I2C_Master_RepeatedStart(void);
@@ -3916,16 +3919,23 @@ int b;
 int n;
 int s;
 int w;
-};
+} extras, dispensed;
 
-
-int inputEntry(void);
+void inputEntry(void);
+void packageCompartment(char b, char n, char s, char w);
+void packaging(void);
+void clearing(void);
 
 # 11 "RTC.h"
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
 
-# 27 "main.c"
+# 11 "timer.h"
+void tic(void);
+float tock(void);
+void tmr0_ISR(void);
+
+# 35 "main.c"
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3988,13 +3998,8 @@ const char assemblyStepEncoding[5] = {
 0b11111111
 };
 
-const unsigned char nanoAddr = 0b00010000;
 
-struct amounts dispensed = {0, 0, 0, 0};
-
-struct amounts extras = {0, 0, 0, 0};
-
-int inputEntry(void) {
+void inputEntry(void) {
 lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 
@@ -4030,6 +4035,9 @@ char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
 for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
 STARTCOMPARTMENT:
 if ((compartmentsToFill >> compartmentNum) & 0b1) {
+char msg[] = "\1Started compartment x\0";
+msg[21] = compartmentNum + 1 + 48;
+I2C_Send(nanoAddr, msg);
 
 setIsGood = 0;
 while (!setIsGood) {
@@ -4104,8 +4112,21 @@ int sum = 0;
 for (i = 0; i < 4; i++) {
 sum += fastenerMatrix[params.toFill[compartmentNum]][i];
 };
-if (numPressed * sum > 4 || numPressed * sum <= 0) {
+if (numPressed * sum > 4) {
 printErrorLCD(errMsgs.tooManyFasteners);
+} else if (numPressed * sum <= 0) {
+printErrorLCD(errMsgs.noFasteners);
+
+
+
+} else if (numB * numPressed > 2) {
+printErrorLCD(errMsgs.tooManyBolts);
+} else if (numN * numPressed > 3) {
+printErrorLCD(errMsgs.tooManyNuts);
+} else if (numS * numPressed > 2) {
+printErrorLCD(errMsgs.tooManySpacers);
+} else if (numW * numPressed > 4) {
+printErrorLCD(errMsgs.tooManyWashers);
 } else {
 params.setMultiple[compartmentNum] = numPressed;
 doneMultiples = 1;
@@ -4117,9 +4138,8 @@ params.setMultiple[compartmentNum] = 0;
 }
 }
 done = 1;
-
+I2C_Send(nanoAddr, "\1Done inputs\0");
 }
-
 }
 }
 
@@ -4129,7 +4149,6 @@ LATBbits.LATB3 = 1;
 LATCbits.LATC1 = 1;
 LATCbits.LATC5 = 1;
 LATCbits.LATC7 = 1;
-I2C_Send(nanoAddr, "Starting\0");
 
 int numB=0, numN=0, numS=0, numW=0;
 int doneB=0, doneN=0, doneS=0, doneW=0;
@@ -4161,19 +4180,19 @@ if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
 timeN = currTime;
 numN++;
 dispensed.n++;
-I2C_Send(nanoAddr, "Nut Counted\0");
+I2C_Send(nanoAddr, "\1Nut Counted\0");
 }
 if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
 timeS = currTime;
 numS++;
 dispensed.s++;
-I2C_Send(nanoAddr, "Spacer Counted\0");
+I2C_Send(nanoAddr, "\1Spacer Counted\0");
 }
 if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
 timeW = currTime;
 numW++;
 dispensed.w++;
-I2C_Send(nanoAddr, "Washer Counted\0");
+I2C_Send(nanoAddr, "\1Washer Counted\0");
 }
 
 if (numB >= b) {
@@ -4207,21 +4226,42 @@ _delay((unsigned long)((5000)*(40000000/4000.0)));
 void packaging(void) {
 int compartmentNum;
 
-# 310
+# 328
+dispensed.b = 0;
+dispensed.n = 0;
+dispensed.s = 0;
+dispensed.w = 0;
+
+I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+
 for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-if (params.toFill[compartmentNum-1] == NONE) break;
+I2C_Send(nanoAddr, "\1Loop\0");
+char msg[] = "\1Started packaging compartment x\0";
+msg[31] = compartmentNum + 48;
+I2C_Send(nanoAddr, msg);
+
+
 char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
-packageCompartment(set[0], set[1], set[2], set[3]);
+char msg2[32];
+sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0], set[1], set[2], set[3]);
+I2C_Send(nanoAddr, msg2);
+
+
 }
 }
 
 void clearing(void) {
 
-# 322
+# 356
 I2C_Send(nanoAddr, 3);
 
 int i;
 int spinTime=100;
+
+extras.b = 0;
+extras.n = 0;
+extras.s = 0;
+extras.w = 0;
 
 LATBbits.LATB3 = 1;
 for (i = 0; i < spinTime; i++) {
@@ -4235,6 +4275,7 @@ _delay((unsigned long)((25)*(40000000/4000.0)));
 LATBbits.LATB3 = 0;
 
 I2C_Send(nanoAddr, 4);
+_delay((unsigned long)((5000)*(40000000/4000.0)));
 
 LATCbits.LATC1 = 1;
 for (i = 0; i < spinTime; i++) {
@@ -4247,6 +4288,7 @@ _delay((unsigned long)((25)*(40000000/4000.0)));
 LATCbits.LATC1 = 0;
 
 I2C_Send(nanoAddr, 5);
+_delay((unsigned long)((5000)*(40000000/4000.0)));
 
 LATCbits.LATC5 = 1;
 for (i = 0; i < spinTime; i++) {
@@ -4259,6 +4301,7 @@ _delay((unsigned long)((25)*(40000000/4000.0)));
 LATCbits.LATC5 = 0;
 
 I2C_Send(nanoAddr, 6);
+_delay((unsigned long)((5000)*(40000000/4000.0)));
 
 LATCbits.LATC7 = 1;
 for (i = 0; i < spinTime; i++) {
@@ -4273,9 +4316,16 @@ I2C_Send(nanoAddr, 7);
 
 }
 
+void interrupt interruptHandler(void) {
+if (T0IE && T0IF) {
+T0IF = 0;
+tmr0_ISR();
+}
+}
+
 void main(void) {
 
-# 382
+# 431
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4297,11 +4347,11 @@ initLCD();
 lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 
+hibernate();
+mainMenu();
 
 
-printf("Counting");
-I2C_Send(nanoAddr, "This is a test\0");
-packageCompartment(4, 4, 4, 4);
+
 while(1);
 
 }

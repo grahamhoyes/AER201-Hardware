@@ -187,15 +187,23 @@ void mainMenu(void) {
             needToPrint = 1;
         } else if (pressed - 48 == 1) { // Begin
             inputEntry(); // Get user input parameters
-            long startTime = RTC_getSeconds();
+            __lcd_clear();
+            __lcd_home();
+            printf("Press 1 to start");
+            __lcd_newline();
+            printf("packaging");
+            int startPress = pollKeypad();
+            while (startPress - 48 != 1) {
+                startPress = pollKeypad();
+            }
+            RTC_startOperation(); // Begin global timing
             __lcd_clear();
             __lcd_home();
             printf("Starting packaging");
             I2C_Send(nanoAddr, "\1Starting packaging\0");
             packaging(); // Fill the box
             clearing(); // Empty and reset the machine
-            long endTime = RTC_getSeconds();
-            long totalTime = endTime - startTime;
+            long operationTime = RTC_getOperatingTime();
             
             printf("Summary:");
             __delay_ms(1000);
@@ -213,6 +221,12 @@ void mainMenu(void) {
                 printf("Remaining:");
                 __lcd_newline();
                 printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+                __delay_ms(2000);
+                __lcd_clear();
+                __lcd_home();
+                printf("Time:");
+                __lcd_newline();
+                printf("%ld", operationTime);
                 __delay_ms(2000);
                 
             }

@@ -4,7 +4,6 @@
 #include <Servo.h>
 
 // Pin definitions
-#define IRPin A0 // IR reflection sensor
 #define NEMAStepPin 2  // Output to A4988 Stepper Motor controller for spinning box
 #define NEMADirPin 7 // Direction the nema should go
 
@@ -22,8 +21,8 @@ Servo microServo;
 int microServoPos = 0;
 
 #define debugPin 13 // For the onboard LED
-#define MSPin 14 // Microswitch on A0
-#define IRSensorPin 15 // Reflective IR sensor pin on A1 (can make Analog if necessary this way)
+#define MSPin A0 // Microswitch on A0
+#define IRSensorPin A1 // Reflective IR sensor pin on A1 (can make Analog if necessary this way)
 
 // Setup the 28BYJ stepper
 AccelStepper boxHoldingStepper(8, motorPin1, motorPin2, motorPin3, motorPin4);
@@ -33,14 +32,14 @@ AccelStepper boxHoldingStepper(8, motorPin1, motorPin2, motorPin3, motorPin4);
 #define CCW 1
 
 // Positions of bins for micro servo - exact values will need to change
-#define POS0 0
-#define POS1 45
-#define POS2 90
-#define POS3 135
-#define POS4 180
+#define POS0 80
+#define POS1 0
+#define POS2 25
+#define POS3 140
+#define POS4 170
 
 // Useful variables
-#define NEMASteps 800 // The NEMA actually has 200 steps/rev, but we're using a 4:1 gear ratio
+#define NEMASteps 720 // The NEMA actually has 200 steps/rev, but we're using a 3.6:1 gear ratio
 int compartmentNum;
 
 void setup() {
@@ -63,6 +62,8 @@ void setup() {
 
   Serial.begin(9600); // For communication with PC
   Serial.println("We're live");
+
+  analogWrite(DCSpeedPin, 255);
 }
 
 void loop() {
@@ -135,6 +136,7 @@ void receiveEvent(int numBytes) {
   } else if (x == 2) { // Instruction to rotate the NEMA17 45 deg CW
     digitalWrite(NEMADirPin, CW);
     rotateNEMA(45.0);
+    Serial.println("Box stepped");
     Serial.println("Rotated the stepper");
   } else if (x == 3) { // Instruction to rotate the NEMA17 359.5 deg CW and step Micro Servo over first bin
     digitalWrite(NEMADirPin, CW);

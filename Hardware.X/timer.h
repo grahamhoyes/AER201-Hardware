@@ -9,8 +9,11 @@
 #define	TIMER_H
 
 void tic(void);
-float tock(void);
+double tock(void);
 void tmr0_ISR(void);
+void Timer_startOperation(void);
+double Timer_getOperatingTime(void);
+long getTest(void);
 
 #endif	/* TIMER_H */
 

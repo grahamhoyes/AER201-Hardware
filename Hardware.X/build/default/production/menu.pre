@@ -3903,6 +3903,8 @@ void I2C_Send(unsigned char address, char * data);
 # 11 "RTC.h"
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
+void RTC_startOperation(void);
+long RTC_getOperatingTime(void);
 
 # 11 "hardware.h"
 typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
@@ -3996,8 +3998,11 @@ void clearing(void);
 
 # 11 "timer.h"
 void tic(void);
-float tock(void);
+double tock(void);
 void tmr0_ISR(void);
+void Timer_startOperation(void);
+double Timer_getOperatingTime(void);
+long getTest(void);
 
 # 11 "menu.c"
 void hibernate(void) {
@@ -4179,15 +4184,23 @@ hibernate();
 needToPrint = 1;
 } else if (pressed - 48 == 1) {
 inputEntry();
-long startTime = RTC_getSeconds();
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+printf("Press 1 to start");
+lcdInst(0xC0);;
+printf("packaging");
+int startPress = pollKeypad();
+while (startPress - 48 != 1) {
+startPress = pollKeypad();
+}
+RTC_startOperation();
 lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 printf("Starting packaging");
 I2C_Send(nanoAddr, "\1Starting packaging\0");
 packaging();
 clearing();
-long endTime = RTC_getSeconds();
-long totalTime = endTime - startTime;
+long operationTime = RTC_getOperatingTime();
 
 printf("Summary:");
 _delay((unsigned long)((1000)*(40000000/4000.0)));
@@ -4205,6 +4218,12 @@ lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 printf("Remaining:");
 lcdInst(0xC0);;
 printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+_delay((unsigned long)((2000)*(40000000/4000.0)));
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+printf("Time:");
+lcdInst(0xC0);;
+printf("%ld", operationTime);
 _delay((unsigned long)((2000)*(40000000/4000.0)));
 
 }

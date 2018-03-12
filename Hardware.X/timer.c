@@ -9,7 +9,12 @@
 #include "hardware.h"
 #include "timer.h"
 
-static float timeSinceLastTic; // Number of seconds since the last call to tic() was made
+static unsigned char operating=0; // Is the machine in operating mode? Should probably make this a global state variable
+static unsigned char timerInit = 0; // Has the timer module been initialized?
+static volatile double operatingTime=-1; // Number of seconds since the operation began. Volatile because modified in ISR
+static volatile double timeSinceLastTic=-1; // Number of seconds since the last call to tic() was made. Volatile because modified in ISR
+static volatile long test = 0;
+
 void tmr0Init(void) {
     /* Starts the timer module with an interrupt period of 0.1 seconds
      * Arguments: none
@@ -19,33 +24,36 @@ void tmr0Init(void) {
      * we're rolling with that.
      */
     
-    T0CONbits.T08BIT = 0;
-    T0CONbits.T0CS = 0;
-    T0CONbits.PSA = 0;
-    
-    // Prescale of 1:256
-    T0CONbits.T0PS2 = 1;
-    T0CONbits.T0PS1 = 1;
-    T0CONbits.T0PS0 = 1;
-    
-    // The following for an interrupt ever 0.1s
-    TMR0H = 0xF2;
-    TMR0L = 0xC0;
-    T0CONbits.TMR0ON = 1;
-    TMR0IE = 1;
-    
-    // Enable all interrupts
-    ei();
+    if (!timerInit) {
+        T0CONbits.T08BIT = 0;
+        T0CONbits.T0CS = 0;
+        T0CONbits.PSA = 0;
+
+        // Prescale of 1:256
+        T0CONbits.T0PS2 = 1;
+        T0CONbits.T0PS1 = 1;
+        T0CONbits.T0PS0 = 1;
+
+        // The following for an interrupt ever 0.1s
+        TMR0H = 0xF2;
+        TMR0L = 0xC0;
+        T0CONbits.TMR0ON = 1;
+        TMR0IE = 1;
+
+        // Enable all interrupts
+        ei();
+    }
 }
 void tic(void) {
     /* Resets the timeSinceLastTic counter 
      * Arguments: none
      * Returns: none
      */
+    tmr0Init();
     timeSinceLastTic = 0;
 }
 
-float tock(void) {
+double tock(void) {
     /* Returns: timeSinceLastTic to any scope
      * Argument: none
      */
@@ -53,8 +61,32 @@ float tock(void) {
     return timeSinceLastTic;
 }
 
+void Timer_startOperation(void) {
+    /* Starts the timer for timing the machine operation
+     * Returns: none
+     * Arguments: none
+     */
+    tmr0Init();
+    operatingTime = 0;
+    operating = 1;
+}
+
+double Timer_getOperatingTime(void) {
+    /* Arguments: none
+     * Returns: The number of seconds since the operation began
+     */
+    
+    return operatingTime;
+}
+
+long getTest(void) {
+    return test;
+}
+
 void tmr0_ISR(void) {
     timeSinceLastTic += 0.1;
+    test++;
+    if (operating) operatingTime += 0.1;
     TMR0H = 0xF2;
     TMR0L = 0xC0;
 }

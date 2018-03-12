@@ -10,6 +10,8 @@
 
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
+void RTC_startOperation(void);
+long RTC_getOperatingTime(void);
 
 #endif	/* RTC_H */
 

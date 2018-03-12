@@ -340,8 +340,7 @@ continue;
 # 802
 default:
 
-# 809
-if(pb->func) (pb->func(c)); else ((*pb->ptr++ = c));
+# 813
 continue;
 
 # 822

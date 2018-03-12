@@ -9,6 +9,10 @@
 #include "I2C.h"
 #include "RTC.h"
 
+static long operatingTime;
+static long startTime;
+static long endTime;
+
 void RTC_getTime(unsigned char * time) {
     /* Reset RTC memory pointer */
     I2C_Master_Start(); // Start
@@ -38,5 +42,16 @@ long RTC_getSeconds(void) {
     
     long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
     return seconds;
+}
+
+void RTC_startOperation(void) {
+    /* Starts timing the operation */
+    startTime = RTC_getSeconds();
+}
+
+long RTC_getOperatingTime(void) {
+    /* Returns: the number of seconds the operation took*/
+    endTime = RTC_getSeconds();
+    return endTime - startTime;
 }
 

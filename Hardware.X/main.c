@@ -18,28 +18,27 @@
 #include "hardware.h"
 #include "RTC.h"
 #include "timer.h"
+#include "motors.h"
 
-// This should go in menu.c
-
+#define debouncingResolution 2
 
 void packageCompartment(char b, char n, char s, char w) {
+    TRISA = 0xFF;
+    
     // Activate all motors
-    LATBbits.LATB3 = 1;
-    LATCbits.LATC1 = 1;
-    LATCbits.LATC5 = 1;
-    LATCbits.LATC7 = 1;
+    motorControl(BOLT, FORWARD);
+    motorControl(NUT, FORWARD);
+    motorControl(SPACER, FORWARD);
+    motorControl(WASHER, FORWARD);
     
     int numB=0, numN=0, numS=0, numW=0;
     int doneB=0, doneN=0, doneS=0, doneW=0;
     long currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-    char resolution = 5;
-    __lcd_clear();
-    __lcd_home();
-    printf("Now counting");
-    __delay_ms(2000);
     
+    tic(); // Start the timer
     while (1) {
-        currTime = RTC_getSeconds();
+        currTime = tock();
+        /*
         char currTimeString[33];
         sprintf(currTimeString, "%li", currTime);
         currTimeString[32] = "\0"; // Null-terminate
@@ -47,47 +46,55 @@ void packageCompartment(char b, char n, char s, char w) {
         __lcd_home();
         printf(currTimeString);
         __delay_ms(2000);
-        I2C_Send(nanoAddr, currTimeString);
+        I2C_Send(nanoAddr, currTimeString);*/
         
-        if (PORTAbits.RA0 == 0 && currTime > timeB + resolution) {
+        // Bolts
+        if (PORTAbits.RA0 == 0 && currTime > timeB + debouncingResolution) {
             timeB = currTime;
             numB++;
             dispensed.b++;
             I2C_Send(nanoAddr, "\1Bolt Counted\0");
         }
-        if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
+        
+        // Nuts
+        if (PORTAbits.RA1 == 0 && currTime > timeN + debouncingResolution) {
             timeN = currTime;
             numN++;
             dispensed.n++;
             I2C_Send(nanoAddr, "\1Nut Counted\0");
         }
-        if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
+        
+        // Spacer
+        if (PORTAbits.RA2 == 0 && currTime > timeS + debouncingResolution) {
             timeS = currTime;
             numS++;
             dispensed.s++;
             I2C_Send(nanoAddr, "\1Spacer Counted\0");
         }
-        if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
+        
+        // Washer
+        if (PORTAbits.RA3 == 0 && currTime > timeW + debouncingResolution) {
             timeW = currTime;
             numW++;
             dispensed.w++;
             I2C_Send(nanoAddr, "\1Washer Counted\0");
         }
         
+        // Stop the motors
         if (numB >= b) {
-            LATBbits.LATB3 = 0; 
+            motorControl(BOLT, STOPMOTOR);
             doneB=1;
         }
         if (numN >= n) {
-            LATCbits.LATC5 = 0;
+            motorControl(NUT, STOPMOTOR);
             doneN=1;
         }
         if (numS >= s) {
-            LATCbits.LATC5 = 0;
+            motorControl(SPACER, STOPMOTOR);
             doneS=1;
         }
         if (numW >= w) {
-            LATCbits.LATC7 = 0;
+            motorControl(WASHER, STOPMOTOR);
             doneW=1;
         }
         
@@ -116,18 +123,21 @@ void packaging(void) {
     I2C_Send(nanoAddr, "\1Entered the packaging function\0");
     
     for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-        I2C_Send(nanoAddr, "\1Loop\0");
+        
         char msg[] = "\1Started packaging compartment x\0";
         msg[31] = compartmentNum + 48;
         I2C_Send(nanoAddr, msg);
         // This is the line that breaks things
-        //if (params.toFill[compartmentNum-1] == 0) break; // Skip compartments that are to be empty
+        if (params.toFill[compartmentNum-1] == 0) continue; // Skip compartments that are to be empty
         char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
         char msg2[32];
-        sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0], set[1], set[2], set[3]);
+        int mult = params.setMultiple[compartmentNum - 1];
+        sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
         I2C_Send(nanoAddr, msg2);
-        
-        //packageCompartment(set[0], set[1], set[2], set[3]);
+        __lcd_clear();
+        __lcd_home();
+        printf("Compartment %d", compartmentNum);
+        packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
     }
 }
 
@@ -146,7 +156,9 @@ void clearing(void) {
     extras.s = 0;
     extras.w = 0;
     
-    LATBbits.LATB3 = 1; // DCB-F pin
+    tic(); // Initialize the debouncing timer
+    
+    motorControl(BOLT, FORWARD);
     for (i = 0; i < spinTime; i++) {
         // Every 25 milliseconds, check if a bolt is passed and count it
         if (PORTAbits.RA0 == 0) {
@@ -155,12 +167,12 @@ void clearing(void) {
         if (extras.b + dispensed.b == maxSuppliedB) break;
         __delay_ms(25);
     }
-    LATBbits.LATB3 = 0;
+    motorControl(BOLT, STOPMOTOR);
     
     I2C_Send(nanoAddr, 4); // Step micro servo over second dispensing bin
     __delay_ms(5000); // These delays should probably be a wait until complete message from the Arduino
     
-    LATCbits.LATC1 = 1; // DCN-F pin
+    motorControl(NUT, FORWARD);
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA1 == 0) {
             extras.n++;
@@ -168,12 +180,12 @@ void clearing(void) {
         if (extras.n + dispensed.n == maxSuppliedN) break;
         __delay_ms(25);
     }
-    LATCbits.LATC1 = 0;
+    motorControl(NUT, STOPMOTOR);
     
     I2C_Send(nanoAddr, 5); // Step micro servo over third dispensing bin
     __delay_ms(5000);
     
-    LATCbits.LATC5 = 1; // DCS-F pin
+    motorControl(SPACER, FORWARD);
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA2 == 0) {
             extras.s++;
@@ -181,19 +193,19 @@ void clearing(void) {
         if (extras.s + dispensed.s == maxSuppliedS) break;
         __delay_ms(25);
     }   
-    LATCbits.LATC5 = 0;
+    motorControl(SPACER, STOPMOTOR);
     
     I2C_Send(nanoAddr, 6); // Step micro servo over fourth dispensing bin
     __delay_ms(5000);
     
-    LATCbits.LATC7 = 1; // DCW-F pin
+    motorControl(WASHER, FORWARD);
     for (i = 0; i < spinTime; i++) {
         if (PORTAbits.RA3 == 0) {
             extras.w++;
         }
         if (extras.w + dispensed.w == maxSuppliedW) break;
     }
-    LATCbits.LATC7 = 0;
+    motorControl(WASHER, STOP);
     
     I2C_Send(nanoAddr, 7); // Unset box
     // Retract 28BYJ stepper and DC motor holding box down
@@ -223,6 +235,9 @@ void main(void) {
     TRISC = 0x00; // Outputs initially. RC4 and RC5 used for I2C communication.
     TRISD = 0x00; // Outputs initially
     TRISE = 0x00; // Outputs initially
+    
+    ADCON0 = 0x00;  // Disable ADC
+    ADCON1 = 0x0F;  // Digital pins
     // </editor-fold>
     
     I2C_Master_Init(100000); // Start I2C with a 100khz clock
@@ -235,8 +250,5 @@ void main(void) {
     hibernate();
     mainMenu();
     //printf("\1Counting");
-    //I2C_Send(nanoAddr, "\1This is a test\0");
     //packageCompartment(4, 4, 4, 4);
-    while(1);
-    
 }

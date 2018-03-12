@@ -3993,58 +3993,68 @@ void clearing(void);
 # 11 "RTC.h"
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
+void RTC_startOperation(void);
+long RTC_getOperatingTime(void);
 
 # 11 "timer.h"
 void tic(void);
-float tock(void);
+double tock(void);
 void tmr0_ISR(void);
+void Timer_startOperation(void);
+double Timer_getOperatingTime(void);
+long getTest(void);
 
-# 25 "main.c"
+# 11 "motors.h"
+typedef enum fastenerType {BOLT, NUT, SPACER, WASHER} fastenerType;
+typedef enum motorDirection {FORWARD, REVERSE, STOPMOTOR} motorDirection;
+
+void motorControl(fastenerType motor, motorDirection dir);
+
+# 23 "main.c"
 void packageCompartment(char b, char n, char s, char w) {
+TRISA = 0xFF;
 
-LATBbits.LATB3 = 1;
-LATCbits.LATC1 = 1;
-LATCbits.LATC5 = 1;
-LATCbits.LATC7 = 1;
+
+motorControl(BOLT, FORWARD);
+motorControl(NUT, FORWARD);
+motorControl(SPACER, FORWARD);
+motorControl(WASHER, FORWARD);
 
 int numB=0, numN=0, numS=0, numW=0;
 int doneB=0, doneN=0, doneS=0, doneW=0;
 long currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-char resolution = 5;
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("Now counting");
-_delay((unsigned long)((2000)*(40000000/4000.0)));
 
+char resolution = 2;
+
+tic();
 while (1) {
-currTime = RTC_getSeconds();
-char currTimeString[33];
-sprintf(currTimeString, "%li", currTime);
-currTimeString[32] = "\0";
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf(currTimeString);
-_delay((unsigned long)((2000)*(40000000/4000.0)));
-I2C_Send(nanoAddr, currTimeString);
+currTime = tock();
 
+# 52
 if (PORTAbits.RA0 == 0 && currTime > timeB + resolution) {
 timeB = currTime;
 numB++;
 dispensed.b++;
 I2C_Send(nanoAddr, "\1Bolt Counted\0");
 }
+
+
 if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
 timeN = currTime;
 numN++;
 dispensed.n++;
 I2C_Send(nanoAddr, "\1Nut Counted\0");
 }
+
+
 if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
 timeS = currTime;
 numS++;
 dispensed.s++;
 I2C_Send(nanoAddr, "\1Spacer Counted\0");
 }
+
+
 if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
 timeW = currTime;
 numW++;
@@ -4052,20 +4062,21 @@ dispensed.w++;
 I2C_Send(nanoAddr, "\1Washer Counted\0");
 }
 
+
 if (numB >= b) {
-LATBbits.LATB3 = 0;
+motorControl(BOLT, STOPMOTOR);
 doneB=1;
 }
 if (numN >= n) {
-LATCbits.LATC5 = 0;
+motorControl(NUT, STOPMOTOR);
 doneN=1;
 }
 if (numS >= s) {
-LATCbits.LATC5 = 0;
+motorControl(SPACER, STOPMOTOR);
 doneS=1;
 }
 if (numW >= w) {
-LATCbits.LATC7 = 0;
+motorControl(WASHER, STOPMOTOR);
 doneW=1;
 }
 
@@ -4083,7 +4094,7 @@ _delay((unsigned long)((5000)*(40000000/4000.0)));
 void packaging(void) {
 int compartmentNum;
 
-# 111
+# 118
 dispensed.b = 0;
 dispensed.n = 0;
 dispensed.s = 0;
@@ -4092,24 +4103,27 @@ dispensed.w = 0;
 I2C_Send(nanoAddr, "\1Entered the packaging function\0");
 
 for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-I2C_Send(nanoAddr, "\1Loop\0");
+
 char msg[] = "\1Started packaging compartment x\0";
 msg[31] = compartmentNum + 48;
 I2C_Send(nanoAddr, msg);
 
-
+if (params.toFill[compartmentNum-1] == 0) continue;
 char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
 char msg2[32];
-sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0], set[1], set[2], set[3]);
+int mult = params.setMultiple[compartmentNum - 1];
+sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
 I2C_Send(nanoAddr, msg2);
-
-
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+printf("Compartment %d", compartmentNum);
+packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
 }
 }
 
 void clearing(void) {
 
-# 139
+# 149
 I2C_Send(nanoAddr, 3);
 
 int i;
@@ -4120,7 +4134,7 @@ extras.n = 0;
 extras.s = 0;
 extras.w = 0;
 
-LATBbits.LATB3 = 1;
+motorControl(BOLT, FORWARD);
 for (i = 0; i < spinTime; i++) {
 
 if (PORTAbits.RA0 == 0) {
@@ -4129,12 +4143,12 @@ extras.b++;
 if (extras.b + dispensed.b == 20) break;
 _delay((unsigned long)((25)*(40000000/4000.0)));
 }
-LATBbits.LATB3 = 0;
+motorControl(BOLT, STOPMOTOR);
 
 I2C_Send(nanoAddr, 4);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
-LATCbits.LATC1 = 1;
+motorControl(NUT, FORWARD);
 for (i = 0; i < spinTime; i++) {
 if (PORTAbits.RA1 == 0) {
 extras.n++;
@@ -4142,12 +4156,12 @@ extras.n++;
 if (extras.n + dispensed.n == 25) break;
 _delay((unsigned long)((25)*(40000000/4000.0)));
 }
-LATCbits.LATC1 = 0;
+motorControl(NUT, STOPMOTOR);
 
 I2C_Send(nanoAddr, 5);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
-LATCbits.LATC5 = 1;
+motorControl(SPACER, FORWARD);
 for (i = 0; i < spinTime; i++) {
 if (PORTAbits.RA2 == 0) {
 extras.s++;
@@ -4155,19 +4169,19 @@ extras.s++;
 if (extras.s + dispensed.s == 20) break;
 _delay((unsigned long)((25)*(40000000/4000.0)));
 }
-LATCbits.LATC5 = 0;
+motorControl(SPACER, STOPMOTOR);
 
 I2C_Send(nanoAddr, 6);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
-LATCbits.LATC7 = 1;
+motorControl(WASHER, FORWARD);
 for (i = 0; i < spinTime; i++) {
 if (PORTAbits.RA3 == 0) {
 extras.w++;
 }
 if (extras.w + dispensed.w == 35) break;
 }
-LATCbits.LATC7 = 0;
+motorControl(WASHER, STOP);
 
 I2C_Send(nanoAddr, 7);
 
@@ -4182,7 +4196,7 @@ tmr0_ISR();
 
 void main(void) {
 
-# 214
+# 224
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4196,6 +4210,9 @@ TRISC = 0x00;
 TRISD = 0x00;
 TRISE = 0x00;
 
+ADCON0 = 0x00;
+ADCON1 = 0x0F;
+
 
 I2C_Master_Init(100000);
 
@@ -4207,8 +4224,5 @@ lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 hibernate();
 mainMenu();
 
-
-
-while(1);
 
 }

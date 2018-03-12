@@ -1,9 +1,9 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "23 hardware.h
-[c E3092 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E3092 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
+[c E3096 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E3096 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "19
-[s S266 `i 1 `E3092 -> 8 `i `i -> 8 `i ]
+[s S266 `i 1 `E3096 -> 8 `i `i -> 8 `i ]
 [n S266 inputParams steps toFill setMultiple ]
 "25
 [s S267 `i 1 `i 1 `i 1 `i 1 ]
@@ -31,14 +31,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _strcpy `(*uc ~T0 @X0 0 ef2`*uc`*Cuc ]
 "75 lcd.h
 [v _lcd_set_cursor `(v ~T0 @X0 0 ef2`uc`uc ]
-"12 RTC.h
-[v _RTC_getSeconds `(l ~T0 @X0 0 ef ]
 "195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
+"13 RTC.h
+[v _RTC_startOperation `(v ~T0 @X0 0 ef ]
 "109 hardware.h
 [v _packaging `(v ~T0 @X0 0 ef ]
 "110
 [v _clearing `(v ~T0 @X0 0 ef ]
+"14 RTC.h
+[v _RTC_getOperatingTime `(l ~T0 @X0 0 ef ]
 [; ;menu.h: 11: void inputEntry(void);
 [; ;menu.h: 12: void hibernate(void);
 [; ;menu.h: 13: void mainMenu(void);
@@ -2933,12 +2935,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;helpers.h: 16: void I2C_Send(unsigned char address, char * data);
 [; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
 [; ;RTC.h: 12: long RTC_getSeconds(void);
+[; ;RTC.h: 13: void RTC_startOperation(void);
+[; ;RTC.h: 14: long RTC_getOperatingTime(void);
 [; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
 [; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
 [; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
-[v F3116 `uc ~T0 @X0 -> 5 `i t ]
+[v F3120 `uc ~T0 @X0 -> 5 `i t ]
 "15 hardware.h
-[v _fSLookup `F3116 ~T0 @X0 -> 21 `i e ]
+[v _fSLookup `F3120 ~T0 @X0 -> 21 `i e ]
 [i _fSLookup
 :U ..
 :U ..
@@ -3085,9 +3089,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 28: int s;
 [; ;hardware.h: 29: int w;
 [; ;hardware.h: 30: } extras, dispensed;
-[v F3130 `Cuc ~T0 @X0 -> 33 `i t ]
+[v F3134 `Cuc ~T0 @X0 -> 33 `i t ]
 "45
-[v _inputEntryQuestions `F3130 ~T0 @X0 -> 4 `i e ]
+[v _inputEntryQuestions `F3134 ~T0 @X0 -> 4 `i e ]
 [i _inputEntryQuestions
 :U ..
 :U ..
@@ -3433,9 +3437,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 68: "Too many spacers\0",
 [; ;hardware.h: 69: "No fasteners selected\0"
 [; ;hardware.h: 70: };
-[v F3142 `Cuc ~T0 @X0 -> 4 `i t ]
+[v F3146 `Cuc ~T0 @X0 -> 4 `i t ]
 "72
-[v _fastenerMatrix `F3142 ~T0 @X0 -> 21 `i e ]
+[v _fastenerMatrix `F3146 ~T0 @X0 -> 21 `i e ]
 [i _fastenerMatrix
 :U ..
 :U ..
@@ -3637,8 +3641,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 109: void packaging(void);
 [; ;hardware.h: 110: void clearing(void);
 [; ;timer.h: 11: void tic(void);
-[; ;timer.h: 12: float tock(void);
+[; ;timer.h: 12: double tock(void);
 [; ;timer.h: 13: void tmr0_ISR(void);
+[; ;timer.h: 14: void Timer_startOperation(void);
+[; ;timer.h: 15: double Timer_getOperatingTime(void);
+[; ;timer.h: 16: long getTest(void);
 "11 menu.c
 [v _hibernate `(v ~T0 @X0 1 ef ]
 {
@@ -3734,8 +3741,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _compartmentNum `i ~T0 @X0 1 a ]
 [; ;menu.c: 36: int compartmentNum = 0;
 [e = _compartmentNum -> 0 `i ]
-[v F3167 `uc ~T0 @X0 -> 2 `i s ]
-[i F3167
+[v F3177 `uc ~T0 @X0 -> 2 `i s ]
+[i F3177
 :U ..
 -> 67 `c
 -> 48 `c
@@ -3744,7 +3751,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "37
 [v _compartmentLabel `uc ~T0 @X0 -> 2 `i a ]
 [; ;menu.c: 37: char compartmentLabel[2] = "C0";
-[e = _compartmentLabel F3167 ]
+[e = _compartmentLabel F3177 ]
 "38
 [v _inputEntryStep `i ~T0 @X0 1 a ]
 [; ;menu.c: 38: int inputEntryStep = 0;
@@ -3838,8 +3845,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "65
 [e $ ! != & >> -> _compartmentsToFill `i _compartmentNum -> 1 `i -> 0 `i 292  ]
 {
-[v F3188 `uc ~T0 @X0 -> 0 `x s ]
-[i F3188
+[v F3198 `uc ~T0 @X0 -> 0 `x s ]
+[i F3198
 :U ..
 -> 1 `c
 -> 83 `c
@@ -3870,7 +3877,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "66
 [v _msg `uc ~T0 @X0 24  a ]
 [; ;menu.c: 66: char msg[] = "\1Started compartment x\0";
-[e = _msg F3188 ]
+[e = _msg F3198 ]
 [; ;menu.c: 67: msg[21] = compartmentNum + 1 + 48;
 "67
 [e = *U + &U _msg * -> -> -> 21 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + + _compartmentNum -> 1 `i -> 48 `i `uc ]
@@ -4019,7 +4026,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;menu.c: 109: params.toFill[compartmentNum] = i;
 "109
-[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux -> _i `E3092 ]
+[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux -> _i `E3096 ]
 [; ;menu.c: 110: found = 1;
 "110
 [e = _found -> 1 `i ]
@@ -4217,7 +4224,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;menu.c: 164: params.toFill[compartmentNum] = NONE;
 "164
-[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux . `E3092 0 ]
+[e = *U + &U . _params 1 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 1 `ui `ux . `E3096 0 ]
 [; ;menu.c: 165: params.setMultiple[compartmentNum] = 0;
 "165
 [e = *U + &U . _params 2 * -> -> _compartmentNum `ui `ux -> -> # *U &U . _params 2 `ui `ux -> 0 `i ]
@@ -4313,148 +4320,203 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;menu.c: 189: inputEntry();
 "189
 [e ( _inputEntry ..  ]
+[; ;menu.c: 190: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 "190
-[v _startTime `l ~T0 @X0 1 a ]
-[; ;menu.c: 190: long startTime = RTC_getSeconds();
-[e = _startTime ( _RTC_getSeconds ..  ]
-[; ;menu.c: 191: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"191
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 192: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"192
+[; ;menu.c: 191: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"191
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 193: printf("Starting packaging");
-"193
+[; ;menu.c: 192: printf("Press 1 to start");
+"192
 [e ( _printf :s 6C ]
-[; ;menu.c: 194: I2C_Send(nanoAddr, "\1Starting packaging\0");
+[; ;menu.c: 193: lcdInst(0xC0);;
+"193
+[e ( _lcdInst (1 -> -> 192 `i `uc ]
+[; ;menu.c: 194: printf("packaging");
 "194
-[e ( _I2C_Send (2 , _nanoAddr -> :s 7C `*uc ]
-[; ;menu.c: 195: packaging();
+[e ( _printf :s 7C ]
 "195
-[e ( _packaging ..  ]
-[; ;menu.c: 196: clearing();
+[v _startPress `i ~T0 @X0 1 a ]
+[; ;menu.c: 195: int startPress = pollKeypad();
+[e = _startPress -> ( _pollKeypad ..  `i ]
+[; ;menu.c: 196: while (startPress - 48 != 1) {
 "196
-[e ( _clearing ..  ]
-"197
-[v _endTime `l ~T0 @X0 1 a ]
-[; ;menu.c: 197: long endTime = RTC_getSeconds();
-[e = _endTime ( _RTC_getSeconds ..  ]
-"198
-[v _totalTime `l ~T0 @X0 1 a ]
-[; ;menu.c: 198: long totalTime = endTime - startTime;
-[e = _totalTime - _endTime _startTime ]
-[; ;menu.c: 200: printf("Summary:");
-"200
-[e ( _printf :s 8C ]
-[; ;menu.c: 201: _delay((unsigned long)((1000)*(40000000/4000.0)));
-"201
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"202
-[v _i `i ~T0 @X0 1 a ]
-[; ;menu.c: 202: int i;
-[; ;menu.c: 203: while(1) {
-"203
+[e $U 347  ]
 [e :U 348 ]
 {
-[; ;menu.c: 204: for (i = 0; i < 8; i++) {
+[; ;menu.c: 197: startPress = pollKeypad();
+"197
+[e = _startPress -> ( _pollKeypad ..  `i ]
+"198
+}
+[e :U 347 ]
+"196
+[e $ != - _startPress -> 48 `i -> 1 `i 348  ]
+[e :U 349 ]
+[; ;menu.c: 198: }
+[; ;menu.c: 199: RTC_startOperation();
+"199
+[e ( _RTC_startOperation ..  ]
+[; ;menu.c: 200: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"200
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 201: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"201
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 202: printf("Starting packaging");
+"202
+[e ( _printf :s 8C ]
+[; ;menu.c: 203: I2C_Send(nanoAddr, "\1Starting packaging\0");
+"203
+[e ( _I2C_Send (2 , _nanoAddr -> :s 9C `*uc ]
+[; ;menu.c: 204: packaging();
 "204
+[e ( _packaging ..  ]
+[; ;menu.c: 205: clearing();
+"205
+[e ( _clearing ..  ]
+"206
+[v _operationTime `l ~T0 @X0 1 a ]
+[; ;menu.c: 206: long operationTime = RTC_getOperatingTime();
+[e = _operationTime ( _RTC_getOperatingTime ..  ]
+[; ;menu.c: 208: printf("Summary:");
+"208
+[e ( _printf :s 10C ]
+[; ;menu.c: 209: _delay((unsigned long)((1000)*(40000000/4000.0)));
+"209
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"210
+[v _i `i ~T0 @X0 1 a ]
+[; ;menu.c: 210: int i;
+[; ;menu.c: 211: while(1) {
+"211
+[e :U 351 ]
+{
+[; ;menu.c: 212: for (i = 0; i < 8; i++) {
+"212
 {
 [e = _i -> 0 `i ]
-[e $ < _i -> 8 `i 350  ]
-[e $U 351  ]
-[e :U 350 ]
+[e $ < _i -> 8 `i 353  ]
+[e $U 354  ]
+[e :U 353 ]
 {
-[; ;menu.c: 205: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"205
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 206: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"206
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 207: printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
-"207
-[e ( _printf , , , (. :s 9C + _i -> 1 `i -> &U *U + &U _fSLookup * -> *U + &U . _params 1 * -> -> _i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fSLookup `ui -> -> 5 `i `ui `ux `*Cuc *U + &U . _params 2 * -> -> _i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
-[; ;menu.c: 208: _delay((unsigned long)((2000)*(40000000/4000.0)));
-"208
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"209
-}
-"204
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 8 `i 350  ]
-[e :U 351 ]
-"209
-}
-[; ;menu.c: 209: }
-[; ;menu.c: 211: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"211
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 212: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"212
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;menu.c: 213: printf("Remaining:");
+[; ;menu.c: 213: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 "213
-[e ( _printf :s 10C ]
-[; ;menu.c: 214: lcdInst(0xC0);;
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 214: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 "214
-[e ( _lcdInst (1 -> -> 192 `i `uc ]
-[; ;menu.c: 215: printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 215: printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
 "215
-[e ( _printf , , , , (. :s 11C . _extras 0 . _extras 1 . _extras 2 . _extras 3 ]
+[e ( _printf , , , (. :s 11C + _i -> 1 `i -> &U *U + &U _fSLookup * -> *U + &U . _params 1 * -> -> _i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fSLookup `ui -> -> 5 `i `ui `ux `*Cuc *U + &U . _params 2 * -> -> _i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
 [; ;menu.c: 216: _delay((unsigned long)((2000)*(40000000/4000.0)));
 "216
 [e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"218
+"217
 }
-[e :U 347 ]
-"203
-[e $U 348  ]
-[e :U 349 ]
-"219
-}
-[; ;menu.c: 218: }
-[; ;menu.c: 219: } else if (pressed - 48 == 2) {
-[e $U 353  ]
-[e :U 346 ]
-[e $ ! == - _pressed -> 48 `i -> 2 `i 354  ]
-{
-[; ;menu.c: 220: viewLogs();
-"220
-[e ( _viewLogs ..  ]
-[; ;menu.c: 221: needToPrint = 1;
-"221
-[e = _needToPrint -> 1 `i ]
-"222
-}
+"212
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 353  ]
 [e :U 354 ]
+"217
+}
+[; ;menu.c: 217: }
+[; ;menu.c: 219: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"219
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 220: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"220
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 221: printf("Remaining:");
+"221
+[e ( _printf :s 12C ]
+[; ;menu.c: 222: lcdInst(0xC0);;
+"222
+[e ( _lcdInst (1 -> -> 192 `i `uc ]
+[; ;menu.c: 223: printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
 "223
-[e :U 353 ]
+[e ( _printf , , , , (. :s 13C . _extras 0 . _extras 1 . _extras 2 . _extras 3 ]
+[; ;menu.c: 224: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"224
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 225: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"225
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 226: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"226
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;menu.c: 227: printf("Time:");
+"227
+[e ( _printf :s 14C ]
+[; ;menu.c: 228: lcdInst(0xC0);;
+"228
+[e ( _lcdInst (1 -> -> 192 `i `uc ]
+[; ;menu.c: 229: printf("%ld", operationTime);
+"229
+[e ( _printf , (. :s 15C _operationTime ]
+[; ;menu.c: 230: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"230
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"232
+}
+[e :U 350 ]
+"211
+[e $U 351  ]
+[e :U 352 ]
+"233
+}
+[; ;menu.c: 232: }
+[; ;menu.c: 233: } else if (pressed - 48 == 2) {
+[e $U 356  ]
+[e :U 346 ]
+[e $ ! == - _pressed -> 48 `i -> 2 `i 357  ]
+{
+[; ;menu.c: 234: viewLogs();
+"234
+[e ( _viewLogs ..  ]
+[; ;menu.c: 235: needToPrint = 1;
+"235
+[e = _needToPrint -> 1 `i ]
+"236
+}
+[e :U 357 ]
+"237
+[e :U 356 ]
 [e :U 345 ]
 }
 [e :U 340 ]
 "178
 [e $U 341  ]
 [e :U 342 ]
-[; ;menu.c: 222: }
-[; ;menu.c: 223: }
-[; ;menu.c: 224: }
-"224
+[; ;menu.c: 236: }
+[; ;menu.c: 237: }
+[; ;menu.c: 238: }
+"238
 [e :UE 339 ]
 }
-[p f _printf 8650880 ]
+[p f _printf 8650896 ]
+[a 6C 80 114 101 115 115 32 49 32 116 111 32 115 116 97 114 116 0 ]
 [a 5C 48 58 83 108 101 101 112 32 49 58 66 101 103 105 110 32 10 50 58 32 86 105 101 119 32 76 111 103 115 0 ]
 [a 2C 78 111 116 32 116 104 101 114 101 32 121 101 116 10 42 32 116 111 32 114 101 116 117 114 110 0 ]
 [a 1C 80 114 101 115 115 32 49 32 116 111 32 98 101 103 105 110 0 ]
-[a 6C 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 ]
-[a 9C 67 37 100 58 32 37 115 32 120 37 100 0 ]
-[a 11C 66 37 100 32 78 37 100 32 83 37 100 32 87 37 100 0 ]
-[a 8C 83 117 109 109 97 114 121 58 0 ]
-[a 10C 82 101 109 97 105 110 105 110 103 58 0 ]
+[a 8C 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 ]
+[a 7C 112 97 99 107 97 103 105 110 103 0 ]
+[a 15C 37 108 100 0 ]
+[a 11C 67 37 100 58 32 37 115 32 120 37 100 0 ]
+[a 13C 66 37 100 32 78 37 100 32 83 37 100 32 87 37 100 0 ]
+[a 10C 83 117 109 109 97 114 121 58 0 ]
+[a 12C 82 101 109 97 105 110 105 110 103 58 0 ]
+[a 14C 84 105 109 101 58 0 ]
 [a 4C 1 68 111 110 101 32 105 110 112 117 116 115 0 0 ]
 [a 3C 83 116 97 114 116 101 100 32 105 110 112 117 116 32 101 110 116 114 121 44 32 104 105 0 0 ]
-[a 7C 1 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 0 ]
+[a 9C 1 83 116 97 114 116 105 110 103 32 112 97 99 107 97 103 105 110 103 0 0 ]

@@ -3485,85 +3485,126 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 29: unsigned char I2C_Master_Read(unsigned char ackBit);
 [; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
 [; ;RTC.h: 12: long RTC_getSeconds(void);
+[; ;RTC.h: 13: void RTC_startOperation(void);
+[; ;RTC.h: 14: long RTC_getOperatingTime(void);
 "12 RTC.c
+[v _operatingTime `l ~T0 @X0 1 s ]
+[; ;RTC.c: 12: static long operatingTime;
+"13
+[v _startTime `l ~T0 @X0 1 s ]
+[; ;RTC.c: 13: static long startTime;
+"14
+[v _endTime `l ~T0 @X0 1 s ]
+[; ;RTC.c: 14: static long endTime;
+"16
 [v _RTC_getTime `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;RTC.c: 12: void RTC_getTime(unsigned char * time) {
+[; ;RTC.c: 16: void RTC_getTime(unsigned char * time) {
 [e :U _RTC_getTime ]
 [v _time `*uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;RTC.c: 14: I2C_Master_Start();
-"14
+[; ;RTC.c: 18: I2C_Master_Start();
+"18
 [e ( _I2C_Master_Start ..  ]
-[; ;RTC.c: 15: I2C_Master_Write(0b11010000);
-"15
+[; ;RTC.c: 19: I2C_Master_Write(0b11010000);
+"19
 [e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
-[; ;RTC.c: 16: I2C_Master_Write(0x00);
-"16
-[e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
-[; ;RTC.c: 17: I2C_Master_Stop();
-"17
-[e ( _I2C_Master_Stop ..  ]
+[; ;RTC.c: 20: I2C_Master_Write(0x00);
 "20
+[e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
+[; ;RTC.c: 21: I2C_Master_Stop();
+"21
+[e ( _I2C_Master_Stop ..  ]
+"24
 [v _i `uc ~T0 @X0 1 a ]
-[; ;RTC.c: 20: char i;
-[; ;RTC.c: 22: I2C_Master_Start();
-"22
+[; ;RTC.c: 24: char i;
+[; ;RTC.c: 26: I2C_Master_Start();
+"26
 [e ( _I2C_Master_Start ..  ]
-[; ;RTC.c: 23: I2C_Master_Write(0b11010001);
-"23
+[; ;RTC.c: 27: I2C_Master_Write(0b11010001);
+"27
 [e ( _I2C_Master_Write (1 -> -> 209 `i `ui ]
-[; ;RTC.c: 25: for (i = 0; i < 6; i++) {
-"25
+[; ;RTC.c: 29: for (i = 0; i < 6; i++) {
+"29
 {
 [e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i -> 6 `i 269  ]
 [e $U 270  ]
 [e :U 269 ]
 {
-[; ;RTC.c: 26: time[i] = I2C_Master_Read(0);
-"26
+[; ;RTC.c: 30: time[i] = I2C_Master_Read(0);
+"30
 [e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
-"27
+"31
 }
-"25
+"29
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 6 `i 269  ]
 [e :U 270 ]
-"27
+"31
 }
-[; ;RTC.c: 27: }
-[; ;RTC.c: 28: time[6] = I2C_Master_Read(1);
-"28
+[; ;RTC.c: 31: }
+[; ;RTC.c: 32: time[6] = I2C_Master_Read(1);
+"32
 [e = *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
-[; ;RTC.c: 29: I2C_Master_Stop();
-"29
+[; ;RTC.c: 33: I2C_Master_Stop();
+"33
 [e ( _I2C_Master_Stop ..  ]
-[; ;RTC.c: 30: }
-"30
+[; ;RTC.c: 34: }
+"34
 [e :UE 268 ]
 }
-"32
+"36
 [v _RTC_getSeconds `(l ~T0 @X0 1 ef ]
 {
-[; ;RTC.c: 32: long RTC_getSeconds(void) {
+[; ;RTC.c: 36: long RTC_getSeconds(void) {
 [e :U _RTC_getSeconds ]
 [f ]
-"36
-[v _time `uc ~T0 @X0 -> 7 `i a ]
-[; ;RTC.c: 36: unsigned char time[7];
-[; ;RTC.c: 37: RTC_getTime(time);
-"37
-[e ( _RTC_getTime (1 &U _time ]
-"39
-[v _seconds `l ~T0 @X0 1 a ]
-[; ;RTC.c: 39: long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
-[e = _seconds -> + + + -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i * -> 60 `i -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * -> 60 `i -> 60 `i -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * * -> 60 `i -> 60 `i -> 24 `i -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i `l ]
-[; ;RTC.c: 40: return seconds;
 "40
+[v _time `uc ~T0 @X0 -> 7 `i a ]
+[; ;RTC.c: 40: unsigned char time[7];
+[; ;RTC.c: 41: RTC_getTime(time);
+"41
+[e ( _RTC_getTime (1 &U _time ]
+"43
+[v _seconds `l ~T0 @X0 1 a ]
+[; ;RTC.c: 43: long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+[e = _seconds -> + + + -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i * -> 60 `i -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * -> 60 `i -> 60 `i -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * * -> 60 `i -> 60 `i -> 24 `i -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i `l ]
+[; ;RTC.c: 44: return seconds;
+"44
 [e ) _seconds ]
 [e $UE 272  ]
-[; ;RTC.c: 41: }
-"41
+[; ;RTC.c: 45: }
+"45
 [e :UE 272 ]
+}
+"47
+[v _RTC_startOperation `(v ~T0 @X0 1 ef ]
+{
+[; ;RTC.c: 47: void RTC_startOperation(void) {
+[e :U _RTC_startOperation ]
+[f ]
+[; ;RTC.c: 49: startTime = RTC_getSeconds();
+"49
+[e = _startTime ( _RTC_getSeconds ..  ]
+[; ;RTC.c: 50: }
+"50
+[e :UE 273 ]
+}
+"52
+[v _RTC_getOperatingTime `(l ~T0 @X0 1 ef ]
+{
+[; ;RTC.c: 52: long RTC_getOperatingTime(void) {
+[e :U _RTC_getOperatingTime ]
+[f ]
+[; ;RTC.c: 54: endTime = RTC_getSeconds();
+"54
+[e = _endTime ( _RTC_getSeconds ..  ]
+[; ;RTC.c: 55: return endTime - startTime;
+"55
+[e ) - _endTime _startTime ]
+[e $UE 274  ]
+[; ;RTC.c: 56: }
+"56
+[e :UE 274 ]
 }

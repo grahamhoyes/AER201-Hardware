@@ -11,42 +11,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 "54
 [s S268 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S268 errorMessages badEntry tooManyFasteners tooManyBolts tooManyNuts tooManyWashers tooManySpacers noFasteners ]
-"996 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
-[s S41 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S41 . LATB0 LATB1 LATB2 LATB3 LATB4 LATB5 LATB6 LATB7 ]
-"1006
-[s S42 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S42 . LB0 LB1 LB2 LB3 LB4 LB5 LB6 LB7 ]
-"995
-[u S40 `S41 1 `S42 1 ]
-[n S40 . . . ]
-"1017
-[v _LATBbits `VS40 ~T0 @X0 0 e@3978 ]
-"1108
-[s S44 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S44 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
-"1118
-[s S45 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S45 . LC0 LC1 LC2 LC3 LC4 LC5 LC6 LC7 ]
-"1107
-[u S43 `S44 1 `S45 1 ]
-[n S43 . . . ]
-"1129
-[v _LATCbits `VS43 ~T0 @X0 0 e@3979 ]
-"71 lcd.h
-[v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
-[v F2882 `(v ~T0 @X0 1 tf1`ul ]
-"164 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18.h
-[v __delay `JF2882 ~T0 @X0 0 e ]
-[p i __delay ]
-"195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"12 RTC.h
-[v _RTC_getSeconds `(l ~T0 @X0 0 ef ]
-"194 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
-[v _sprintf `(i ~T0 @X0 0 e1v`*uc`*Cuc ]
-"16 helpers.h
-[v _I2C_Send `(v ~T0 @X0 0 ef2`uc`*uc ]
+"1378 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
+[v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
+"27 main.c
+[c E3169 0 1 2 3 .. ]
+[n E3169 fastenerType BOLT NUT SPACER WASHER  ]
+[c E3175 0 1 2 .. ]
+[n E3175 motorDirection FORWARD REVERSE STOPMOTOR  ]
+"14 motors.h
+[v _motorControl `(v ~T0 @X0 0 ef2`E3169`E3175 ]
+"11 timer.h
+[v _tic `(v ~T0 @X0 0 ef ]
+"12
+[v _tock `(d ~T0 @X0 0 ef ]
 "56 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [s S2 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S2 . RA0 RA1 RA2 RA3 RA4 RA5 RA6 RA7 ]
@@ -76,6 +53,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S1 . . . . . . . . . ]
 "97
 [v _PORTAbits `VS1 ~T0 @X0 0 e@3968 ]
+"16 helpers.h
+[v _I2C_Send `(v ~T0 @X0 0 ef2`uc`*uc ]
+[v F2882 `(v ~T0 @X0 1 tf1`ul ]
+"164 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18.h
+[v __delay `JF2882 ~T0 @X0 0 e ]
+[p i __delay ]
+"194 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
+[v _sprintf `(i ~T0 @X0 0 e1v`*uc`*Cuc ]
+"71 lcd.h
+[v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
+"195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
+[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
+"7611 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
+[v _STOP `Vb ~T0 @X0 0 e@32316 ]
 "7629
 [v _T0IE `Vb ~T0 @X0 0 e@32661 ]
 "7631
@@ -93,8 +84,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _LATD `Vuc ~T0 @X0 0 e@3980 ]
 "1326
 [v _LATE `Vuc ~T0 @X0 0 e@3981 ]
-"1378
-[v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
 "1600
 [v _TRISB `Vuc ~T0 @X0 0 e@3987 ]
 "1822
@@ -103,6 +92,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISD `Vuc ~T0 @X0 0 e@3989 ]
 "2266
 [v _TRISE `Vuc ~T0 @X0 0 e@3990 ]
+"4527
+[v _ADCON0 `Vuc ~T0 @X0 0 e@4034 ]
+"4442
+[v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
 "24 I2C.h
 [v _I2C_Master_Init `(v ~T0 @X0 0 ef1`Cul ]
 "74 lcd.h
@@ -3708,31 +3701,42 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 110: void clearing(void);
 [; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
 [; ;RTC.h: 12: long RTC_getSeconds(void);
+[; ;RTC.h: 13: void RTC_startOperation(void);
+[; ;RTC.h: 14: long RTC_getOperatingTime(void);
 [; ;timer.h: 11: void tic(void);
-[; ;timer.h: 12: float tock(void);
+[; ;timer.h: 12: double tock(void);
 [; ;timer.h: 13: void tmr0_ISR(void);
-"25 main.c
+[; ;timer.h: 14: void Timer_startOperation(void);
+[; ;timer.h: 15: double Timer_getOperatingTime(void);
+[; ;timer.h: 16: long getTest(void);
+[; ;motors.h: 11: typedef enum fastenerType {BOLT, NUT, SPACER, WASHER} fastenerType;
+[; ;motors.h: 12: typedef enum motorDirection {FORWARD, REVERSE, STOPMOTOR} motorDirection;
+[; ;motors.h: 14: void motorControl(fastenerType motor, motorDirection dir);
+"23 main.c
 [v _packageCompartment `(v ~T0 @X0 1 ef4`uc`uc`uc`uc ]
 {
-[; ;main.c: 25: void packageCompartment(char b, char n, char s, char w) {
+[; ;main.c: 23: void packageCompartment(char b, char n, char s, char w) {
 [e :U _packageCompartment ]
 [v _b `uc ~T0 @X0 1 r1 ]
 [v _n `uc ~T0 @X0 1 r2 ]
 [v _s `uc ~T0 @X0 1 r3 ]
 [v _w `uc ~T0 @X0 1 r4 ]
 [f ]
-[; ;main.c: 27: LATBbits.LATB3 = 1;
+[; ;main.c: 24: TRISA = 0xFF;
+"24
+[e = _TRISA -> -> 255 `i `uc ]
+[; ;main.c: 27: motorControl(BOLT, FORWARD);
 "27
-[e = . . _LATBbits 0 3 -> -> 1 `i `uc ]
-[; ;main.c: 28: LATCbits.LATC1 = 1;
+[e ( _motorControl (2 , . `E3169 0 . `E3175 0 ]
+[; ;main.c: 28: motorControl(NUT, FORWARD);
 "28
-[e = . . _LATCbits 0 1 -> -> 1 `i `uc ]
-[; ;main.c: 29: LATCbits.LATC5 = 1;
+[e ( _motorControl (2 , . `E3169 1 . `E3175 0 ]
+[; ;main.c: 29: motorControl(SPACER, FORWARD);
 "29
-[e = . . _LATCbits 0 5 -> -> 1 `i `uc ]
-[; ;main.c: 30: LATCbits.LATC7 = 1;
+[e ( _motorControl (2 , . `E3169 2 . `E3175 0 ]
+[; ;main.c: 30: motorControl(WASHER, FORWARD);
 "30
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
+[e ( _motorControl (2 , . `E3169 3 . `E3175 0 ]
 "32
 [v _numB `i ~T0 @X0 1 a ]
 [; ;main.c: 32: int numB=0, numN=0, numS=0, numW=0;
@@ -3764,57 +3768,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _timeS -> -> 0 `i `l ]
 [v _timeW `l ~T0 @X0 1 a ]
 [e = _timeW -> -> 0 `i `l ]
-"35
-[v _resolution `uc ~T0 @X0 1 a ]
-[; ;main.c: 35: char resolution = 5;
-[e = _resolution -> -> 5 `i `uc ]
-[; ;main.c: 36: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 "36
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 37: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"37
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 38: printf("Now counting");
+[v _resolution `uc ~T0 @X0 1 a ]
+[; ;main.c: 36: char resolution = 2;
+[e = _resolution -> -> 2 `i `uc ]
+[; ;main.c: 38: tic();
 "38
-[e ( _printf :s 1C ]
-[; ;main.c: 39: _delay((unsigned long)((2000)*(40000000/4000.0)));
+[e ( _tic ..  ]
+[; ;main.c: 39: while (1) {
 "39
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 41: while (1) {
-"41
 [e :U 271 ]
 {
-[; ;main.c: 42: currTime = RTC_getSeconds();
-"42
-[e = _currTime ( _RTC_getSeconds ..  ]
-"43
-[v _currTimeString `uc ~T0 @X0 -> 33 `i a ]
-[; ;main.c: 43: char currTimeString[33];
-[; ;main.c: 44: sprintf(currTimeString, "%li", currTime);
-"44
-[e ( _sprintf (1 , (. , &U _currTimeString :s 2C _currTime ]
-[; ;main.c: 45: currTimeString[32] = "\0";
-"45
-[e = *U + &U _currTimeString * -> -> -> 32 `i `ui `ux -> -> # *U &U _currTimeString `ui `ux -> :s 3C `uc ]
-[; ;main.c: 46: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"46
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 47: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"47
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 48: printf(currTimeString);
-"48
-[e ( _printf -> &U _currTimeString `*Cuc ]
-[; ;main.c: 49: _delay((unsigned long)((2000)*(40000000/4000.0)));
-"49
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 50: I2C_Send(nanoAddr, currTimeString);
-"50
-[e ( _I2C_Send (2 , _nanoAddr &U _currTimeString ]
+[; ;main.c: 40: currTime = tock();
+"40
+[e = _currTime -> ( _tock ..  `l ]
 [; ;main.c: 52: if (PORTAbits.RA0 == 0 && currTime > timeB + resolution) {
 "52
 [e $ ! && == -> . . _PORTAbits 0 0 `i -> 0 `i > _currTime + _timeB -> _resolution `l 273  ]
@@ -3830,195 +3797,192 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ++ . _dispensed 0 -> 1 `i ]
 [; ;main.c: 56: I2C_Send(nanoAddr, "\1Bolt Counted\0");
 "56
-[e ( _I2C_Send (2 , _nanoAddr -> :s 4C `*uc ]
+[e ( _I2C_Send (2 , _nanoAddr -> :s 1C `*uc ]
 "57
 }
 [e :U 273 ]
 [; ;main.c: 57: }
-[; ;main.c: 58: if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
-"58
+[; ;main.c: 60: if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
+"60
 [e $ ! && == -> . . _PORTAbits 0 1 `i -> 0 `i > _currTime + _timeN -> _resolution `l 274  ]
 {
-[; ;main.c: 59: timeN = currTime;
-"59
-[e = _timeN _currTime ]
-[; ;main.c: 60: numN++;
-"60
-[e ++ _numN -> 1 `i ]
-[; ;main.c: 61: dispensed.n++;
+[; ;main.c: 61: timeN = currTime;
 "61
-[e ++ . _dispensed 1 -> 1 `i ]
-[; ;main.c: 62: I2C_Send(nanoAddr, "\1Nut Counted\0");
+[e = _timeN _currTime ]
+[; ;main.c: 62: numN++;
 "62
-[e ( _I2C_Send (2 , _nanoAddr -> :s 5C `*uc ]
+[e ++ _numN -> 1 `i ]
+[; ;main.c: 63: dispensed.n++;
 "63
+[e ++ . _dispensed 1 -> 1 `i ]
+[; ;main.c: 64: I2C_Send(nanoAddr, "\1Nut Counted\0");
+"64
+[e ( _I2C_Send (2 , _nanoAddr -> :s 2C `*uc ]
+"65
 }
 [e :U 274 ]
-[; ;main.c: 63: }
-[; ;main.c: 64: if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
-"64
+[; ;main.c: 65: }
+[; ;main.c: 68: if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
+"68
 [e $ ! && == -> . . _PORTAbits 0 2 `i -> 0 `i > _currTime + _timeS -> _resolution `l 275  ]
 {
-[; ;main.c: 65: timeS = currTime;
-"65
-[e = _timeS _currTime ]
-[; ;main.c: 66: numS++;
-"66
-[e ++ _numS -> 1 `i ]
-[; ;main.c: 67: dispensed.s++;
-"67
-[e ++ . _dispensed 2 -> 1 `i ]
-[; ;main.c: 68: I2C_Send(nanoAddr, "\1Spacer Counted\0");
-"68
-[e ( _I2C_Send (2 , _nanoAddr -> :s 6C `*uc ]
+[; ;main.c: 69: timeS = currTime;
 "69
+[e = _timeS _currTime ]
+[; ;main.c: 70: numS++;
+"70
+[e ++ _numS -> 1 `i ]
+[; ;main.c: 71: dispensed.s++;
+"71
+[e ++ . _dispensed 2 -> 1 `i ]
+[; ;main.c: 72: I2C_Send(nanoAddr, "\1Spacer Counted\0");
+"72
+[e ( _I2C_Send (2 , _nanoAddr -> :s 3C `*uc ]
+"73
 }
 [e :U 275 ]
-[; ;main.c: 69: }
-[; ;main.c: 70: if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
-"70
+[; ;main.c: 73: }
+[; ;main.c: 76: if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
+"76
 [e $ ! && == -> . . _PORTAbits 0 3 `i -> 0 `i > _currTime + _timeW -> _resolution `l 276  ]
 {
-[; ;main.c: 71: timeW = currTime;
-"71
+[; ;main.c: 77: timeW = currTime;
+"77
 [e = _timeW _currTime ]
-[; ;main.c: 72: numW++;
-"72
+[; ;main.c: 78: numW++;
+"78
 [e ++ _numW -> 1 `i ]
-[; ;main.c: 73: dispensed.w++;
-"73
+[; ;main.c: 79: dispensed.w++;
+"79
 [e ++ . _dispensed 3 -> 1 `i ]
-[; ;main.c: 74: I2C_Send(nanoAddr, "\1Washer Counted\0");
-"74
-[e ( _I2C_Send (2 , _nanoAddr -> :s 7C `*uc ]
-"75
+[; ;main.c: 80: I2C_Send(nanoAddr, "\1Washer Counted\0");
+"80
+[e ( _I2C_Send (2 , _nanoAddr -> :s 4C `*uc ]
+"81
 }
 [e :U 276 ]
-[; ;main.c: 75: }
-[; ;main.c: 77: if (numB >= b) {
-"77
+[; ;main.c: 81: }
+[; ;main.c: 84: if (numB >= b) {
+"84
 [e $ ! >= _numB -> _b `i 277  ]
 {
-[; ;main.c: 78: LATBbits.LATB3 = 0;
-"78
-[e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
-[; ;main.c: 79: doneB=1;
-"79
+[; ;main.c: 85: motorControl(BOLT, STOPMOTOR);
+"85
+[e ( _motorControl (2 , . `E3169 0 . `E3175 2 ]
+[; ;main.c: 86: doneB=1;
+"86
 [e = _doneB -> 1 `i ]
-"80
+"87
 }
 [e :U 277 ]
-[; ;main.c: 80: }
-[; ;main.c: 81: if (numN >= n) {
-"81
+[; ;main.c: 87: }
+[; ;main.c: 88: if (numN >= n) {
+"88
 [e $ ! >= _numN -> _n `i 278  ]
 {
-[; ;main.c: 82: LATCbits.LATC5 = 0;
-"82
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-[; ;main.c: 83: doneN=1;
-"83
+[; ;main.c: 89: motorControl(NUT, STOPMOTOR);
+"89
+[e ( _motorControl (2 , . `E3169 1 . `E3175 2 ]
+[; ;main.c: 90: doneN=1;
+"90
 [e = _doneN -> 1 `i ]
-"84
+"91
 }
 [e :U 278 ]
-[; ;main.c: 84: }
-[; ;main.c: 85: if (numS >= s) {
-"85
+[; ;main.c: 91: }
+[; ;main.c: 92: if (numS >= s) {
+"92
 [e $ ! >= _numS -> _s `i 279  ]
 {
-[; ;main.c: 86: LATCbits.LATC5 = 0;
-"86
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-[; ;main.c: 87: doneS=1;
-"87
+[; ;main.c: 93: motorControl(SPACER, STOPMOTOR);
+"93
+[e ( _motorControl (2 , . `E3169 2 . `E3175 2 ]
+[; ;main.c: 94: doneS=1;
+"94
 [e = _doneS -> 1 `i ]
-"88
+"95
 }
 [e :U 279 ]
-[; ;main.c: 88: }
-[; ;main.c: 89: if (numW >= w) {
-"89
+[; ;main.c: 95: }
+[; ;main.c: 96: if (numW >= w) {
+"96
 [e $ ! >= _numW -> _w `i 280  ]
 {
-[; ;main.c: 90: LATCbits.LATC7 = 0;
-"90
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
-[; ;main.c: 91: doneW=1;
-"91
+[; ;main.c: 97: motorControl(WASHER, STOPMOTOR);
+"97
+[e ( _motorControl (2 , . `E3169 3 . `E3175 2 ]
+[; ;main.c: 98: doneW=1;
+"98
 [e = _doneW -> 1 `i ]
-"92
+"99
 }
 [e :U 280 ]
-[; ;main.c: 92: }
-[; ;main.c: 94: if (doneB && doneN && doneS && doneW) {
-"94
+[; ;main.c: 99: }
+[; ;main.c: 101: if (doneB && doneN && doneS && doneW) {
+"101
 [e $ ! && && && != _doneB -> 0 `i != _doneN -> 0 `i != _doneS -> 0 `i != _doneW -> 0 `i 281  ]
 {
-[; ;main.c: 95: I2C_Send(nanoAddr, "\1Done compartment\0");
-"95
-[e ( _I2C_Send (2 , _nanoAddr -> :s 8C `*uc ]
-[; ;main.c: 96: break;
-"96
+[; ;main.c: 102: I2C_Send(nanoAddr, "\1Done compartment\0");
+"102
+[e ( _I2C_Send (2 , _nanoAddr -> :s 5C `*uc ]
+[; ;main.c: 103: break;
+"103
 [e $U 272  ]
-"97
+"104
 }
 [e :U 281 ]
-"98
+"105
 }
 [e :U 270 ]
-"41
+"39
 [e $U 271  ]
 [e :U 272 ]
-[; ;main.c: 97: }
-[; ;main.c: 98: }
-[; ;main.c: 101: I2C_Send(nanoAddr, 2);
-"101
+[; ;main.c: 104: }
+[; ;main.c: 105: }
+[; ;main.c: 108: I2C_Send(nanoAddr, 2);
+"108
 [e ( _I2C_Send (2 , _nanoAddr -> -> 2 `i `*uc ]
-[; ;main.c: 102: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"102
+[; ;main.c: 109: _delay((unsigned long)((5000)*(40000000/4000.0)));
+"109
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 103: }
-"103
+[; ;main.c: 110: }
+"110
 [e :UE 269 ]
 }
-"105
+"112
 [v _packaging `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 105: void packaging(void) {
+[; ;main.c: 112: void packaging(void) {
 [e :U _packaging ]
 [f ]
-"106
-[v _compartmentNum `i ~T0 @X0 1 a ]
-[; ;main.c: 106: int compartmentNum;
-[; ;main.c: 111: dispensed.b = 0;
-"111
-[e = . _dispensed 0 -> 0 `i ]
-[; ;main.c: 112: dispensed.n = 0;
-"112
-[e = . _dispensed 1 -> 0 `i ]
-[; ;main.c: 113: dispensed.s = 0;
 "113
-[e = . _dispensed 2 -> 0 `i ]
-[; ;main.c: 114: dispensed.w = 0;
-"114
-[e = . _dispensed 3 -> 0 `i ]
-[; ;main.c: 116: I2C_Send(nanoAddr, "\1Entered the packaging function\0");
-"116
-[e ( _I2C_Send (2 , _nanoAddr -> :s 9C `*uc ]
-[; ;main.c: 118: for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
+[v _compartmentNum `i ~T0 @X0 1 a ]
+[; ;main.c: 113: int compartmentNum;
+[; ;main.c: 118: dispensed.b = 0;
 "118
+[e = . _dispensed 0 -> 0 `i ]
+[; ;main.c: 119: dispensed.n = 0;
+"119
+[e = . _dispensed 1 -> 0 `i ]
+[; ;main.c: 120: dispensed.s = 0;
+"120
+[e = . _dispensed 2 -> 0 `i ]
+[; ;main.c: 121: dispensed.w = 0;
+"121
+[e = . _dispensed 3 -> 0 `i ]
+[; ;main.c: 123: I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+"123
+[e ( _I2C_Send (2 , _nanoAddr -> :s 6C `*uc ]
+[; ;main.c: 125: for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
+"125
 {
 [e = _compartmentNum -> 8 `i ]
 [e $ > _compartmentNum -> 0 `i 283  ]
 [e $U 284  ]
 [e :U 283 ]
 {
-[; ;main.c: 119: I2C_Send(nanoAddr, "\1Loop\0");
-"119
-[e ( _I2C_Send (2 , _nanoAddr -> :s 10C `*uc ]
-[v F3188 `uc ~T0 @X0 -> 0 `x s ]
-[i F3188
+[v F3205 `uc ~T0 @X0 -> 0 `x s ]
+[i F3205
 :U ..
 -> 1 `c
 -> 83 `c
@@ -4056,363 +4020,384 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"120
-[v _msg `uc ~T0 @X0 34  a ]
-[; ;main.c: 120: char msg[] = "\1Started packaging compartment x\0";
-[e = _msg F3188 ]
-[; ;main.c: 121: msg[31] = compartmentNum + 48;
-"121
-[e = *U + &U _msg * -> -> -> 31 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + _compartmentNum -> 48 `i `uc ]
-[; ;main.c: 122: I2C_Send(nanoAddr, msg);
-"122
-[e ( _I2C_Send (2 , _nanoAddr &U _msg ]
-"125
-[v _set `*uc ~T0 @X0 1 a ]
-[; ;main.c: 125: char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
-[e = _set -> &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `*uc ]
-"126
-[v _msg2 `uc ~T0 @X0 -> 32 `i a ]
-[; ;main.c: 126: char msg2[32];
-[; ;main.c: 127: sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0], set[1], set[2], set[3]);
 "127
-[e ( _sprintf (1 , , , , (. , &U _msg2 :s 11C -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i ]
-[; ;main.c: 128: I2C_Send(nanoAddr, msg2);
+[v _msg `uc ~T0 @X0 34  a ]
+[; ;main.c: 127: char msg[] = "\1Started packaging compartment x\0";
+[e = _msg F3205 ]
+[; ;main.c: 128: msg[31] = compartmentNum + 48;
 "128
-[e ( _I2C_Send (2 , _nanoAddr &U _msg2 ]
+[e = *U + &U _msg * -> -> -> 31 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + _compartmentNum -> 48 `i `uc ]
+[; ;main.c: 129: I2C_Send(nanoAddr, msg);
+"129
+[e ( _I2C_Send (2 , _nanoAddr &U _msg ]
+[; ;main.c: 131: if (params.toFill[compartmentNum-1] == 0) continue;
 "131
+[e $ ! == -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `i -> 0 `i 286  ]
+[e $U 285  ]
+[e :U 286 ]
+"132
+[v _set `*uc ~T0 @X0 1 a ]
+[; ;main.c: 132: char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
+[e = _set -> &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `*uc ]
+"133
+[v _msg2 `uc ~T0 @X0 -> 32 `i a ]
+"134
+[v _mult `i ~T0 @X0 1 a ]
+[; ;main.c: 133: char msg2[32];
+[; ;main.c: 134: int mult = params.setMultiple[compartmentNum - 1];
+[e = _mult *U + &U . _params 2 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
+[; ;main.c: 135: sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+"135
+[e ( _sprintf (1 , , , , (. , &U _msg2 :s 7C * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult ]
+[; ;main.c: 136: I2C_Send(nanoAddr, msg2);
+"136
+[e ( _I2C_Send (2 , _nanoAddr &U _msg2 ]
+[; ;main.c: 137: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"137
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 138: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"138
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 139: printf("Compartment %d", compartmentNum);
+"139
+[e ( _printf , (. :s 8C _compartmentNum ]
+[; ;main.c: 140: packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+"140
+[e ( _packageCompartment (4 , , , -> * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult `uc ]
+"141
 }
-"118
+"125
+[e :U 285 ]
 [e -- _compartmentNum -> 1 `i ]
 [e $ > _compartmentNum -> 0 `i 283  ]
 [e :U 284 ]
-"131
+"141
 }
-[; ;main.c: 131: }
-[; ;main.c: 132: }
-"132
+[; ;main.c: 141: }
+[; ;main.c: 142: }
+"142
 [e :UE 282 ]
 }
-"134
+"144
 [v _clearing `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 134: void clearing(void) {
+[; ;main.c: 144: void clearing(void) {
 [e :U _clearing ]
 [f ]
-[; ;main.c: 139: I2C_Send(nanoAddr, 3);
-"139
-[e ( _I2C_Send (2 , _nanoAddr -> -> 3 `i `*uc ]
-"141
-[v _i `i ~T0 @X0 1 a ]
-"142
-[v _spinTime `i ~T0 @X0 1 a ]
-[; ;main.c: 141: int i;
-[; ;main.c: 142: int spinTime=100;
-[e = _spinTime -> 100 `i ]
-[; ;main.c: 144: extras.b = 0;
-"144
-[e = . _extras 0 -> 0 `i ]
-[; ;main.c: 145: extras.n = 0;
-"145
-[e = . _extras 1 -> 0 `i ]
-[; ;main.c: 146: extras.s = 0;
-"146
-[e = . _extras 2 -> 0 `i ]
-[; ;main.c: 147: extras.w = 0;
-"147
-[e = . _extras 3 -> 0 `i ]
-[; ;main.c: 149: LATBbits.LATB3 = 1;
+[; ;main.c: 149: I2C_Send(nanoAddr, 3);
 "149
-[e = . . _LATBbits 0 3 -> -> 1 `i `uc ]
-[; ;main.c: 150: for (i = 0; i < spinTime; i++) {
-"150
-{
-[e = _i -> 0 `i ]
-[e $U 290  ]
-[e :U 287 ]
-{
-[; ;main.c: 152: if (PORTAbits.RA0 == 0) {
+[e ( _I2C_Send (2 , _nanoAddr -> -> 3 `i `*uc ]
+"151
+[v _i `i ~T0 @X0 1 a ]
 "152
-[e $ ! == -> . . _PORTAbits 0 0 `i -> 0 `i 291  ]
-{
-[; ;main.c: 153: extras.b++;
-"153
-[e ++ . _extras 0 -> 1 `i ]
+[v _spinTime `i ~T0 @X0 1 a ]
+[; ;main.c: 151: int i;
+[; ;main.c: 152: int spinTime=100;
+[e = _spinTime -> 100 `i ]
+[; ;main.c: 154: extras.b = 0;
 "154
-}
-[e :U 291 ]
-[; ;main.c: 154: }
-[; ;main.c: 155: if (extras.b + dispensed.b == 20) break;
+[e = . _extras 0 -> 0 `i ]
+[; ;main.c: 155: extras.n = 0;
 "155
-[e $ ! == + . _extras 0 . _dispensed 0 -> 20 `i 292  ]
-[e $U 288  ]
-[e :U 292 ]
-[; ;main.c: 156: _delay((unsigned long)((25)*(40000000/4000.0)));
+[e = . _extras 1 -> 0 `i ]
+[; ;main.c: 156: extras.s = 0;
 "156
-[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[e = . _extras 2 -> 0 `i ]
+[; ;main.c: 157: extras.w = 0;
 "157
-}
-"150
-[e ++ _i -> 1 `i ]
-[e :U 290 ]
-[e $ < _i _spinTime 287  ]
-[e :U 288 ]
-"157
-}
-[; ;main.c: 157: }
-[; ;main.c: 158: LATBbits.LATB3 = 0;
-"158
-[e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
-[; ;main.c: 160: I2C_Send(nanoAddr, 4);
+[e = . _extras 3 -> 0 `i ]
+[; ;main.c: 159: motorControl(BOLT, FORWARD);
+"159
+[e ( _motorControl (2 , . `E3169 0 . `E3175 0 ]
+[; ;main.c: 160: for (i = 0; i < spinTime; i++) {
 "160
-[e ( _I2C_Send (2 , _nanoAddr -> -> 4 `i `*uc ]
-[; ;main.c: 161: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"161
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 163: LATCbits.LATC1 = 1;
-"163
-[e = . . _LATCbits 0 1 -> -> 1 `i `uc ]
-[; ;main.c: 164: for (i = 0; i < spinTime; i++) {
-"164
 {
 [e = _i -> 0 `i ]
-[e $U 296  ]
-[e :U 293 ]
+[e $U 291  ]
+[e :U 288 ]
 {
-[; ;main.c: 165: if (PORTAbits.RA1 == 0) {
+[; ;main.c: 162: if (PORTAbits.RA0 == 0) {
+"162
+[e $ ! == -> . . _PORTAbits 0 0 `i -> 0 `i 292  ]
+{
+[; ;main.c: 163: extras.b++;
+"163
+[e ++ . _extras 0 -> 1 `i ]
+"164
+}
+[e :U 292 ]
+[; ;main.c: 164: }
+[; ;main.c: 165: if (extras.b + dispensed.b == 20) break;
 "165
-[e $ ! == -> . . _PORTAbits 0 1 `i -> 0 `i 297  ]
-{
-[; ;main.c: 166: extras.n++;
+[e $ ! == + . _extras 0 . _dispensed 0 -> 20 `i 293  ]
+[e $U 289  ]
+[e :U 293 ]
+[; ;main.c: 166: _delay((unsigned long)((25)*(40000000/4000.0)));
 "166
-[e ++ . _extras 1 -> 1 `i ]
+[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
 "167
 }
-[e :U 297 ]
-[; ;main.c: 167: }
-[; ;main.c: 168: if (extras.n + dispensed.n == 25) break;
-"168
-[e $ ! == + . _extras 1 . _dispensed 1 -> 25 `i 298  ]
-[e $U 294  ]
-[e :U 298 ]
-[; ;main.c: 169: _delay((unsigned long)((25)*(40000000/4000.0)));
-"169
-[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"170
-}
-"164
+"160
 [e ++ _i -> 1 `i ]
-[e :U 296 ]
-[e $ < _i _spinTime 293  ]
-[e :U 294 ]
-"170
+[e :U 291 ]
+[e $ < _i _spinTime 288  ]
+[e :U 289 ]
+"167
 }
-[; ;main.c: 170: }
-[; ;main.c: 171: LATCbits.LATC1 = 0;
+[; ;main.c: 167: }
+[; ;main.c: 168: motorControl(BOLT, STOPMOTOR);
+"168
+[e ( _motorControl (2 , . `E3169 0 . `E3175 2 ]
+[; ;main.c: 170: I2C_Send(nanoAddr, 4);
+"170
+[e ( _I2C_Send (2 , _nanoAddr -> -> 4 `i `*uc ]
+[; ;main.c: 171: _delay((unsigned long)((5000)*(40000000/4000.0)));
 "171
-[e = . . _LATCbits 0 1 -> -> 0 `i `uc ]
-[; ;main.c: 173: I2C_Send(nanoAddr, 5);
-"173
-[e ( _I2C_Send (2 , _nanoAddr -> -> 5 `i `*uc ]
-[; ;main.c: 174: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"174
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 176: LATCbits.LATC5 = 1;
-"176
-[e = . . _LATCbits 0 5 -> -> 1 `i `uc ]
-[; ;main.c: 177: for (i = 0; i < spinTime; i++) {
-"177
+[; ;main.c: 173: motorControl(NUT, FORWARD);
+"173
+[e ( _motorControl (2 , . `E3169 1 . `E3175 0 ]
+[; ;main.c: 174: for (i = 0; i < spinTime; i++) {
+"174
 {
 [e = _i -> 0 `i ]
-[e $U 302  ]
-[e :U 299 ]
+[e $U 297  ]
+[e :U 294 ]
 {
-[; ;main.c: 178: if (PORTAbits.RA2 == 0) {
+[; ;main.c: 175: if (PORTAbits.RA1 == 0) {
+"175
+[e $ ! == -> . . _PORTAbits 0 1 `i -> 0 `i 298  ]
+{
+[; ;main.c: 176: extras.n++;
+"176
+[e ++ . _extras 1 -> 1 `i ]
+"177
+}
+[e :U 298 ]
+[; ;main.c: 177: }
+[; ;main.c: 178: if (extras.n + dispensed.n == 25) break;
 "178
-[e $ ! == -> . . _PORTAbits 0 2 `i -> 0 `i 303  ]
-{
-[; ;main.c: 179: extras.s++;
+[e $ ! == + . _extras 1 . _dispensed 1 -> 25 `i 299  ]
+[e $U 295  ]
+[e :U 299 ]
+[; ;main.c: 179: _delay((unsigned long)((25)*(40000000/4000.0)));
 "179
-[e ++ . _extras 2 -> 1 `i ]
+[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
 "180
 }
-[e :U 303 ]
-[; ;main.c: 180: }
-[; ;main.c: 181: if (extras.s + dispensed.s == 20) break;
-"181
-[e $ ! == + . _extras 2 . _dispensed 2 -> 20 `i 304  ]
-[e $U 300  ]
-[e :U 304 ]
-[; ;main.c: 182: _delay((unsigned long)((25)*(40000000/4000.0)));
-"182
-[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-"183
-}
-"177
+"174
 [e ++ _i -> 1 `i ]
-[e :U 302 ]
-[e $ < _i _spinTime 299  ]
-[e :U 300 ]
-"183
+[e :U 297 ]
+[e $ < _i _spinTime 294  ]
+[e :U 295 ]
+"180
 }
-[; ;main.c: 183: }
-[; ;main.c: 184: LATCbits.LATC5 = 0;
+[; ;main.c: 180: }
+[; ;main.c: 181: motorControl(NUT, STOPMOTOR);
+"181
+[e ( _motorControl (2 , . `E3169 1 . `E3175 2 ]
+[; ;main.c: 183: I2C_Send(nanoAddr, 5);
+"183
+[e ( _I2C_Send (2 , _nanoAddr -> -> 5 `i `*uc ]
+[; ;main.c: 184: _delay((unsigned long)((5000)*(40000000/4000.0)));
 "184
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-[; ;main.c: 186: I2C_Send(nanoAddr, 6);
-"186
-[e ( _I2C_Send (2 , _nanoAddr -> -> 6 `i `*uc ]
-[; ;main.c: 187: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"187
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 189: LATCbits.LATC7 = 1;
-"189
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-[; ;main.c: 190: for (i = 0; i < spinTime; i++) {
-"190
+[; ;main.c: 186: motorControl(SPACER, FORWARD);
+"186
+[e ( _motorControl (2 , . `E3169 2 . `E3175 0 ]
+[; ;main.c: 187: for (i = 0; i < spinTime; i++) {
+"187
 {
 [e = _i -> 0 `i ]
-[e $U 308  ]
-[e :U 305 ]
+[e $U 303  ]
+[e :U 300 ]
 {
-[; ;main.c: 191: if (PORTAbits.RA3 == 0) {
+[; ;main.c: 188: if (PORTAbits.RA2 == 0) {
+"188
+[e $ ! == -> . . _PORTAbits 0 2 `i -> 0 `i 304  ]
+{
+[; ;main.c: 189: extras.s++;
+"189
+[e ++ . _extras 2 -> 1 `i ]
+"190
+}
+[e :U 304 ]
+[; ;main.c: 190: }
+[; ;main.c: 191: if (extras.s + dispensed.s == 20) break;
 "191
-[e $ ! == -> . . _PORTAbits 0 3 `i -> 0 `i 309  ]
-{
-[; ;main.c: 192: extras.w++;
+[e $ ! == + . _extras 2 . _dispensed 2 -> 20 `i 305  ]
+[e $U 301  ]
+[e :U 305 ]
+[; ;main.c: 192: _delay((unsigned long)((25)*(40000000/4000.0)));
 "192
-[e ++ . _extras 3 -> 1 `i ]
+[e ( __delay (1 -> * -> -> 25 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
 "193
 }
-[e :U 309 ]
-[; ;main.c: 193: }
-[; ;main.c: 194: if (extras.w + dispensed.w == 35) break;
-"194
-[e $ ! == + . _extras 3 . _dispensed 3 -> 35 `i 310  ]
-[e $U 306  ]
-[e :U 310 ]
-"195
-}
-"190
+"187
 [e ++ _i -> 1 `i ]
-[e :U 308 ]
-[e $ < _i _spinTime 305  ]
-[e :U 306 ]
-"195
+[e :U 303 ]
+[e $ < _i _spinTime 300  ]
+[e :U 301 ]
+"193
 }
-[; ;main.c: 195: }
-[; ;main.c: 196: LATCbits.LATC7 = 0;
+[; ;main.c: 193: }
+[; ;main.c: 194: motorControl(SPACER, STOPMOTOR);
+"194
+[e ( _motorControl (2 , . `E3169 2 . `E3175 2 ]
+[; ;main.c: 196: I2C_Send(nanoAddr, 6);
 "196
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
-[; ;main.c: 198: I2C_Send(nanoAddr, 7);
-"198
-[e ( _I2C_Send (2 , _nanoAddr -> -> 7 `i `*uc ]
-[; ;main.c: 200: }
+[e ( _I2C_Send (2 , _nanoAddr -> -> 6 `i `*uc ]
+[; ;main.c: 197: _delay((unsigned long)((5000)*(40000000/4000.0)));
+"197
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 199: motorControl(WASHER, FORWARD);
+"199
+[e ( _motorControl (2 , . `E3169 3 . `E3175 0 ]
+[; ;main.c: 200: for (i = 0; i < spinTime; i++) {
 "200
-[e :UE 286 ]
+{
+[e = _i -> 0 `i ]
+[e $U 309  ]
+[e :U 306 ]
+{
+[; ;main.c: 201: if (PORTAbits.RA3 == 0) {
+"201
+[e $ ! == -> . . _PORTAbits 0 3 `i -> 0 `i 310  ]
+{
+[; ;main.c: 202: extras.w++;
+"202
+[e ++ . _extras 3 -> 1 `i ]
+"203
+}
+[e :U 310 ]
+[; ;main.c: 203: }
+[; ;main.c: 204: if (extras.w + dispensed.w == 35) break;
+"204
+[e $ ! == + . _extras 3 . _dispensed 3 -> 35 `i 311  ]
+[e $U 307  ]
+[e :U 311 ]
+"205
+}
+"200
+[e ++ _i -> 1 `i ]
+[e :U 309 ]
+[e $ < _i _spinTime 306  ]
+[e :U 307 ]
+"205
+}
+[; ;main.c: 205: }
+[; ;main.c: 206: motorControl(WASHER, STOP);
+"206
+[e ( _motorControl (2 , . `E3169 3 -> -> _STOP `i `E3175 ]
+[; ;main.c: 208: I2C_Send(nanoAddr, 7);
+"208
+[e ( _I2C_Send (2 , _nanoAddr -> -> 7 `i `*uc ]
+[; ;main.c: 210: }
+"210
+[e :UE 287 ]
 }
 [v $root$_interruptHandler `(v ~T0 @X0 0 e ]
-[v F3202 `(v ~T0 @X0 1 tf ]
-"202
-[v _interruptHandler `IF3202 ~T0 @X0 1 e ]
+[v F3222 `(v ~T0 @X0 1 tf ]
+"212
+[v _interruptHandler `IF3222 ~T0 @X0 1 e ]
 {
-[; ;main.c: 202: void interrupt interruptHandler(void) {
+[; ;main.c: 212: void interrupt interruptHandler(void) {
 [e :U _interruptHandler ]
 [f ]
-[; ;main.c: 203: if (T0IE && T0IF) {
-"203
-[e $ ! && _T0IE _T0IF 312  ]
+[; ;main.c: 213: if (T0IE && T0IF) {
+"213
+[e $ ! && _T0IE _T0IF 313  ]
 {
-[; ;main.c: 204: T0IF = 0;
-"204
+[; ;main.c: 214: T0IF = 0;
+"214
 [e = _T0IF -> -> 0 `i `b ]
-[; ;main.c: 205: tmr0_ISR();
-"205
+[; ;main.c: 215: tmr0_ISR();
+"215
 [e ( _tmr0_ISR ..  ]
-"206
+"216
 }
-[e :U 312 ]
-[; ;main.c: 206: }
-[; ;main.c: 207: }
-"207
-[e :UE 311 ]
+[e :U 313 ]
+[; ;main.c: 216: }
+[; ;main.c: 217: }
+"217
+[e :UE 312 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"209
+"219
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 209: void main(void) {
+[; ;main.c: 219: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 214: LATA = 0x00;
-"214
-[e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 215: LATB = 0x00;
-"215
-[e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 216: LATC = 0x00;
-"216
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 217: LATD = 0x00;
-"217
-[e = _LATD -> -> 0 `i `uc ]
-[; ;main.c: 218: LATE = 0x00;
-"218
-[e = _LATE -> -> 0 `i `uc ]
-[; ;main.c: 221: TRISA = 0xFF;
-"221
-[e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 222: TRISB = 0b11110111;
-"222
-[e = _TRISB -> -> 247 `i `uc ]
-[; ;main.c: 223: TRISC = 0x00;
-"223
-[e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 224: TRISD = 0x00;
+[; ;main.c: 224: LATA = 0x00;
 "224
-[e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 225: TRISE = 0x00;
+[e = _LATA -> -> 0 `i `uc ]
+[; ;main.c: 225: LATB = 0x00;
 "225
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 228: I2C_Master_Init(100000);
+[e = _LATB -> -> 0 `i `uc ]
+[; ;main.c: 226: LATC = 0x00;
+"226
+[e = _LATC -> -> 0 `i `uc ]
+[; ;main.c: 227: LATD = 0x00;
+"227
+[e = _LATD -> -> 0 `i `uc ]
+[; ;main.c: 228: LATE = 0x00;
 "228
-[e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
-[; ;main.c: 230: initLCD();
-"230
-[e ( _initLCD ..  ]
-[; ;main.c: 232: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+[e = _LATE -> -> 0 `i `uc ]
+[; ;main.c: 231: TRISA = 0xFF;
+"231
+[e = _TRISA -> -> 255 `i `uc ]
+[; ;main.c: 232: TRISB = 0b11110111;
 "232
+[e = _TRISB -> -> 247 `i `uc ]
+[; ;main.c: 233: TRISC = 0x00;
+"233
+[e = _TRISC -> -> 0 `i `uc ]
+[; ;main.c: 234: TRISD = 0x00;
+"234
+[e = _TRISD -> -> 0 `i `uc ]
+[; ;main.c: 235: TRISE = 0x00;
+"235
+[e = _TRISE -> -> 0 `i `uc ]
+[; ;main.c: 237: ADCON0 = 0x00;
+"237
+[e = _ADCON0 -> -> 0 `i `uc ]
+[; ;main.c: 238: ADCON1 = 0x0F;
+"238
+[e = _ADCON1 -> -> 15 `i `uc ]
+[; ;main.c: 241: I2C_Master_Init(100000);
+"241
+[e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
+[; ;main.c: 243: initLCD();
+"243
+[e ( _initLCD ..  ]
+[; ;main.c: 245: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"245
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 233: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"233
+[; ;main.c: 246: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"246
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 235: hibernate();
-"235
+[; ;main.c: 248: hibernate();
+"248
 [e ( _hibernate ..  ]
-[; ;main.c: 236: mainMenu();
-"236
+[; ;main.c: 249: mainMenu();
+"249
 [e ( _mainMenu ..  ]
-[; ;main.c: 240: while(1);
-"240
-[e :U 315 ]
-[e :U 314 ]
-[e $U 315  ]
-[e :U 316 ]
-[; ;main.c: 242: }
-"242
-[e :UE 313 ]
+[; ;main.c: 252: }
+"252
+[e :UE 314 ]
 }
-[p f _sprintf 8388752 ]
-[p f _printf 9437696 ]
-[a 2C 37 108 105 0 ]
-[a 1C 78 111 119 32 99 111 117 110 116 105 110 103 0 ]
-[a 8C 1 68 111 110 101 32 99 111 109 112 97 114 116 109 101 110 116 0 0 ]
-[a 10C 1 76 111 111 112 0 0 ]
-[a 9C 1 69 110 116 101 114 101 100 32 116 104 101 32 112 97 99 107 97 103 105 110 103 32 102 117 110 99 116 105 111 110 0 0 ]
-[a 5C 1 78 117 116 32 67 111 117 110 116 101 100 0 0 ]
-[a 4C 1 66 111 108 116 32 67 111 117 110 116 101 100 0 0 ]
-[a 7C 1 87 97 115 104 101 114 32 67 111 117 110 116 101 100 0 0 ]
-[a 6C 1 83 112 97 99 101 114 32 67 111 117 110 116 101 100 0 0 ]
-[a 11C 1 66 58 37 100 32 78 58 37 100 32 83 58 37 100 32 87 58 37 100 0 0 ]
-[a 3C 0 0 ]
+[p f _sprintf 8388736 ]
+[p f _printf 8388736 ]
+[a 8C 67 111 109 112 97 114 116 109 101 110 116 32 37 100 0 ]
+[a 5C 1 68 111 110 101 32 99 111 109 112 97 114 116 109 101 110 116 0 0 ]
+[a 6C 1 69 110 116 101 114 101 100 32 116 104 101 32 112 97 99 107 97 103 105 110 103 32 102 117 110 99 116 105 111 110 0 0 ]
+[a 2C 1 78 117 116 32 67 111 117 110 116 101 100 0 0 ]
+[a 1C 1 66 111 108 116 32 67 111 117 110 116 101 100 0 0 ]
+[a 4C 1 87 97 115 104 101 114 32 67 111 117 110 116 101 100 0 0 ]
+[a 3C 1 83 112 97 99 101 114 32 67 111 117 110 116 101 100 0 0 ]
+[a 7C 1 66 58 37 100 32 78 58 37 100 32 83 58 37 100 32 87 58 37 100 0 0 ]

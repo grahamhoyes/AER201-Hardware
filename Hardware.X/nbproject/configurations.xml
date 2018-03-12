@@ -12,6 +12,7 @@
       <itemPath>helpers.h</itemPath>
       <itemPath>RTC.h</itemPath>
       <itemPath>timer.h</itemPath>
+      <itemPath>motors.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -28,6 +29,7 @@
       <itemPath>helpers.c</itemPath>
       <itemPath>RTC.c</itemPath>
       <itemPath>timer.c</itemPath>
+      <itemPath>motors.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

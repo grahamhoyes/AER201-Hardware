@@ -3864,8 +3864,14 @@ unsigned char I2C_Master_Read(unsigned char ackBit);
 # 11 "RTC.h"
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
+void RTC_startOperation(void);
+long RTC_getOperatingTime(void);
 
 # 12 "RTC.c"
+static long operatingTime;
+static long startTime;
+static long endTime;
+
 void RTC_getTime(unsigned char * time) {
 
 I2C_Master_Start();
@@ -3888,11 +3894,22 @@ I2C_Master_Stop();
 
 long RTC_getSeconds(void) {
 
-# 36
+# 40
 unsigned char time[7];
 RTC_getTime(time);
 
 long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
 return seconds;
+}
+
+void RTC_startOperation(void) {
+
+startTime = RTC_getSeconds();
+}
+
+long RTC_getOperatingTime(void) {
+
+endTime = RTC_getSeconds();
+return endTime - startTime;
 }
 

@@ -27,7 +27,7 @@ BNNW 18
 BNNN 19
 BWWW 20
 ]
-"27 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"29 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [e E3169 fastenerType `uc
 BOLT 0
 NUT 1
@@ -148,16 +148,18 @@ STOPMOTOR 2
 [v __doprnt _doprnt `(i  1 e 2 0 ]
 "62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
+[v i2___ftpack __ftpack `(f  1 e 3 0 ]
 "86 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftadd.c
 [v ___ftadd __ftadd `(f  1 e 3 0 ]
+[v i2___ftadd __ftadd `(f  1 e 3 0 ]
 "54 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftdiv.c
 [v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"4 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftge.c
+[v ___ftge __ftge `(b  1 e 0 0 ]
 "62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftmul.c
 [v ___ftmul __ftmul `(f  1 e 3 0 ]
 "20 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftsub.c
 [v ___ftsub __ftsub `(f  1 e 3 0 ]
-"44 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\fttol.c
-[v ___fttol __fttol `(l  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\lldiv.c
 [v ___lldiv __lldiv `(ul  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\llmod.c
@@ -212,15 +214,15 @@ STOPMOTOR 2
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 1 0 ]
 "98
 [v _lcd_shift_cursor lcd_shift_cursor `(v  1 e 1 0 ]
-"23 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _packageCompartment packageCompartment `(v  1 e 1 0 ]
 "112
 [v _packaging packaging `(v  1 e 1 0 ]
-"144
+"146
 [v _clearing clearing `(v  1 e 1 0 ]
-"212
+"239
 [v _interruptHandler interruptHandler `II(v  1 e 1 0 ]
-"219
+"246
 [v _main main `(v  1 e 1 0 ]
 "11 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
 [v _hibernate hibernate `(v  1 e 1 0 ]
@@ -285,7 +287,7 @@ STOPMOTOR 2
 [v _PORTAbits PORTAbits `VES116  1 e 1 @3968 ]
 "187
 [v _PORTB PORTB `VEuc  1 e 1 @3969 ]
-[s S743 . 1 `uc 1 RB0 1 0 :1:0 
+[s S751 . 1 `uc 1 RB0 1 0 :1:0 
 `uc 1 RB1 1 0 :1:1 
 `uc 1 RB2 1 0 :1:2 
 `uc 1 RB3 1 0 :1:3 
@@ -295,7 +297,7 @@ STOPMOTOR 2
 `uc 1 RB7 1 0 :1:7 
 ]
 "228
-[s S752 . 1 `uc 1 INT0 1 0 :1:0 
+[s S760 . 1 `uc 1 INT0 1 0 :1:0 
 `uc 1 INT1 1 0 :1:1 
 `uc 1 INT2 1 0 :1:2 
 `uc 1 CCP2 1 0 :1:3 
@@ -304,7 +306,7 @@ STOPMOTOR 2
 `uc 1 KBI2 1 0 :1:6 
 `uc 1 KBI3 1 0 :1:7 
 ]
-[s S761 . 1 `uc 1 AN12 1 0 :1:0 
+[s S769 . 1 `uc 1 AN12 1 0 :1:0 
 `uc 1 AN10 1 0 :1:1 
 `uc 1 AN8 1 0 :1:2 
 `uc 1 AN9 1 0 :1:3 
@@ -313,16 +315,16 @@ STOPMOTOR 2
 `uc 1 PGC 1 0 :1:6 
 `uc 1 PGD 1 0 :1:7 
 ]
-[s S770 . 1 `uc 1 . 1 0 :3:0 
+[s S778 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 CCP2_PA2 1 0 :1:3 
 ]
-[u S773 . 1 `S743 1 . 1 0 `S752 1 . 1 0 `S761 1 . 1 0 `S770 1 . 1 0 ]
-[v _PORTBbits PORTBbits `VES773  1 e 1 @3969 ]
+[u S781 . 1 `S751 1 . 1 0 `S760 1 . 1 0 `S769 1 . 1 0 `S778 1 . 1 0 ]
+[v _PORTBbits PORTBbits `VES781  1 e 1 @3969 ]
 "878
 [v _LATA LATA `VEuc  1 e 1 @3977 ]
 "990
 [v _LATB LATB `VEuc  1 e 1 @3978 ]
-[s S1104 . 1 `uc 1 LATB0 1 0 :1:0 
+[s S1112 . 1 `uc 1 LATB0 1 0 :1:0 
 `uc 1 LATB1 1 0 :1:1 
 `uc 1 LATB2 1 0 :1:2 
 `uc 1 LATB3 1 0 :1:3 
@@ -332,7 +334,7 @@ STOPMOTOR 2
 `uc 1 LATB7 1 0 :1:7 
 ]
 "1017
-[s S1113 . 1 `uc 1 LB0 1 0 :1:0 
+[s S1121 . 1 `uc 1 LB0 1 0 :1:0 
 `uc 1 LB1 1 0 :1:1 
 `uc 1 LB2 1 0 :1:2 
 `uc 1 LB3 1 0 :1:3 
@@ -341,11 +343,11 @@ STOPMOTOR 2
 `uc 1 LB6 1 0 :1:6 
 `uc 1 LB7 1 0 :1:7 
 ]
-[u S1122 . 1 `S1104 1 . 1 0 `S1113 1 . 1 0 ]
-[v _LATBbits LATBbits `VES1122  1 e 1 @3978 ]
+[u S1130 . 1 `S1112 1 . 1 0 `S1121 1 . 1 0 ]
+[v _LATBbits LATBbits `VES1130  1 e 1 @3978 ]
 "1102
 [v _LATC LATC `VEuc  1 e 1 @3979 ]
-[s S1144 . 1 `uc 1 LATC0 1 0 :1:0 
+[s S1152 . 1 `uc 1 LATC0 1 0 :1:0 
 `uc 1 LATC1 1 0 :1:1 
 `uc 1 LATC2 1 0 :1:2 
 `uc 1 LATC3 1 0 :1:3 
@@ -355,7 +357,7 @@ STOPMOTOR 2
 `uc 1 LATC7 1 0 :1:7 
 ]
 "1129
-[s S1153 . 1 `uc 1 LC0 1 0 :1:0 
+[s S1161 . 1 `uc 1 LC0 1 0 :1:0 
 `uc 1 LC1 1 0 :1:1 
 `uc 1 LC2 1 0 :1:2 
 `uc 1 LC3 1 0 :1:3 
@@ -364,11 +366,11 @@ STOPMOTOR 2
 `uc 1 LC6 1 0 :1:6 
 `uc 1 LC7 1 0 :1:7 
 ]
-[u S1162 . 1 `S1144 1 . 1 0 `S1153 1 . 1 0 ]
-[v _LATCbits LATCbits `VES1162  1 e 1 @3979 ]
+[u S1170 . 1 `S1152 1 . 1 0 `S1161 1 . 1 0 ]
+[v _LATCbits LATCbits `VES1170  1 e 1 @3979 ]
 "1214
 [v _LATD LATD `VEuc  1 e 1 @3980 ]
-[s S443 . 1 `uc 1 LATD0 1 0 :1:0 
+[s S451 . 1 `uc 1 LATD0 1 0 :1:0 
 `uc 1 LATD1 1 0 :1:1 
 `uc 1 LATD2 1 0 :1:2 
 `uc 1 LATD3 1 0 :1:3 
@@ -378,7 +380,7 @@ STOPMOTOR 2
 `uc 1 LATD7 1 0 :1:7 
 ]
 "1241
-[s S452 . 1 `uc 1 LD0 1 0 :1:0 
+[s S460 . 1 `uc 1 LD0 1 0 :1:0 
 `uc 1 LD1 1 0 :1:1 
 `uc 1 LD2 1 0 :1:2 
 `uc 1 LD3 1 0 :1:3 
@@ -387,28 +389,28 @@ STOPMOTOR 2
 `uc 1 LD6 1 0 :1:6 
 `uc 1 LD7 1 0 :1:7 
 ]
-[u S461 . 1 `S443 1 . 1 0 `S452 1 . 1 0 ]
-[v _LATDbits LATDbits `VES461  1 e 1 @3980 ]
+[u S469 . 1 `S451 1 . 1 0 `S460 1 . 1 0 ]
+[v _LATDbits LATDbits `VES469  1 e 1 @3980 ]
 "1326
 [v _LATE LATE `VEuc  1 e 1 @3981 ]
-[s S1184 . 1 `uc 1 LATE0 1 0 :1:0 
+[s S1192 . 1 `uc 1 LATE0 1 0 :1:0 
 `uc 1 LATE1 1 0 :1:1 
 `uc 1 LATE2 1 0 :1:2 
 ]
 "1343
-[s S1188 . 1 `uc 1 LE0 1 0 :1:0 
+[s S1196 . 1 `uc 1 LE0 1 0 :1:0 
 `uc 1 LE1 1 0 :1:1 
 `uc 1 LE2 1 0 :1:2 
 ]
-[u S1192 . 1 `S1184 1 . 1 0 `S1188 1 . 1 0 ]
-[v _LATEbits LATEbits `VES1192  1 e 1 @3981 ]
+[u S1200 . 1 `S1192 1 . 1 0 `S1196 1 . 1 0 ]
+[v _LATEbits LATEbits `VES1200  1 e 1 @3981 ]
 "1378
 [v _TRISA TRISA `VEuc  1 e 1 @3986 ]
 "1600
 [v _TRISB TRISB `VEuc  1 e 1 @3987 ]
 "1822
 [v _TRISC TRISC `VEuc  1 e 1 @3988 ]
-[s S343 . 1 `uc 1 TRISC0 1 0 :1:0 
+[s S351 . 1 `uc 1 TRISC0 1 0 :1:0 
 `uc 1 TRISC1 1 0 :1:1 
 `uc 1 TRISC2 1 0 :1:2 
 `uc 1 TRISC3 1 0 :1:3 
@@ -418,7 +420,7 @@ STOPMOTOR 2
 `uc 1 TRISC7 1 0 :1:7 
 ]
 "1854
-[s S352 . 1 `uc 1 RC0 1 0 :1:0 
+[s S360 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -427,8 +429,8 @@ STOPMOTOR 2
 `uc 1 RC6 1 0 :1:6 
 `uc 1 RC7 1 0 :1:7 
 ]
-[u S361 . 1 `S343 1 . 1 0 `S352 1 . 1 0 ]
-[v _TRISCbits TRISCbits `VES361  1 e 1 @3988 ]
+[u S369 . 1 `S351 1 . 1 0 `S360 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES369  1 e 1 @3988 ]
 "2044
 [v _TRISD TRISD `VEuc  1 e 1 @3989 ]
 "2266
@@ -439,7 +441,7 @@ STOPMOTOR 2
 [v _ADCON0 ADCON0 `VEuc  1 e 1 @4034 ]
 "4667
 [v _SSPCON2 SSPCON2 `VEuc  1 e 1 @4037 ]
-[s S387 . 1 `uc 1 SEN 1 0 :1:0 
+[s S395 . 1 `uc 1 SEN 1 0 :1:0 
 `uc 1 RSEN 1 0 :1:1 
 `uc 1 PEN 1 0 :1:2 
 `uc 1 RCEN 1 0 :1:3 
@@ -449,31 +451,31 @@ STOPMOTOR 2
 `uc 1 GCEN 1 0 :1:7 
 ]
 "4684
-[u S396 . 1 `S387 1 . 1 0 ]
-[v _SSPCON2bits SSPCON2bits `VES396  1 e 1 @4037 ]
+[u S404 . 1 `S395 1 . 1 0 ]
+[v _SSPCON2bits SSPCON2bits `VES404  1 e 1 @4037 ]
 "4729
 [v _SSPCON1 SSPCON1 `VEuc  1 e 1 @4038 ]
-[s S317 . 1 `uc 1 SSPM 1 0 :4:0 
+[s S325 . 1 `uc 1 SSPM 1 0 :4:0 
 `uc 1 CKP 1 0 :1:4 
 `uc 1 SSPEN 1 0 :1:5 
 `uc 1 SSPOV 1 0 :1:6 
 `uc 1 WCOL 1 0 :1:7 
 ]
 "4749
-[s S323 . 1 `uc 1 SSPM0 1 0 :1:0 
+[s S331 . 1 `uc 1 SSPM0 1 0 :1:0 
 `uc 1 SSPM1 1 0 :1:1 
 `uc 1 SSPM2 1 0 :1:2 
 `uc 1 SSPM3 1 0 :1:3 
 ]
-[u S328 . 1 `S317 1 . 1 0 `S323 1 . 1 0 ]
-[v _SSPCON1bits SSPCON1bits `VES328  1 e 1 @4038 ]
+[u S336 . 1 `S325 1 . 1 0 `S331 1 . 1 0 ]
+[v _SSPCON1bits SSPCON1bits `VES336  1 e 1 @4038 ]
 "4799
 [v _SSPSTAT SSPSTAT `VEuc  1 e 1 @4039 ]
 "5020
 [v _SSPADD SSPADD `VEuc  1 e 1 @4040 ]
 "5027
 [v _SSPBUF SSPBUF `VEuc  1 e 1 @4041 ]
-[s S960 . 1 `uc 1 T0PS 1 0 :3:0 
+[s S968 . 1 `uc 1 T0PS 1 0 :3:0 
 `uc 1 PSA 1 0 :1:3 
 `uc 1 T0SE 1 0 :1:4 
 `uc 1 T0CS 1 0 :1:5 
@@ -481,19 +483,19 @@ STOPMOTOR 2
 `uc 1 TMR0ON 1 0 :1:7 
 ]
 "5876
-[s S967 . 1 `uc 1 T0PS0 1 0 :1:0 
+[s S975 . 1 `uc 1 T0PS0 1 0 :1:0 
 `uc 1 T0PS1 1 0 :1:1 
 `uc 1 T0PS2 1 0 :1:2 
 `uc 1 . 1 0 :3:3 
 `uc 1 T016BIT 1 0 :1:6 
 ]
-[u S973 . 1 `S960 1 . 1 0 `S967 1 . 1 0 ]
-[v _T0CONbits T0CONbits `VES973  1 e 1 @4053 ]
+[u S981 . 1 `S968 1 . 1 0 `S975 1 . 1 0 ]
+[v _T0CONbits T0CONbits `VES981  1 e 1 @4053 ]
 "5938
 [v _TMR0L TMR0L `VEuc  1 e 1 @4054 ]
 "5945
 [v _TMR0H TMR0H `VEuc  1 e 1 @4055 ]
-[s S491 . 1 `uc 1 RBIF 1 0 :1:0 
+[s S499 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INT0IF 1 0 :1:1 
 `uc 1 TMR0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
@@ -503,7 +505,7 @@ STOPMOTOR 2
 `uc 1 GIE_GIEH 1 0 :1:7 
 ]
 "6404
-[s S500 . 1 `uc 1 . 1 0 :1:0 
+[s S508 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 INT0F 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -512,12 +514,12 @@ STOPMOTOR 2
 `uc 1 PEIE 1 0 :1:6 
 `uc 1 GIE 1 0 :1:7 
 ]
-[s S509 . 1 `uc 1 . 1 0 :6:0 
+[s S517 . 1 `uc 1 . 1 0 :6:0 
 `uc 1 GIEL 1 0 :1:6 
 `uc 1 GIEH 1 0 :1:7 
 ]
-[u S513 . 1 `S491 1 . 1 0 `S500 1 . 1 0 `S509 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES513  1 e 1 @4082 ]
+[u S521 . 1 `S499 1 . 1 0 `S508 1 . 1 0 `S517 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES521  1 e 1 @4082 ]
 "7611
 [v _STOP STOP `VEb  1 e 0 @32316 ]
 "7629
@@ -568,10 +570,10 @@ STOPMOTOR 2
 [v _timeSinceLastTic timeSinceLastTic `VEd  1 s 3 timeSinceLastTic ]
 "16
 [v _test test `VEl  1 s 4 test ]
-"219 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"246 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"252
+"279
 } 0
 "174 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
 [v _mainMenu mainMenu `(v  1 e 1 0 ]
@@ -598,26 +600,30 @@ STOPMOTOR 2
 "112 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _packaging packaging `(v  1 e 1 0 ]
 {
-"127
+"129
 [v packaging@msg msg `[34]uc  1 a 34 0 ]
-"133
+"135
 [v packaging@msg2 msg2 `[32]uc  1 a 32 34 ]
+"136
+[v packaging@mult mult `i  1 a 2 72 ]
 "134
-[v packaging@mult mult `i  1 a 2 70 ]
-"132
-[v packaging@set set `*.32uc  1 a 2 68 ]
+[v packaging@set set `*.32uc  1 a 2 70 ]
 "113
-[v packaging@compartmentNum compartmentNum `i  1 a 2 66 ]
-"125
-[v packaging@F3205 F3205 `[34]uc  1 s 34 F3205 ]
-"142
+[v packaging@compartmentNum compartmentNum `i  1 a 2 68 ]
+"124
+[v packaging@instr instr `[2]uc  1 a 2 66 ]
+"123
+[v packaging@F3204 F3204 `[2]uc  1 s 2 F3204 ]
+"127
+[v packaging@F3206 F3206 `[34]uc  1 s 34 F3206 ]
+"144
 } 0
 "13 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\sprintf.c
 [v _sprintf sprintf `(i  1 e 2 0 ]
 {
-[s S1240 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
+[s S1248 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
 "29
-[v sprintf@pb pb `S1240  1 a 4 41 ]
+[v sprintf@pb pb `S1248  1 a 4 41 ]
 "28
 [v sprintf@ap ap `[1]*.39v  1 a 2 39 ]
 "13
@@ -628,9 +634,9 @@ STOPMOTOR 2
 "13 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\printf.c
 [v _printf printf `(i  1 e 2 0 ]
 {
-[s S1240 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
+[s S1248 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
 "21
-[v printf@pb pb `S1240  1 a 4 39 ]
+[v printf@pb pb `S1248  1 a 4 39 ]
 "15
 [v printf@ap ap `[1]*.39v  1 a 2 37 ]
 "13
@@ -650,9 +656,9 @@ STOPMOTOR 2
 [v __doprnt@c c `c  1 a 1 26 ]
 "508
 [v __doprnt@flag flag `uc  1 a 1 19 ]
-[s S1240 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
+[s S1248 __prbuf 4 `*.39uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
 "458
-[v __doprnt@pb pb `*.39S1240  1 p 2 9 ]
+[v __doprnt@pb pb `*.39S1248  1 p 2 9 ]
 [v __doprnt@f f `*.32Cuc  1 p 2 11 ]
 [v __doprnt@ap ap `*.39*.39v  1 p 2 13 ]
 "1541
@@ -667,62 +673,33 @@ STOPMOTOR 2
 [v ___llmod@divisor divisor `ul  1 p 4 4 ]
 "26
 } 0
-"23 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"25 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _packageCompartment packageCompartment `(v  1 e 1 0 ]
 {
 [v packageCompartment@b b `uc  1 a 1 wreg ]
-"34
-[v packageCompartment@currTime currTime `l  1 a 4 48 ]
-[v packageCompartment@timeW timeW `l  1 a 4 27 ]
-[v packageCompartment@timeS timeS `l  1 a 4 23 ]
-[v packageCompartment@timeN timeN `l  1 a 4 19 ]
-[v packageCompartment@timeB timeB `l  1 a 4 15 ]
-"33
-[v packageCompartment@doneW doneW `i  1 a 2 45 ]
-[v packageCompartment@doneS doneS `i  1 a 2 43 ]
-[v packageCompartment@doneN doneN `i  1 a 2 41 ]
-[v packageCompartment@doneB doneB `i  1 a 2 39 ]
-"32
-[v packageCompartment@numW numW `i  1 a 2 37 ]
-[v packageCompartment@numS numS `i  1 a 2 35 ]
-[v packageCompartment@numN numN `i  1 a 2 33 ]
-[v packageCompartment@numB numB `i  1 a 2 31 ]
 "36
-[v packageCompartment@resolution resolution `uc  1 a 1 47 ]
-"23
+[v packageCompartment@currTime currTime `d  1 a 3 53 ]
+[v packageCompartment@timeW timeW `d  1 a 3 34 ]
+[v packageCompartment@timeS timeS `d  1 a 3 31 ]
+[v packageCompartment@timeN timeN `d  1 a 3 28 ]
+[v packageCompartment@timeB timeB `d  1 a 3 25 ]
+"35
+[v packageCompartment@doneW doneW `i  1 a 2 51 ]
+[v packageCompartment@doneS doneS `i  1 a 2 49 ]
+[v packageCompartment@doneN doneN `i  1 a 2 47 ]
+[v packageCompartment@doneB doneB `i  1 a 2 45 ]
+"34
+[v packageCompartment@numW numW `i  1 a 2 43 ]
+[v packageCompartment@numS numS `i  1 a 2 41 ]
+[v packageCompartment@numN numN `i  1 a 2 39 ]
+[v packageCompartment@numB numB `i  1 a 2 37 ]
+"25
 [v packageCompartment@b b `uc  1 a 1 wreg ]
-[v packageCompartment@n n `uc  1 p 1 6 ]
-[v packageCompartment@s s `uc  1 p 1 7 ]
-[v packageCompartment@w w `uc  1 p 1 8 ]
-[v packageCompartment@b b `uc  1 a 1 14 ]
+[v packageCompartment@n n `uc  1 p 1 18 ]
+[v packageCompartment@s s `uc  1 p 1 19 ]
+[v packageCompartment@w w `uc  1 p 1 20 ]
+[v packageCompartment@b b `uc  1 a 1 24 ]
 "110
-} 0
-"56 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\timer.c
-[v _tock tock `(d  1 e 3 0 ]
-{
-"62
-} 0
-"47
-[v _tic tic `(v  1 e 1 0 ]
-{
-"54
-} 0
-"18
-[v _tmr0Init tmr0Init `(v  1 e 1 0 ]
-{
-"46
-} 0
-"44 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\fttol.c
-[v ___fttol __fttol `(l  1 e 4 0 ]
-{
-"47
-[v ___fttol@lval lval `ul  1 a 4 1 ]
-"46
-[v ___fttol@exp1 exp1 `uc  1 a 1 5 ]
-[v ___fttol@sign1 sign1 `uc  1 a 1 0 ]
-"44
-[v ___fttol@f1 f1 `f  1 p 3 41 ]
-"73
 } 0
 "30 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\menu.c
 [v _inputEntry inputEntry `(v  1 e 1 0 ]
@@ -848,14 +825,30 @@ STOPMOTOR 2
 [v pollKeypad@keypress keypress `uc  1 a 1 38 ]
 "81
 } 0
-"144 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"146 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _clearing clearing `(v  1 e 1 0 ]
 {
-"151
-[v clearing@i i `i  1 a 2 2 ]
-"152
-[v clearing@spinTime spinTime `i  1 a 2 0 ]
-"210
+"156
+[v clearing@currTime currTime `d  1 a 3 24 ]
+[v clearing@debounceTime debounceTime `d  1 a 3 21 ]
+"154
+[v clearing@spinTime spinTime `d  1 a 3 18 ]
+"237
+} 0
+"56 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\timer.c
+[v _tock tock `(d  1 e 3 0 ]
+{
+"62
+} 0
+"47
+[v _tic tic `(v  1 e 1 0 ]
+{
+"54
+} 0
+"18
+[v _tmr0Init tmr0Init `(v  1 e 1 0 ]
+{
+"46
 } 0
 "6 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\motors.c
 [v _motorControl motorControl `(v  1 e 1 0 ]
@@ -865,6 +858,33 @@ STOPMOTOR 2
 [v motorControl@dir dir `E2966  1 p 1 38 ]
 [v motorControl@motor motor `E2960  1 a 1 39 ]
 "59
+} 0
+"4 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftge.c
+[v ___ftge __ftge `(b  1 e 0 0 ]
+{
+[v ___ftge@ff1 ff1 `f  1 p 3 9 ]
+[v ___ftge@ff2 ff2 `f  1 p 3 12 ]
+"13
+} 0
+"86 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+{
+"88
+[v ___ftadd@exp1 exp1 `uc  1 a 1 8 ]
+[v ___ftadd@exp2 exp2 `uc  1 a 1 7 ]
+[v ___ftadd@sign sign `uc  1 a 1 6 ]
+"86
+[v ___ftadd@f1 f1 `f  1 p 3 0 ]
+[v ___ftadd@f2 f2 `f  1 p 3 3 ]
+"148
+} 0
+"62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+{
+[v ___ftpack@arg arg `um  1 p 3 38 ]
+[v ___ftpack@exp exp `uc  1 p 1 41 ]
+[v ___ftpack@sign sign `uc  1 p 1 42 ]
+"86
 } 0
 "83 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\helpers.c
 [v _I2C_Send I2C_Send `(v  1 e 1 0 ]
@@ -994,10 +1014,10 @@ STOPMOTOR 2
 [v ___lldiv@divisor divisor `ul  1 p 4 42 ]
 "31
 } 0
-"212 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
+"239 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 [v _interruptHandler interruptHandler `II(v  1 e 1 0 ]
 {
-"217
+"244
 } 0
 "86 C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\timer.c
 [v _tmr0_ISR tmr0_ISR `(v  1 e 1 0 ]
@@ -1005,22 +1025,20 @@ STOPMOTOR 2
 "92
 } 0
 "86 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\ftadd.c
-[v ___ftadd __ftadd `(f  1 e 3 0 ]
+[v i2___ftadd __ftadd `(f  1 e 3 0 ]
 {
-"88
-[v ___ftadd@exp1 exp1 `uc  1 a 1 19 ]
-[v ___ftadd@exp2 exp2 `uc  1 a 1 18 ]
-[v ___ftadd@sign sign `uc  1 a 1 17 ]
-"86
-[v ___ftadd@f1 f1 `f  1 p 3 8 ]
-[v ___ftadd@f2 f2 `f  1 p 3 11 ]
+[v i2___ftadd@exp1 __ftadd `uc  1 a 1 19 ]
+[v i2___ftadd@exp2 __ftadd `uc  1 a 1 18 ]
+[v i2___ftadd@sign __ftadd `uc  1 a 1 17 ]
+[v i2___ftadd@f1 f1 `f  1 p 3 8 ]
+[v i2___ftadd@f2 f2 `f  1 p 3 11 ]
 "148
 } 0
 "62 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\float.c
-[v ___ftpack __ftpack `(f  1 e 3 0 ]
+[v i2___ftpack __ftpack `(f  1 e 3 0 ]
 {
-[v ___ftpack@arg arg `um  1 p 3 0 ]
-[v ___ftpack@exp exp `uc  1 p 1 3 ]
-[v ___ftpack@sign sign `uc  1 p 1 4 ]
+[v i2___ftpack@arg arg `um  1 p 3 0 ]
+[v i2___ftpack@exp exp `uc  1 p 1 3 ]
+[v i2___ftpack@sign sign `uc  1 p 1 4 ]
 "86
 } 0

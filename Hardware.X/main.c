@@ -33,7 +33,7 @@ void packageCompartment(char b, char n, char s, char w) {
     
     int numB=0, numN=0, numS=0, numW=0;
     int doneB=0, doneN=0, doneS=0, doneW=0;
-    long currTime, timeB=0, timeN=0, timeS=0, timeW=0;
+    double currTime, timeB=0, timeN=0, timeS=0, timeW=0; // This was a long before?
     
     tic(); // Start the timer
     while (1) {
@@ -121,6 +121,8 @@ void packaging(void) {
     dispensed.w = 0;
     
     I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+    char instr[2] = {8, 0};
+    I2C_Send(nanoAddr, &instr); // Instruction to start box setting
     
     for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
         
@@ -149,7 +151,9 @@ void clearing(void) {
     I2C_Send(nanoAddr, 3); // Rotate Nema 17 359.5 deg CW, step micro servo over first dispensing bin
     
     int i;
-    int spinTime=100; // Change this in practice
+    double spinTime=20.0; // Change this in practice
+    long startTime;
+    double currTime, debounceTime=0;
     
     extras.b = 0;
     extras.n = 0;
@@ -159,52 +163,73 @@ void clearing(void) {
     tic(); // Initialize the debouncing timer
     
     motorControl(BOLT, FORWARD);
-    for (i = 0; i < spinTime; i++) {
-        // Every 25 milliseconds, check if a bolt is passed and count it
-        if (PORTAbits.RA0 == 0) {
+    while (extras.b + dispensed.b < maxSuppliedB) { // Make sure this doesn't miss one
+        currTime = tock();
+        if (PORTAbits.RA0 == 0 && currTime > debounceTime + debouncingResolution) {
+            debounceTime = currTime;
             extras.b++;
+            I2C_Send(nanoAddr, "\1Bolt counted\0");
         }
-        if (extras.b + dispensed.b == maxSuppliedB) break;
-        __delay_ms(25);
+        
+        if (currTime >= spinTime) break; // We've waited long enough
     }
     motorControl(BOLT, STOPMOTOR);
     
     I2C_Send(nanoAddr, 4); // Step micro servo over second dispensing bin
     __delay_ms(5000); // These delays should probably be a wait until complete message from the Arduino
     
+    tic();
+    debounceTime = 0;
     motorControl(NUT, FORWARD);
-    for (i = 0; i < spinTime; i++) {
-        if (PORTAbits.RA1 == 0) {
+    while (extras.n + dispensed.n < maxSuppliedN) {
+        currTime = tock();
+        if (PORTAbits.RA1 == 0 && currTime > debounceTime + debouncingResolution) {
+            debounceTime = currTime;
             extras.n++;
+            I2C_Send(nanoAddr, "\1Nut counted\0");
         }
-        if (extras.n + dispensed.n == maxSuppliedN) break;
-        __delay_ms(25);
+        
+        if (currTime >= spinTime) break;
     }
+    
     motorControl(NUT, STOPMOTOR);
     
     I2C_Send(nanoAddr, 5); // Step micro servo over third dispensing bin
     __delay_ms(5000);
     
+    tic();
+    debounceTime = 0;
     motorControl(SPACER, FORWARD);
-    for (i = 0; i < spinTime; i++) {
-        if (PORTAbits.RA2 == 0) {
+    while (extras.s + dispensed.s < maxSuppliedS) {
+        currTime = tock();
+        if (PORTAbits.RA2 == 0 && currTime > debounceTime + debouncingResolution) {
+            debounceTime = currTime;
             extras.s++;
+            I2C_Send(nanoAddr, "\1Spacer counted\0");
         }
-        if (extras.s + dispensed.s == maxSuppliedS) break;
-        __delay_ms(25);
-    }   
+        
+        if (currTime >= spinTime) break;
+    }
+
     motorControl(SPACER, STOPMOTOR);
     
     I2C_Send(nanoAddr, 6); // Step micro servo over fourth dispensing bin
     __delay_ms(5000);
     
+    tic();
+    debounceTime = 0;
     motorControl(WASHER, FORWARD);
-    for (i = 0; i < spinTime; i++) {
-        if (PORTAbits.RA3 == 0) {
+    while (extras.w + dispensed.w < maxSuppliedW) {
+        currTime = tock();
+        if (PORTAbits.RA3 == 0 && currTime > debounceTime + debouncingResolution) {
+            debounceTime = currTime;
             extras.w++;
+            I2C_Send(nanoAddr, "\1Washer counted\0");
         }
-        if (extras.w + dispensed.w == maxSuppliedW) break;
+        
+        if (currTime >= spinTime) break;
     }
+    
     motorControl(WASHER, STOP);
     
     I2C_Send(nanoAddr, 7); // Unset box

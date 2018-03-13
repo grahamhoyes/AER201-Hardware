@@ -4010,7 +4010,7 @@ typedef enum motorDirection {FORWARD, REVERSE, STOPMOTOR} motorDirection;
 
 void motorControl(fastenerType motor, motorDirection dir);
 
-# 23 "main.c"
+# 25 "main.c"
 void packageCompartment(char b, char n, char s, char w) {
 TRISA = 0xFF;
 
@@ -4022,16 +4022,14 @@ motorControl(WASHER, FORWARD);
 
 int numB=0, numN=0, numS=0, numW=0;
 int doneB=0, doneN=0, doneS=0, doneW=0;
-long currTime, timeB=0, timeN=0, timeS=0, timeW=0;
-
-char resolution = 2;
+double currTime, timeB=0, timeN=0, timeS=0, timeW=0;
 
 tic();
 while (1) {
 currTime = tock();
 
 # 52
-if (PORTAbits.RA0 == 0 && currTime > timeB + resolution) {
+if (PORTAbits.RA0 == 0 && currTime > timeB + 2) {
 timeB = currTime;
 numB++;
 dispensed.b++;
@@ -4039,7 +4037,7 @@ I2C_Send(nanoAddr, "\1Bolt Counted\0");
 }
 
 
-if (PORTAbits.RA1 == 0 && currTime > timeN + resolution) {
+if (PORTAbits.RA1 == 0 && currTime > timeN + 2) {
 timeN = currTime;
 numN++;
 dispensed.n++;
@@ -4047,7 +4045,7 @@ I2C_Send(nanoAddr, "\1Nut Counted\0");
 }
 
 
-if (PORTAbits.RA2 == 0 && currTime > timeS + resolution) {
+if (PORTAbits.RA2 == 0 && currTime > timeS + 2) {
 timeS = currTime;
 numS++;
 dispensed.s++;
@@ -4055,7 +4053,7 @@ I2C_Send(nanoAddr, "\1Spacer Counted\0");
 }
 
 
-if (PORTAbits.RA3 == 0 && currTime > timeW + resolution) {
+if (PORTAbits.RA3 == 0 && currTime > timeW + 2) {
 timeW = currTime;
 numW++;
 dispensed.w++;
@@ -4101,6 +4099,8 @@ dispensed.s = 0;
 dispensed.w = 0;
 
 I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+char instr[2] = {8, 0};
+I2C_Send(nanoAddr, &instr);
 
 for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
 
@@ -4123,64 +4123,89 @@ packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
 
 void clearing(void) {
 
-# 149
+# 151
 I2C_Send(nanoAddr, 3);
 
 int i;
-int spinTime=100;
+double spinTime=20.0;
+long startTime;
+double currTime, debounceTime=0;
 
 extras.b = 0;
 extras.n = 0;
 extras.s = 0;
 extras.w = 0;
 
-motorControl(BOLT, FORWARD);
-for (i = 0; i < spinTime; i++) {
+tic();
 
-if (PORTAbits.RA0 == 0) {
+motorControl(BOLT, FORWARD);
+while (extras.b + dispensed.b < 20) {
+currTime = tock();
+if (PORTAbits.RA0 == 0 && currTime > debounceTime + 2) {
+debounceTime = currTime;
 extras.b++;
+I2C_Send(nanoAddr, "\1Bolt counted\0");
 }
-if (extras.b + dispensed.b == 20) break;
-_delay((unsigned long)((25)*(40000000/4000.0)));
+
+if (currTime >= spinTime) break;
 }
 motorControl(BOLT, STOPMOTOR);
 
 I2C_Send(nanoAddr, 4);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
+tic();
+debounceTime = 0;
 motorControl(NUT, FORWARD);
-for (i = 0; i < spinTime; i++) {
-if (PORTAbits.RA1 == 0) {
+while (extras.n + dispensed.n < 25) {
+currTime = tock();
+if (PORTAbits.RA1 == 0 && currTime > debounceTime + 2) {
+debounceTime = currTime;
 extras.n++;
+I2C_Send(nanoAddr, "\1Nut counted\0");
 }
-if (extras.n + dispensed.n == 25) break;
-_delay((unsigned long)((25)*(40000000/4000.0)));
+
+if (currTime >= spinTime) break;
 }
+
 motorControl(NUT, STOPMOTOR);
 
 I2C_Send(nanoAddr, 5);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
+tic();
+debounceTime = 0;
 motorControl(SPACER, FORWARD);
-for (i = 0; i < spinTime; i++) {
-if (PORTAbits.RA2 == 0) {
+while (extras.s + dispensed.s < 20) {
+currTime = tock();
+if (PORTAbits.RA2 == 0 && currTime > debounceTime + 2) {
+debounceTime = currTime;
 extras.s++;
+I2C_Send(nanoAddr, "\1Spacer counted\0");
 }
-if (extras.s + dispensed.s == 20) break;
-_delay((unsigned long)((25)*(40000000/4000.0)));
+
+if (currTime >= spinTime) break;
 }
+
 motorControl(SPACER, STOPMOTOR);
 
 I2C_Send(nanoAddr, 6);
 _delay((unsigned long)((5000)*(40000000/4000.0)));
 
+tic();
+debounceTime = 0;
 motorControl(WASHER, FORWARD);
-for (i = 0; i < spinTime; i++) {
-if (PORTAbits.RA3 == 0) {
+while (extras.w + dispensed.w < 35) {
+currTime = tock();
+if (PORTAbits.RA3 == 0 && currTime > debounceTime + 2) {
+debounceTime = currTime;
 extras.w++;
+I2C_Send(nanoAddr, "\1Washer counted\0");
 }
-if (extras.w + dispensed.w == 35) break;
+
+if (currTime >= spinTime) break;
 }
+
 motorControl(WASHER, STOP);
 
 I2C_Send(nanoAddr, 7);
@@ -4196,7 +4221,7 @@ tmr0_ISR();
 
 void main(void) {
 
-# 224
+# 251
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;

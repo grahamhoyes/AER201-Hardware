@@ -5,6 +5,6 @@ Hardware.X/dist/
 Hardware.X/nbproject/
 Hardware.X/debug/
 Hardware.X/build/
-PCInterface.py
+PCinterface.py
 *.p1
 *.pre

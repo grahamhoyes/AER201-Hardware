@@ -1,11 +1,11 @@
 /* TODO 
 * IR reflection is on analog, need to calibrate
-* NEMA makes a ton of noise when stopped. Use A2 as nEnable
+* DCSpeedControl doesn't properly dim an LED, does weird stuff with servo when on D10
+*   Either Cam or Danial had some kind of issue like this, talk to them
+* Servo library disables PWM on 9 and 10 (servo on 10 still fine?)
 */
 
 #include <Wire.h>
-#include <Stepper.h>
-#include <AccelStepper.h>
 #include <Servo.h>
 #include "IR.h"
 
@@ -14,15 +14,12 @@
 #define NEMADirPin 7 // Direction the nema should go
 #define NEMAnEnablePin A2 // Active low enable for NEMA
 
-// 28BYJ Motor Pins
-#define motorPin1 3
-#define motorPin2 4
-#define motorPin3 5
-#define motorPin4 6
+#define nDonePin A3 // Low when the instruction completes
 
-#define DCSpeedPin 9 // PWM signal for controlling DC motor speeds
-int DCSpeed = 255;
-#define microServoPin 10 // PWM signal for micro servo
+#define DCSpeedPin 5 // PWM signal for controlling DC motor speeds
+//int DCSpeed = 102;
+int DCSpeed = 140;
+#define microServoPin 12 // PWM signal for micro servo
 
 // Setup the Micro Servo
 Servo microServo;
@@ -31,23 +28,22 @@ int microServoPos = 0;
 #define debugPin 13 // For the onboard LED
 #define MSPin A0 // Microswitch on A0. Not using anymore 
 #define IRSensorPin A1 // Reflective IR sensor pin on A1 (can make Analog if necessary this way)
-
-// Setup the 28BYJ stepper
-AccelStepper boxHoldingStepper(8, motorPin1, motorPin2, motorPin3, motorPin4);
+#define IRSensorThreshold 70 // Analog threshold for triggering things
 
 // Directions for NEMA
 #define CW 0
 #define CCW 1
 
 // Positions of bins for micro servo - exact values will need to change
-#define POS0 163 // Default position
+#define POS0 165 // Default position
 #define POS1 0
 #define POS2 30
-#define POS3 60
-#define POS4 90
+#define POS3 70
+#define POS4 110
 
 // Useful variables
 #define NEMASteps 2880 // NEMA has 200 steps/rev, 1/4 microstepping, 1:3.6 gearing. 200*4*3.6 = 2880
+//#define NEMASteps 1440
 int compartmentNum;
 int servoCurrPos = 0;
 
@@ -63,13 +59,12 @@ void setup() {
   pinMode(DCSpeedPin, OUTPUT); // PWM signal for controlling DC motor speeds
   pinMode(MSPin, INPUT);
   pinMode(IRSensorPin, INPUT);
+  pinMode(nDonePin, OUTPUT);
+  pinMode(4, OUTPUT);
+  digitalWrite(4, HIGH);
 
   digitalWrite(NEMAnEnablePin, HIGH); // Disable the stepper initially
-
-  // 28BYJ Setup
-  boxHoldingStepper.setMaxSpeed(100.0);
-  boxHoldingStepper.setAcceleration(100.0); // Set the max acceleration to 100 steps/sec^2
-  boxHoldingStepper.setSpeed(64.0); // Set the speed to 1 rev/second (64 steps/rev)
+  digitalWrite(nDonePin, HIGH);
 
   // Servo setup
   microServo.attach(microServoPin);
@@ -83,6 +78,14 @@ void setup() {
   analogWrite(DCSpeedPin, DCSpeed);
 
   receiver.enableIRIn();
+
+  setServoPos(POS1);
+}
+
+void doneSignal(void) {
+  digitalWrite(nDonePin, LOW);
+  delay(500);
+  digitalWrite(nDonePin, HIGH);  
 }
 
 void stepNEMA(int steps) {
@@ -97,11 +100,12 @@ void stepNEMA(int steps) {
 }
 
 void rotateNEMA(float deg) {
-  stepNEMA((int)NEMASteps/(360/deg));
+  stepNEMA((int)(NEMASteps/(360/deg)));
 }
 
 void boxSetting(void) {
-  digitalWrite(NEMADirPin, CCW); // Counter-clockwise
+  digitalWrite(nDonePin, HIGH);
+  digitalWrite(NEMADirPin, CW); // Counter-clockwise
 //  while(digitalRead(MSPin) == LOW) {
 //    /* While the microswitch hasn't detected the box lid, step the NEMA 17. */
 //    stepNEMA(1);
@@ -112,25 +116,37 @@ void boxSetting(void) {
 //    boxHoldingStepper.run(); // Perform 1 step
 //  }
 
-  rotateNEMA(720.0);
-  digitalWrite(NEMADirPin, CW); // Rotating clockwise now
-  rotateNEMA(45.0); // Rotate the box 45 deg
+  rotateNEMA(540.0);
+  //digitalWrite(NEMADirPin, CW); // Rotating clockwise now
+  //rotateNEMA(45.0); // Rotate the box 45 deg
 
-  while (digitalRead(IRSensorPin) == HIGH) { // Reflective IR goes low when triggered
+  Serial.println("Finding compartment 1");
+  int count = 0;
+  digitalWrite(NEMAnEnablePin, LOW); // Enable the motor controller
+  while (1) { // Reflective IR goes low when triggered
     /* Step the NEMA until the C1 white strip is detected */
-    stepNEMA(1);
+    //Serial.println(analogRead(IRSensorPin));
+    if (analogRead(IRSensorPin) >= IRSensorThreshold) {
+      count++;
+      if (count == 3) break; 
+    } else {
+      count = 0;  
+    }
+    digitalWrite(NEMAStepPin, HIGH);
+    delay(2);
+    digitalWrite(NEMAStepPin, LOW);
+    delay(2);
   }
-
+  digitalWrite(NEMAnEnablePin, HIGH); // Disable the motor controller
+  stepNEMA(280); // Proper alignment over compartment 8?
+  Serial.println("Compartment 1 found");
   compartmentNum = 8;
+  doneSignal();
 }
 
 void boxUnsetting(void) {
-  boxHoldingStepper.moveTo(0); // Return to initial holding position
-  while (boxHoldingStepper.distanceToGo() > 0) {
-    boxHoldingStepper.run(); // Perform 1 step  
-  }
-
-  microServo.write(POS0); // Reset micro servo to initial position
+  // Really this should start out of the way and move in at start
+  setServoPos(POS0); // Reset micro servo to initial position
 }
 
 void setServoPos(int pos) {
@@ -148,6 +164,7 @@ void setServoPos(int pos) {
   }
 
   servoCurrPos = pos;
+  doneSignal();
 }
 
 void receiveEvent(int numBytes) {
@@ -163,29 +180,35 @@ void receiveEvent(int numBytes) {
     }
     Serial.print("\n");
   } else if (x == 2) { // Instruction to rotate the NEMA17 45 deg CW
+    Serial.println("Received 2");
     digitalWrite(NEMADirPin, CW);
-    rotateNEMA(45.0);
+    rotateNEMA(46);
     Serial.println("Box stepped");
-    Serial.println("Rotated the stepper");
+    doneSignal();
   } else if (x == 3) { // Instruction to rotate the NEMA17 359.5 deg CW and step Micro Servo over first bin
-    digitalWrite(NEMADirPin, CW);
-    rotateNEMA(359.5); // This will get truncated down to 359 deg in reality
+    digitalWrite(NEMADirPin, CCW);
+    rotateNEMA(540); // This will get truncated down to 359 deg in reality
     Serial.println("Rotated the stepper");
-    microServo.write(POS1);
+    setServoPos(POS1);
+    doneSignal();
   } else if (x == 4) { // Instruction to step micro servo over second dispensing bin
-    microServo.write(POS2);
+    setServoPos(POS2);
     Serial.println("Servo over bin 2");
+    doneSignal();
   } else if (x == 5) { // Instruction to step micro servo over third dispensing bin
-    microServo.write(POS3);  
+    setServoPos(POS3);  
     Serial.println("Servo over bin 3");
+    doneSignal();
   } else if (x == 6) { // Instruction to step micro servo over fourth dispensing bin
-    microServo.write(POS4);  
+    setServoPos(POS4);  
     Serial.println("Servo over bin 4");
+    doneSignal();
   } else if (x == 7) { // Instruction to release the box and reset the micro servo
     boxUnsetting();
     Serial.println("Box removed");
   } else if (x == 8) { // Instruction to start box setting, because I forgot it earlier
     Serial.println("Box being set");
+    setServoPos(POS0);
     boxSetting();
     Serial.println("Box setting complete");
   } else {
@@ -198,6 +221,8 @@ void receiveEvent(int numBytes) {
   }
 }
 int nemaDir = CW;
+long last = millis();
+int stepsMade = 0;
 void loop() {
   if (receiver.decode(&output)) {
     unsigned int value = output.value;
@@ -210,7 +235,7 @@ void loop() {
         break;
       case one_key: // Step the box 45 deg
         Serial.println("One pressed: Box spun 45 deg");
-        rotateNEMA(45);
+        rotateNEMA(45.3);
         break;
       case two_key: // Cycle the micro servo position
         Serial.println("Two pressed: Servo moved");
@@ -232,13 +257,60 @@ void loop() {
         DCSpeed = (DCSpeed <= 245) ? DCSpeed + 10 : 255;
         Serial.println(DCSpeed);
         analogWrite(DCSpeedPin, DCSpeed);
+        break;
+      case four_key:
+        stepNEMA(1);
+        stepsMade = (nemaDir == CW) ? stepsMade + 1 : stepsMade - 1;
+        Serial.print("Nema stepped 1 step. Total ");
+        Serial.println(stepsMade);
+        break;
+      case five_key:
+        stepNEMA(5);
+        stepsMade = (nemaDir == CW) ? stepsMade + 5 : stepsMade - 5;
+        Serial.print("Nema stepped 5 steps. Total ");
+        Serial.println(stepsMade);
+        break;
+      case six_key:
+        stepNEMA(10);
+        stepsMade = (nemaDir == CW) ? stepsMade + 10 : stepsMade - 10;
+        Serial.print("Nema stepped 10 steps. Total ");
+        Serial.println(stepsMade);
+        break;
+      case seven_key:
+        stepNEMA(50);
+        stepsMade = (nemaDir == CW) ? stepsMade + 50 : stepsMade - 50;
+        Serial.print("Nema stepped 50 steps. Total ");
+        Serial.println(stepsMade);
+        break;
+      case eight_key:
+        stepNEMA(100);
+        stepsMade = (nemaDir == CW) ? stepsMade + 100 : stepsMade - 100;
+        Serial.print("Nema stepped 100 steps. Total ");
+        Serial.println(stepsMade);
+        break;
+      case nine_key:
+        stepNEMA(500);
+        stepsMade = (nemaDir == CW) ? stepsMade + 500 : stepsMade - 500;
+        Serial.print("Nema stepped 500 steps. Total ");
+        Serial.println(stepsMade);
+        break;
+      case play_key:
+        stepsMade=0;
+        Serial.println("Steps counter reset");
+        break;
+      case ch_key:
+        boxSetting();
+        break;
     }
-    //Serial.print("IR received: ");
-    //Serial.print(value);
-    //Serial.print("\n");
     value = 0;
     receiver.resume();
   }
+  /*
+  if (millis() > last + 2000) {
+    Serial.print("Analog IR Sensor: ");
+    Serial.println(analogRead(IRSensorPin));
+    last = millis();
+  }*/
 }
 
 

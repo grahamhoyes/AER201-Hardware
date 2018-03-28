@@ -11,7 +11,10 @@
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
 void RTC_startOperation(void);
-long RTC_getOperatingTime(void);
+int RTC_getOperatingTime(void);
+
+/* Macros */
+#define __bcd_to_num(num) (num & 0x0F) + ((num & 0xF0)>>4)*10
 
 #endif	/* RTC_H */
 

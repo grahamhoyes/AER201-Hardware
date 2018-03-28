@@ -20,9 +20,10 @@
 #include "timer.h"
 #include "motors.h"
 
-#define debouncingResolution 2
+#define debouncingResolution 1
 
 void packageCompartment(char b, char n, char s, char w) {
+    currentMode = PACKAGING;
     TRISA = 0xFF;
     
     // Activate all motors
@@ -49,7 +50,7 @@ void packageCompartment(char b, char n, char s, char w) {
         I2C_Send(nanoAddr, currTimeString);*/
         
         // Bolts
-        if (PORTAbits.RA0 == 0 && currTime > timeB + debouncingResolution) {
+        if (PORTAbits.RA3 == 0 && currTime > timeB + debouncingResolution) {
             timeB = currTime;
             numB++;
             dispensed.b++;
@@ -65,7 +66,7 @@ void packageCompartment(char b, char n, char s, char w) {
         }
         
         // Spacer
-        if (PORTAbits.RA2 == 0 && currTime > timeS + debouncingResolution) {
+        if (PORTAbits.RA0 == 0 && currTime > timeS + debouncingResolution) {
             timeS = currTime;
             numS++;
             dispensed.s++;
@@ -73,7 +74,7 @@ void packageCompartment(char b, char n, char s, char w) {
         }
         
         // Washer
-        if (PORTAbits.RA3 == 0 && currTime > timeW + debouncingResolution) {
+        if (PORTAbits.RA2 == 0 && currTime > timeW + debouncingResolution) {
             timeW = currTime;
             numW++;
             dispensed.w++;
@@ -103,10 +104,13 @@ void packageCompartment(char b, char n, char s, char w) {
             break;
         }
     }
+    I2C_Send(nanoAddr, "\1Out of the packaging loop\0");
+    __delay_ms(2000);
     //I2C_Send(nanoAddr, "Done\0");
     // Rotate Nema 17 45deg CW
-    I2C_Send(nanoAddr, 2); // We should actually wait until this completes, approx 4 * 50 ms * 200/8
-    __delay_ms(5000); // Yeah, we'll want to speed this up after testing
+    char instr[] = {2, 0};
+    I2C_Send(nanoAddr, instr);
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
 }
 
 void packaging(void) {
@@ -124,13 +128,21 @@ void packaging(void) {
     char instr[2] = {8, 0};
     I2C_Send(nanoAddr, &instr); // Instruction to start box setting
     
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until box setting is done
+    
     for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-        
         char msg[] = "\1Started packaging compartment x\0";
         msg[31] = compartmentNum + 48;
         I2C_Send(nanoAddr, msg);
         // This is the line that breaks things
-        if (params.toFill[compartmentNum-1] == 0) continue; // Skip compartments that are to be empty
+        if (params.toFill[compartmentNum-1] == 0) {
+            //I2C_Send(nanoAddr, "Done\0");
+            // Rotate Nema 17 45deg CW
+            char instr[] = {2, 0};
+            I2C_Send(nanoAddr, instr); // Move the stepper
+            while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
+            continue;
+        }; // Skip compartments that are to be empty
         char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
         char msg2[32];
         int mult = params.setMultiple[compartmentNum - 1];
@@ -140,18 +152,26 @@ void packaging(void) {
         __lcd_home();
         printf("Compartment %d", compartmentNum);
         packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+        char msg3[50];
+        sprintf(msg3, "\1Finished packaging compartment %d\0", compartmentNum);
+        I2C_Send(nanoAddr, msg3);
+        currentMode = WAITING;
+        __delay_ms(10);
     }
 }
 
 void clearing(void) {
+    currentMode = WAITING;
     /* This function involves a lot of coordination between the PIC and 
      * Arduino. For now, we're keeping track of how long motor operations
      * on the Arduino take, and delaying for the appropriate time here.*/
     
-    I2C_Send(nanoAddr, 3); // Rotate Nema 17 359.5 deg CW, step micro servo over first dispensing bin
+    char instr[] = {3, 0};
+    I2C_Send(nanoAddr, instr); // Rotate Nema 17 359.5 deg CW, step micro servo over first dispensing bin
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
     
     int i;
-    double spinTime=20.0; // Change this in practice
+    double spinTime=15.0; // Change this in practice
     long startTime;
     double currTime, debounceTime=0;
     
@@ -162,10 +182,11 @@ void clearing(void) {
     
     tic(); // Initialize the debouncing timer
     
+    currentMode = CLEARING;
     motorControl(BOLT, FORWARD);
     while (extras.b + dispensed.b < maxSuppliedB) { // Make sure this doesn't miss one
         currTime = tock();
-        if (PORTAbits.RA0 == 0 && currTime > debounceTime + debouncingResolution) {
+        if (PORTAbits.RA3 == 0 && currTime > debounceTime + debouncingResolution) {
             debounceTime = currTime;
             extras.b++;
             I2C_Send(nanoAddr, "\1Bolt counted\0");
@@ -174,12 +195,15 @@ void clearing(void) {
         if (currTime >= spinTime) break; // We've waited long enough
     }
     motorControl(BOLT, STOPMOTOR);
+    currentMode = WAITING;
     
-    I2C_Send(nanoAddr, 4); // Step micro servo over second dispensing bin
-    __delay_ms(5000); // These delays should probably be a wait until complete message from the Arduino
+    instr[0] = 4;
+    I2C_Send(nanoAddr, instr); // Step micro servo over second dispensing bin
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
     
     tic();
     debounceTime = 0;
+    currentMode = CLEARING;
     motorControl(NUT, FORWARD);
     while (extras.n + dispensed.n < maxSuppliedN) {
         currTime = tock();
@@ -193,16 +217,19 @@ void clearing(void) {
     }
     
     motorControl(NUT, STOPMOTOR);
+    currentMode = WAITING;
     
-    I2C_Send(nanoAddr, 5); // Step micro servo over third dispensing bin
-    __delay_ms(5000);
+    instr[0] = 5;
+    I2C_Send(nanoAddr, instr); // Step micro servo over third dispensing bin
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
     
     tic();
     debounceTime = 0;
+    currentMode = CLEARING;
     motorControl(SPACER, FORWARD);
     while (extras.s + dispensed.s < maxSuppliedS) {
         currTime = tock();
-        if (PORTAbits.RA2 == 0 && currTime > debounceTime + debouncingResolution) {
+        if (PORTAbits.RA0 == 0 && currTime > debounceTime + debouncingResolution) {
             debounceTime = currTime;
             extras.s++;
             I2C_Send(nanoAddr, "\1Spacer counted\0");
@@ -212,16 +239,19 @@ void clearing(void) {
     }
 
     motorControl(SPACER, STOPMOTOR);
+    currentMode = WAITING;
     
-    I2C_Send(nanoAddr, 6); // Step micro servo over fourth dispensing bin
-    __delay_ms(5000);
+    instr[0] = 6;
+    I2C_Send(nanoAddr, instr); // Step micro servo over fourth dispensing bin
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
     
     tic();
     debounceTime = 0;
+    currentMode = CLEARING;
     motorControl(WASHER, FORWARD);
     while (extras.w + dispensed.w < maxSuppliedW) {
         currTime = tock();
-        if (PORTAbits.RA3 == 0 && currTime > debounceTime + debouncingResolution) {
+        if (PORTAbits.RA2 == 0 && currTime > debounceTime + debouncingResolution) {
             debounceTime = currTime;
             extras.w++;
             I2C_Send(nanoAddr, "\1Washer counted\0");
@@ -230,9 +260,12 @@ void clearing(void) {
         if (currTime >= spinTime) break;
     }
     
-    motorControl(WASHER, STOP);
+    motorControl(WASHER, STOPMOTOR);
+    currentMode = WAITING;
     
-    I2C_Send(nanoAddr, 7); // Unset box
+    instr[0] = 7;
+    I2C_Send(nanoAddr, instr); // Unset box
+    while (PORTAbits.RA5 == 1) {continue;} // Wait until complete
     // Retract 28BYJ stepper and DC motor holding box down
 }
 
@@ -266,14 +299,38 @@ void main(void) {
     // </editor-fold>
     
     I2C_Master_Init(100000); // Start I2C with a 100khz clock
-    
+    tmr0Init();
     initLCD();
     
     __lcd_clear();
     __lcd_home();
+
+    /* Make sure all motors are stopped initially */
+    motorControl(BOLT, STOPMOTOR);
+    motorControl(NUT, STOPMOTOR);
+    motorControl(SPACER, STOPMOTOR);
+    motorControl(WASHER, STOPMOTOR);
+    
+//    currentMode = PACKAGING;
+//    motorControl(BOLT, FORWARD);
+//    motorControl(NUT, FORWARD);
+//    motorControl(SPACER, FORWARD); // This triggers spacers and washers
+//    motorControl(WASHER, FORWARD);
+//    while(1);
     
     hibernate();
     mainMenu();
-    //printf("\1Counting");
-    //packageCompartment(4, 4, 4, 4);
+    while(1);
+    //    while (1) {
+//        motorControl(BOLT, FORWARD);
+//        motorControl(SPACER, FORWARD);
+//        motorControl(NUT, FORWARD);
+//        motorControl(WASHER, FORWARD);
+//        __delay_ms(2600);
+//        motorControl(BOLT, REVERSE);
+//        motorControl(SPACER, REVERSE);
+//        motorControl(NUT, REVERSE);
+//        motorControl(WASHER, REVERSE);
+//        __delay_ms(400);
+//    }
 }

@@ -7,6 +7,12 @@
 
 #ifndef HARDWARE_H
 #define	HARDWARE_H
+/* Operating modes 
+ * These weren't implemented early enough to be used everywhere, but they are useful in interrupt handlers
+ */
+typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+int currentMode = MENU;
+
 /* Fastener sets */
 typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11, 
                 BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,

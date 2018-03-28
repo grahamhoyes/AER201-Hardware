@@ -1,16 +1,22 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"23 hardware.h
-[c E1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E1 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
-"19
-[s S1 `i 1 `E1 -> 8 `i `i -> 8 `i ]
-[n S1 inputParams steps toFill setMultiple ]
+"14 hardware.h
+[c E1 0 1 2 3 4 .. ]
+[n E1 operatingMode MENU LOGS PACKAGING CLEARING WAITING  ]
+"29
+[c E9 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E9 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "25
+[s S1 `i 1 `E9 -> 8 `i `i -> 8 `i ]
+[n S1 inputParams steps toFill setMultiple ]
+"31
 [s S2 `i 1 `i 1 `i 1 `i 1 ]
 [n S2 amounts b n s w ]
-"54
+"60
 [s S3 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S3 errorMessages badEntry tooManyFasteners tooManyBolts tooManyNuts tooManyWashers tooManySpacers noFasteners ]
+"12 RTC.c
+[s S268 `i 1 `i 1 `i 1 ]
+[n S268 time h m s ]
 "25 I2C.h
 [v _I2C_Master_Start `(v ~T0 @X0 0 ef ]
 "28
@@ -19,12 +25,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _I2C_Master_Stop `(v ~T0 @X0 0 ef ]
 "29
 [v _I2C_Master_Read `(uc ~T0 @X0 0 ef1`uc ]
-[; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
-[; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
-[; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
-[v F25 `uc ~T0 @X0 -> 5 `i t ]
-"15 hardware.h
-[v _fSLookup `F25 ~T0 @X0 -> 21 `i e ]
+[; ;hardware.h: 13: typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+"14 hardware.h
+[v _currentMode `i ~T0 @X0 1 e ]
+[i _currentMode
+-> . `E1 0 `i
+]
+[; ;hardware.h: 14: int currentMode = MENU;
+[; ;hardware.h: 17: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+[; ;hardware.h: 18: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+[; ;hardware.h: 19: BNNN=19, BWWW=20} fS;
+[v F33 `uc ~T0 @X0 -> 5 `i t ]
+"21
+[v _fSLookup `F33 ~T0 @X0 -> 21 `i e ]
 [i _fSLookup
 :U ..
 :U ..
@@ -152,28 +165,28 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 15: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
-[; ;hardware.h: 16: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
-[; ;hardware.h: 17: "BNNN", "BWWW"};
-"23
+[; ;hardware.h: 21: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+[; ;hardware.h: 22: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+[; ;hardware.h: 23: "BNNN", "BWWW"};
+"29
 [v _params `S1 ~T0 @X0 1 e ]
-[; ;hardware.h: 19: struct inputParams{
-[; ;hardware.h: 20: int steps;
-[; ;hardware.h: 21: fS toFill[8];
-[; ;hardware.h: 22: int setMultiple[8];
-[; ;hardware.h: 23: } params;
-"30
+[; ;hardware.h: 25: struct inputParams{
+[; ;hardware.h: 26: int steps;
+[; ;hardware.h: 27: fS toFill[8];
+[; ;hardware.h: 28: int setMultiple[8];
+[; ;hardware.h: 29: } params;
+"36
 [v _extras `S2 ~T0 @X0 1 e ]
 [v _dispensed `S2 ~T0 @X0 1 e ]
-[; ;hardware.h: 25: struct amounts {
-[; ;hardware.h: 26: int b;
-[; ;hardware.h: 27: int n;
-[; ;hardware.h: 28: int s;
-[; ;hardware.h: 29: int w;
-[; ;hardware.h: 30: } extras, dispensed;
-[v F39 `Cuc ~T0 @X0 -> 33 `i t ]
-"45
-[v _inputEntryQuestions `F39 ~T0 @X0 -> 4 `i e ]
+[; ;hardware.h: 31: struct amounts {
+[; ;hardware.h: 32: int b;
+[; ;hardware.h: 33: int n;
+[; ;hardware.h: 34: int s;
+[; ;hardware.h: 35: int w;
+[; ;hardware.h: 36: } extras, dispensed;
+[v F47 `Cuc ~T0 @X0 -> 33 `i t ]
+"51
+[v _inputEntryQuestions `F47 ~T0 @X0 -> 4 `i e ]
 [i _inputEntryQuestions
 :U ..
 :U ..
@@ -309,13 +322,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 45: const char inputEntryQuestions[4][33] = {
-[; ;hardware.h: 46: "Assembly steps\n" "*<-  (4-8)     \0",
-[; ;hardware.h: 47: "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
-[; ;hardware.h: 48: "How many sets?\n" "*<-  (1-4)     \0",
-[; ;hardware.h: 49: "Confirm?\n" "*<-  (A:Y/B:N) \0"
-[; ;hardware.h: 50: };
-"52
+[; ;hardware.h: 51: const char inputEntryQuestions[4][33] = {
+[; ;hardware.h: 52: "Assembly steps\n" "*<-  (4-8)     \0",
+[; ;hardware.h: 53: "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
+[; ;hardware.h: 54: "How many sets?\n" "*<-  (1-4)     \0",
+[; ;hardware.h: 55: "Confirm?\n" "*<-  (A:Y/B:N) \0"
+[; ;hardware.h: 56: };
+"58
 [v _LCDMenuIcons `Cuc ~T0 @X0 -> 16 `i e ]
 [i _LCDMenuIcons
 :U ..
@@ -337,8 +350,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[; ;hardware.h: 52: const char LCDMenuIcons[16] = "*<-   ( - )    \0";
-"62
+[; ;hardware.h: 58: const char LCDMenuIcons[16] = "*<-   ( - )    \0";
+"68
 [v _errMsgs `CS3 ~T0 @X0 1 e ]
 [i _errMsgs
 :U ..
@@ -502,75 +515,33 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 54: const struct errorMessages {
-[; ;hardware.h: 55: const char badEntry[32];
-[; ;hardware.h: 56: const char tooManyFasteners[32];
-[; ;hardware.h: 57: const char tooManyBolts[32];
-[; ;hardware.h: 58: const char tooManyNuts[32];
-[; ;hardware.h: 59: const char tooManyWashers[32];
-[; ;hardware.h: 60: const char tooManySpacers[32];
-[; ;hardware.h: 61: const char noFasteners[32];
-[; ;hardware.h: 62: } errMsgs = {
-[; ;hardware.h: 63: "Invalid entry\nPlease try again\0",
-[; ;hardware.h: 64: "Too many fasteners\0",
-[; ;hardware.h: 65: "Too many bolts\0",
-[; ;hardware.h: 66: "Too many nuts\0",
-[; ;hardware.h: 67: "Too many washers\0",
-[; ;hardware.h: 68: "Too many spacers\0",
-[; ;hardware.h: 69: "No fasteners selected\0"
-[; ;hardware.h: 70: };
-[v F51 `Cuc ~T0 @X0 -> 4 `i t ]
-"72
-[v _fastenerMatrix `F51 ~T0 @X0 -> 21 `i e ]
+[; ;hardware.h: 60: const struct errorMessages {
+[; ;hardware.h: 61: const char badEntry[32];
+[; ;hardware.h: 62: const char tooManyFasteners[32];
+[; ;hardware.h: 63: const char tooManyBolts[32];
+[; ;hardware.h: 64: const char tooManyNuts[32];
+[; ;hardware.h: 65: const char tooManyWashers[32];
+[; ;hardware.h: 66: const char tooManySpacers[32];
+[; ;hardware.h: 67: const char noFasteners[32];
+[; ;hardware.h: 68: } errMsgs = {
+[; ;hardware.h: 69: "Invalid entry\nPlease try again\0",
+[; ;hardware.h: 70: "Too many fasteners\0",
+[; ;hardware.h: 71: "Too many bolts\0",
+[; ;hardware.h: 72: "Too many nuts\0",
+[; ;hardware.h: 73: "Too many washers\0",
+[; ;hardware.h: 74: "Too many spacers\0",
+[; ;hardware.h: 75: "No fasteners selected\0"
+[; ;hardware.h: 76: };
+[v F59 `Cuc ~T0 @X0 -> 4 `i t ]
+"78
+[v _fastenerMatrix `F59 ~T0 @X0 -> 21 `i e ]
 [i _fastenerMatrix
 :U ..
 :U ..
-"73
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"74
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"75
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"76
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"77
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"78
--> -> 1 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
 "79
--> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
@@ -578,25 +549,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "81
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
 "82
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
 "83
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
@@ -606,46 +577,46 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "85
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "86
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
--> -> 2 `i `uc
+-> -> 1 `i `uc
 ..
 :U ..
 "87
--> -> 1 `i `uc
+-> -> 2 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 2 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "88
--> -> 1 `i `uc
+-> -> 2 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
--> -> 2 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "89
 -> -> 2 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
 "90
--> -> 2 `i `uc
+-> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
@@ -653,19 +624,61 @@ Version 3.2 HI-TECH Software Intermediate Code
 :U ..
 "91
 -> -> 1 `i `uc
--> -> 2 `i `uc
 -> -> 0 `i `uc
+-> -> 1 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
 "92
 -> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 0 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"93
+-> -> 1 `i `uc
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"94
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"95
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"96
+-> -> 2 `i `uc
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"97
+-> -> 1 `i `uc
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"98
+-> -> 1 `i `uc
 -> -> 3 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"93
+"99
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
@@ -673,55 +686,55 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 72: const char fastenerMatrix[21][4] = {
-[; ;hardware.h: 73: {0,0,0,0},
-[; ;hardware.h: 74: {1,0,0,0},
-[; ;hardware.h: 75: {0,1,0,0},
-[; ;hardware.h: 76: {0,0,1,0},
-[; ;hardware.h: 77: {0,0,0,1},
-[; ;hardware.h: 78: {1,1,0,0},
-[; ;hardware.h: 79: {1,0,1,0},
-[; ;hardware.h: 80: {1,0,0,1},
-[; ;hardware.h: 81: {2,1,0,0},
-[; ;hardware.h: 82: {2,0,1,0},
-[; ;hardware.h: 83: {2,0,0,1},
-[; ;hardware.h: 84: {1,1,0,1},
-[; ;hardware.h: 85: {1,0,1,1},
-[; ;hardware.h: 86: {1,0,0,2},
-[; ;hardware.h: 87: {1,1,0,2},
-[; ;hardware.h: 88: {1,0,1,2},
-[; ;hardware.h: 89: {2,0,1,1},
-[; ;hardware.h: 90: {2,1,0,1},
-[; ;hardware.h: 91: {1,2,0,1},
-[; ;hardware.h: 92: {1,3,0,0},
-[; ;hardware.h: 93: {1,0,0,3}
-[; ;hardware.h: 94: };
-"97
+[; ;hardware.h: 78: const char fastenerMatrix[21][4] = {
+[; ;hardware.h: 79: {0,0,0,0},
+[; ;hardware.h: 80: {1,0,0,0},
+[; ;hardware.h: 81: {0,1,0,0},
+[; ;hardware.h: 82: {0,0,1,0},
+[; ;hardware.h: 83: {0,0,0,1},
+[; ;hardware.h: 84: {1,1,0,0},
+[; ;hardware.h: 85: {1,0,1,0},
+[; ;hardware.h: 86: {1,0,0,1},
+[; ;hardware.h: 87: {2,1,0,0},
+[; ;hardware.h: 88: {2,0,1,0},
+[; ;hardware.h: 89: {2,0,0,1},
+[; ;hardware.h: 90: {1,1,0,1},
+[; ;hardware.h: 91: {1,0,1,1},
+[; ;hardware.h: 92: {1,0,0,2},
+[; ;hardware.h: 93: {1,1,0,2},
+[; ;hardware.h: 94: {1,0,1,2},
+[; ;hardware.h: 95: {2,0,1,1},
+[; ;hardware.h: 96: {2,1,0,1},
+[; ;hardware.h: 97: {1,2,0,1},
+[; ;hardware.h: 98: {1,3,0,0},
+[; ;hardware.h: 99: {1,0,0,3}
+[; ;hardware.h: 100: };
+"103
 [v _assemblyStepEncoding `Cuc ~T0 @X0 -> 5 `i e ]
 [i _assemblyStepEncoding
 :U ..
-"100
+"106
 -> -> 85 `i `uc
-"101
+"107
 -> -> 91 `i `uc
-"102
+"108
 -> -> 119 `i `uc
-"103
+"109
 -> -> 127 `i `uc
-"105
+"111
 -> -> 255 `i `uc
 ..
 ]
-[; ;hardware.h: 97: const char assemblyStepEncoding[5] = {
-[; ;hardware.h: 100: 0b01010101,
-[; ;hardware.h: 101: 0b01011011,
-[; ;hardware.h: 102: 0b01110111,
-[; ;hardware.h: 103: 0b01111111,
-[; ;hardware.h: 104: 0b11111111
-[; ;hardware.h: 105: };
-[; ;hardware.h: 108: void packageCompartment(char b, char n, char s, char w);
-[; ;hardware.h: 109: void packaging(void);
-[; ;hardware.h: 110: void clearing(void);
+[; ;hardware.h: 103: const char assemblyStepEncoding[5] = {
+[; ;hardware.h: 106: 0b01010101,
+[; ;hardware.h: 107: 0b01011011,
+[; ;hardware.h: 108: 0b01110111,
+[; ;hardware.h: 109: 0b01111111,
+[; ;hardware.h: 110: 0b11111111
+[; ;hardware.h: 111: };
+[; ;hardware.h: 114: void packageCompartment(char b, char n, char s, char w);
+[; ;hardware.h: 115: void packaging(void);
+[; ;hardware.h: 116: void clearing(void);
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -3486,125 +3499,169 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
 [; ;RTC.h: 12: long RTC_getSeconds(void);
 [; ;RTC.h: 13: void RTC_startOperation(void);
-[; ;RTC.h: 14: long RTC_getOperatingTime(void);
-"12 RTC.c
+[; ;RTC.h: 14: int RTC_getOperatingTime(void);
+[; ;RTC.c: 12: typedef struct time {
+[; ;RTC.c: 13: int h;
+[; ;RTC.c: 14: int m;
+[; ;RTC.c: 15: int s;
+[; ;RTC.c: 16: } Time;
+"18 RTC.c
 [v _operatingTime `l ~T0 @X0 1 s ]
-[; ;RTC.c: 12: static long operatingTime;
-"13
-[v _startTime `l ~T0 @X0 1 s ]
-[; ;RTC.c: 13: static long startTime;
-"14
-[v _endTime `l ~T0 @X0 1 s ]
-[; ;RTC.c: 14: static long endTime;
-"16
+[; ;RTC.c: 18: static long operatingTime;
+"19
+[v _startTime `S268 ~T0 @X0 1 s ]
+[; ;RTC.c: 19: static Time startTime;
+"20
+[v _endTime `S268 ~T0 @X0 1 s ]
+[; ;RTC.c: 20: static Time endTime;
+"22
 [v _RTC_getTime `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;RTC.c: 16: void RTC_getTime(unsigned char * time) {
+[; ;RTC.c: 22: void RTC_getTime(unsigned char * time) {
 [e :U _RTC_getTime ]
 [v _time `*uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;RTC.c: 18: I2C_Master_Start();
-"18
-[e ( _I2C_Master_Start ..  ]
-[; ;RTC.c: 19: I2C_Master_Write(0b11010000);
-"19
-[e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
-[; ;RTC.c: 20: I2C_Master_Write(0x00);
-"20
-[e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
-[; ;RTC.c: 21: I2C_Master_Stop();
-"21
-[e ( _I2C_Master_Stop ..  ]
+[; ;RTC.c: 24: I2C_Master_Start();
 "24
-[v _i `uc ~T0 @X0 1 a ]
-[; ;RTC.c: 24: char i;
-[; ;RTC.c: 26: I2C_Master_Start();
-"26
 [e ( _I2C_Master_Start ..  ]
-[; ;RTC.c: 27: I2C_Master_Write(0b11010001);
+[; ;RTC.c: 25: I2C_Master_Write(0b11010000);
+"25
+[e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
+[; ;RTC.c: 26: I2C_Master_Write(0x00);
+"26
+[e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
+[; ;RTC.c: 27: I2C_Master_Stop();
 "27
+[e ( _I2C_Master_Stop ..  ]
+"30
+[v _i `uc ~T0 @X0 1 a ]
+[; ;RTC.c: 30: char i;
+[; ;RTC.c: 32: I2C_Master_Start();
+"32
+[e ( _I2C_Master_Start ..  ]
+[; ;RTC.c: 33: I2C_Master_Write(0b11010001);
+"33
 [e ( _I2C_Master_Write (1 -> -> 209 `i `ui ]
-[; ;RTC.c: 29: for (i = 0; i < 6; i++) {
-"29
+[; ;RTC.c: 35: for (i = 0; i < 6; i++) {
+"35
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 6 `i 269  ]
-[e $U 270  ]
-[e :U 269 ]
-{
-[; ;RTC.c: 30: time[i] = I2C_Master_Read(0);
-"30
-[e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
-"31
-}
-"29
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 6 `i 269  ]
+[e $ < -> _i `i -> 6 `i 270  ]
+[e $U 271  ]
 [e :U 270 ]
-"31
-}
-[; ;RTC.c: 31: }
-[; ;RTC.c: 32: time[6] = I2C_Master_Read(1);
-"32
-[e = *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
-[; ;RTC.c: 33: I2C_Master_Stop();
-"33
-[e ( _I2C_Master_Stop ..  ]
-[; ;RTC.c: 34: }
-"34
-[e :UE 268 ]
-}
+{
+[; ;RTC.c: 36: time[i] = I2C_Master_Read(0);
 "36
+[e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
+"37
+}
+"35
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 270  ]
+[e :U 271 ]
+"37
+}
+[; ;RTC.c: 37: }
+[; ;RTC.c: 38: time[6] = I2C_Master_Read(1);
+"38
+[e = *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
+[; ;RTC.c: 39: I2C_Master_Stop();
+"39
+[e ( _I2C_Master_Stop ..  ]
+[; ;RTC.c: 40: }
+"40
+[e :UE 269 ]
+}
+"42
 [v _RTC_getSeconds `(l ~T0 @X0 1 ef ]
 {
-[; ;RTC.c: 36: long RTC_getSeconds(void) {
+[; ;RTC.c: 42: long RTC_getSeconds(void) {
 [e :U _RTC_getSeconds ]
 [f ]
-"40
+"46
 [v _time `uc ~T0 @X0 -> 7 `i a ]
-[; ;RTC.c: 40: unsigned char time[7];
-[; ;RTC.c: 41: RTC_getTime(time);
-"41
-[e ( _RTC_getTime (1 &U _time ]
-"43
-[v _seconds `l ~T0 @X0 1 a ]
-[; ;RTC.c: 43: long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
-[e = _seconds -> + + + -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i * -> 60 `i -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * -> 60 `i -> 60 `i -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i * * * -> 60 `i -> 60 `i -> 24 `i -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i `l ]
-[; ;RTC.c: 44: return seconds;
-"44
-[e ) _seconds ]
-[e $UE 272  ]
-[; ;RTC.c: 45: }
-"45
-[e :UE 272 ]
-}
+[; ;RTC.c: 46: char time[7];
+[; ;RTC.c: 47: RTC_getTime(time);
 "47
-[v _RTC_startOperation `(v ~T0 @X0 1 ef ]
-{
-[; ;RTC.c: 47: void RTC_startOperation(void) {
-[e :U _RTC_startOperation ]
-[f ]
-[; ;RTC.c: 49: startTime = RTC_getSeconds();
+[e ( _RTC_getTime (1 &U _time ]
 "49
-[e = _startTime ( _RTC_getSeconds ..  ]
-[; ;RTC.c: 50: }
-"50
+[v _seconds `l ~T0 @X0 1 a ]
+[; ;RTC.c: 49: long seconds = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10 + 60*(time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10 + 60*60*(time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+[e = _seconds -> + + + + + & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i * -> 60 `i & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i * * -> 60 `i -> 60 `i & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i `l ]
+[; ;RTC.c: 52: return seconds;
+"52
+[e ) _seconds ]
+[e $UE 273  ]
+[; ;RTC.c: 53: }
+"53
 [e :UE 273 ]
 }
-"52
-[v _RTC_getOperatingTime `(l ~T0 @X0 1 ef ]
+"55
+[v _RTC_startOperation `(v ~T0 @X0 1 ef ]
 {
-[; ;RTC.c: 52: long RTC_getOperatingTime(void) {
+[; ;RTC.c: 55: void RTC_startOperation(void) {
+[e :U _RTC_startOperation ]
+[f ]
+"57
+[v _time `uc ~T0 @X0 -> 7 `i a ]
+[; ;RTC.c: 57: char time[7];
+[; ;RTC.c: 58: RTC_getTime(time);
+"58
+[e ( _RTC_getTime (1 &U _time ]
+[; ;RTC.c: 59: startTime.h = (time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+"59
+[e = . _startTime 0 + & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[; ;RTC.c: 60: startTime.m = (time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10;
+"60
+[e = . _startTime 1 + & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[; ;RTC.c: 61: startTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
+"61
+[e = . _startTime 2 + & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[; ;RTC.c: 62: }
+"62
+[e :UE 274 ]
+}
+"64
+[v _RTC_getOperatingTime `(i ~T0 @X0 1 ef ]
+{
+[; ;RTC.c: 64: int RTC_getOperatingTime(void) {
 [e :U _RTC_getOperatingTime ]
 [f ]
-[; ;RTC.c: 54: endTime = RTC_getSeconds();
-"54
-[e = _endTime ( _RTC_getSeconds ..  ]
-[; ;RTC.c: 55: return endTime - startTime;
-"55
-[e ) - _endTime _startTime ]
-[e $UE 274  ]
-[; ;RTC.c: 56: }
-"56
-[e :UE 274 ]
+"66
+[v _time `uc ~T0 @X0 -> 7 `i a ]
+[; ;RTC.c: 66: char time[7];
+[; ;RTC.c: 67: RTC_getTime(time);
+"67
+[e ( _RTC_getTime (1 &U _time ]
+[; ;RTC.c: 68: endTime.h = (time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+"68
+[e = . _endTime 0 + & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[; ;RTC.c: 69: endTime.m = (time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10;
+"69
+[e = . _endTime 1 + & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[; ;RTC.c: 70: endTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
+"70
+[e = . _endTime 2 + & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
+[v _operatingTime `S268 ~T0 @X0 1 a ]
+[; ;RTC.c: 72: Time operatingTime;
+[; ;RTC.c: 73: operatingTime.h = endTime.h - startTime.h;
+"73
+[e = . _operatingTime 0 - . _endTime 0 . _startTime 0 ]
+[; ;RTC.c: 74: operatingTime.m = endTime.m - startTime.m;
+"74
+[e = . _operatingTime 1 - . _endTime 1 . _startTime 1 ]
+[; ;RTC.c: 75: operatingTime.s = endTime.s - startTime.s;
+"75
+[e = . _operatingTime 2 - . _endTime 2 . _startTime 2 ]
+"77
+[v _res `i ~T0 @X0 1 a ]
+[; ;RTC.c: 77: int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
+[e = _res + + * * -> 60 `i -> 60 `i . _operatingTime 0 * -> 60 `i . _operatingTime 1 . _operatingTime 2 ]
+[; ;RTC.c: 78: return res;
+"78
+[e ) _res ]
+[e $UE 275  ]
+[; ;RTC.c: 79: }
+"79
+[e :UE 275 ]
 }

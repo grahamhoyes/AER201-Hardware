@@ -1,28 +1,35 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"23 hardware.h
-[c E3088 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E3088 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
-"19
-[s S266 `i 1 `E3088 -> 8 `i `i -> 8 `i ]
-[n S266 inputParams steps toFill setMultiple ]
+"14 hardware.h
+[c E3088 0 1 2 3 4 .. ]
+[n E3088 operatingMode MENU LOGS PACKAGING CLEARING WAITING  ]
+"29
+[c E3096 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E3096 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "25
+[s S266 `i 1 `E3096 -> 8 `i `i -> 8 `i ]
+[n S266 inputParams steps toFill setMultiple ]
+"31
 [s S267 `i 1 `i 1 `i 1 `i 1 ]
 [n S267 amounts b n s w ]
-"54
+"60
 [s S268 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S268 errorMessages badEntry tooManyFasteners tooManyBolts tooManyNuts tooManyWashers tooManySpacers noFasteners ]
+"19 motors.h
+[c E3187 0 1 2 .. ]
+[n E3187 motorDirection FORWARD REVERSE STOPMOTOR  ]
+"14
+[s S269 `E3187 1 `E3187 1 `E3187 1 `E3187 1 ]
+[n S269 currMotorDir b n s w ]
 "1378 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
-"29 main.c
-[c E3169 0 1 2 3 .. ]
-[n E3169 fastenerType BOLT NUT SPACER WASHER  ]
-[c E3175 0 1 2 .. ]
-[n E3175 motorDirection FORWARD REVERSE STOPMOTOR  ]
-"14 motors.h
-[v _motorControl `(v ~T0 @X0 0 ef2`E3169`E3175 ]
-"11 timer.h
+"30 main.c
+[c E3181 0 1 2 3 .. ]
+[n E3181 fastenerType BOLT NUT SPACER WASHER  ]
+"21 motors.h
+[v _motorControl `(v ~T0 @X0 0 ef2`E3181`E3187 ]
+"12 timer.h
 [v _tic `(v ~T0 @X0 0 ef ]
-"12
+"13
 [v _tock `(d ~T0 @X0 0 ef ]
 "56 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [s S2 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -65,13 +72,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _lcdInst `(v ~T0 @X0 0 ef1`uc ]
 "195 C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"7611 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
-[v _STOP `Vb ~T0 @X0 0 e@32316 ]
-"7629
+"7629 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [v _T0IE `Vb ~T0 @X0 0 e@32661 ]
 "7631
 [v _T0IF `Vb ~T0 @X0 0 e@32658 ]
-"13 timer.h
+"14 timer.h
 [v _tmr0_ISR `(v ~T0 @X0 0 ef ]
 [p mainexit ]
 "878 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
@@ -98,6 +103,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
 "24 I2C.h
 [v _I2C_Master_Init `(v ~T0 @X0 0 ef1`Cul ]
+"11 timer.h
+[v _tmr0Init `(v ~T0 @X0 0 ef ]
 "74 lcd.h
 [v _initLCD `(v ~T0 @X0 0 ef ]
 "12 menu.h
@@ -2996,12 +3003,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;menu.h: 12: void hibernate(void);
 [; ;menu.h: 13: void mainMenu(void);
 [; ;menu.h: 14: void viewLogs(void);
-[; ;hardware.h: 11: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
-[; ;hardware.h: 12: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
-[; ;hardware.h: 13: BNNN=19, BWWW=20} fS;
-[v F3112 `uc ~T0 @X0 -> 5 `i t ]
-"15 hardware.h
-[v _fSLookup `F3112 ~T0 @X0 -> 21 `i e ]
+[; ;hardware.h: 13: typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+"14 hardware.h
+[v _currentMode `i ~T0 @X0 1 e ]
+[i _currentMode
+-> . `E3088 0 `i
+]
+[; ;hardware.h: 14: int currentMode = MENU;
+[; ;hardware.h: 17: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+[; ;hardware.h: 18: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+[; ;hardware.h: 19: BNNN=19, BWWW=20} fS;
+[v F3120 `uc ~T0 @X0 -> 5 `i t ]
+"21
+[v _fSLookup `F3120 ~T0 @X0 -> 21 `i e ]
 [i _fSLookup
 :U ..
 :U ..
@@ -3129,28 +3143,28 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 15: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
-[; ;hardware.h: 16: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
-[; ;hardware.h: 17: "BNNN", "BWWW"};
-"23
+[; ;hardware.h: 21: char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+[; ;hardware.h: 22: "BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+[; ;hardware.h: 23: "BNNN", "BWWW"};
+"29
 [v _params `S266 ~T0 @X0 1 e ]
-[; ;hardware.h: 19: struct inputParams{
-[; ;hardware.h: 20: int steps;
-[; ;hardware.h: 21: fS toFill[8];
-[; ;hardware.h: 22: int setMultiple[8];
-[; ;hardware.h: 23: } params;
-"30
+[; ;hardware.h: 25: struct inputParams{
+[; ;hardware.h: 26: int steps;
+[; ;hardware.h: 27: fS toFill[8];
+[; ;hardware.h: 28: int setMultiple[8];
+[; ;hardware.h: 29: } params;
+"36
 [v _extras `S267 ~T0 @X0 1 e ]
 [v _dispensed `S267 ~T0 @X0 1 e ]
-[; ;hardware.h: 25: struct amounts {
-[; ;hardware.h: 26: int b;
-[; ;hardware.h: 27: int n;
-[; ;hardware.h: 28: int s;
-[; ;hardware.h: 29: int w;
-[; ;hardware.h: 30: } extras, dispensed;
-[v F3126 `Cuc ~T0 @X0 -> 33 `i t ]
-"45
-[v _inputEntryQuestions `F3126 ~T0 @X0 -> 4 `i e ]
+[; ;hardware.h: 31: struct amounts {
+[; ;hardware.h: 32: int b;
+[; ;hardware.h: 33: int n;
+[; ;hardware.h: 34: int s;
+[; ;hardware.h: 35: int w;
+[; ;hardware.h: 36: } extras, dispensed;
+[v F3134 `Cuc ~T0 @X0 -> 33 `i t ]
+"51
+[v _inputEntryQuestions `F3134 ~T0 @X0 -> 4 `i e ]
 [i _inputEntryQuestions
 :U ..
 :U ..
@@ -3286,13 +3300,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 45: const char inputEntryQuestions[4][33] = {
-[; ;hardware.h: 46: "Assembly steps\n" "*<-  (4-8)     \0",
-[; ;hardware.h: 47: "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
-[; ;hardware.h: 48: "How many sets?\n" "*<-  (1-4)     \0",
-[; ;hardware.h: 49: "Confirm?\n" "*<-  (A:Y/B:N) \0"
-[; ;hardware.h: 50: };
-"52
+[; ;hardware.h: 51: const char inputEntryQuestions[4][33] = {
+[; ;hardware.h: 52: "Assembly steps\n" "*<-  (4-8)     \0",
+[; ;hardware.h: 53: "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
+[; ;hardware.h: 54: "How many sets?\n" "*<-  (1-4)     \0",
+[; ;hardware.h: 55: "Confirm?\n" "*<-  (A:Y/B:N) \0"
+[; ;hardware.h: 56: };
+"58
 [v _LCDMenuIcons `Cuc ~T0 @X0 -> 16 `i e ]
 [i _LCDMenuIcons
 :U ..
@@ -3314,8 +3328,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[; ;hardware.h: 52: const char LCDMenuIcons[16] = "*<-   ( - )    \0";
-"62
+[; ;hardware.h: 58: const char LCDMenuIcons[16] = "*<-   ( - )    \0";
+"68
 [v _errMsgs `CS268 ~T0 @X0 1 e ]
 [i _errMsgs
 :U ..
@@ -3479,75 +3493,33 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 54: const struct errorMessages {
-[; ;hardware.h: 55: const char badEntry[32];
-[; ;hardware.h: 56: const char tooManyFasteners[32];
-[; ;hardware.h: 57: const char tooManyBolts[32];
-[; ;hardware.h: 58: const char tooManyNuts[32];
-[; ;hardware.h: 59: const char tooManyWashers[32];
-[; ;hardware.h: 60: const char tooManySpacers[32];
-[; ;hardware.h: 61: const char noFasteners[32];
-[; ;hardware.h: 62: } errMsgs = {
-[; ;hardware.h: 63: "Invalid entry\nPlease try again\0",
-[; ;hardware.h: 64: "Too many fasteners\0",
-[; ;hardware.h: 65: "Too many bolts\0",
-[; ;hardware.h: 66: "Too many nuts\0",
-[; ;hardware.h: 67: "Too many washers\0",
-[; ;hardware.h: 68: "Too many spacers\0",
-[; ;hardware.h: 69: "No fasteners selected\0"
-[; ;hardware.h: 70: };
-[v F3138 `Cuc ~T0 @X0 -> 4 `i t ]
-"72
-[v _fastenerMatrix `F3138 ~T0 @X0 -> 21 `i e ]
+[; ;hardware.h: 60: const struct errorMessages {
+[; ;hardware.h: 61: const char badEntry[32];
+[; ;hardware.h: 62: const char tooManyFasteners[32];
+[; ;hardware.h: 63: const char tooManyBolts[32];
+[; ;hardware.h: 64: const char tooManyNuts[32];
+[; ;hardware.h: 65: const char tooManyWashers[32];
+[; ;hardware.h: 66: const char tooManySpacers[32];
+[; ;hardware.h: 67: const char noFasteners[32];
+[; ;hardware.h: 68: } errMsgs = {
+[; ;hardware.h: 69: "Invalid entry\nPlease try again\0",
+[; ;hardware.h: 70: "Too many fasteners\0",
+[; ;hardware.h: 71: "Too many bolts\0",
+[; ;hardware.h: 72: "Too many nuts\0",
+[; ;hardware.h: 73: "Too many washers\0",
+[; ;hardware.h: 74: "Too many spacers\0",
+[; ;hardware.h: 75: "No fasteners selected\0"
+[; ;hardware.h: 76: };
+[v F3146 `Cuc ~T0 @X0 -> 4 `i t ]
+"78
+[v _fastenerMatrix `F3146 ~T0 @X0 -> 21 `i e ]
 [i _fastenerMatrix
 :U ..
 :U ..
-"73
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"74
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"75
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"76
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
-..
-:U ..
-"77
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-:U ..
-"78
--> -> 1 `i `uc
--> -> 1 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-:U ..
 "79
--> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
@@ -3555,25 +3527,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "81
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
 "82
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
 "83
--> -> 2 `i `uc
+-> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
@@ -3583,46 +3555,46 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "85
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "86
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
--> -> 2 `i `uc
+-> -> 1 `i `uc
 ..
 :U ..
 "87
--> -> 1 `i `uc
+-> -> 2 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
--> -> 2 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "88
--> -> 1 `i `uc
+-> -> 2 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
--> -> 2 `i `uc
+-> -> 0 `i `uc
 ..
 :U ..
 "89
 -> -> 2 `i `uc
 -> -> 0 `i `uc
--> -> 1 `i `uc
+-> -> 0 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
 "90
--> -> 2 `i `uc
+-> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
@@ -3630,19 +3602,61 @@ Version 3.2 HI-TECH Software Intermediate Code
 :U ..
 "91
 -> -> 1 `i `uc
--> -> 2 `i `uc
 -> -> 0 `i `uc
+-> -> 1 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
 "92
 -> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 0 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"93
+-> -> 1 `i `uc
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"94
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+-> -> 2 `i `uc
+..
+:U ..
+"95
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"96
+-> -> 2 `i `uc
+-> -> 1 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"97
+-> -> 1 `i `uc
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+..
+:U ..
+"98
+-> -> 1 `i `uc
 -> -> 3 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"93
+"99
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
@@ -3650,68 +3664,89 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;hardware.h: 72: const char fastenerMatrix[21][4] = {
-[; ;hardware.h: 73: {0,0,0,0},
-[; ;hardware.h: 74: {1,0,0,0},
-[; ;hardware.h: 75: {0,1,0,0},
-[; ;hardware.h: 76: {0,0,1,0},
-[; ;hardware.h: 77: {0,0,0,1},
-[; ;hardware.h: 78: {1,1,0,0},
-[; ;hardware.h: 79: {1,0,1,0},
-[; ;hardware.h: 80: {1,0,0,1},
-[; ;hardware.h: 81: {2,1,0,0},
-[; ;hardware.h: 82: {2,0,1,0},
-[; ;hardware.h: 83: {2,0,0,1},
-[; ;hardware.h: 84: {1,1,0,1},
-[; ;hardware.h: 85: {1,0,1,1},
-[; ;hardware.h: 86: {1,0,0,2},
-[; ;hardware.h: 87: {1,1,0,2},
-[; ;hardware.h: 88: {1,0,1,2},
-[; ;hardware.h: 89: {2,0,1,1},
-[; ;hardware.h: 90: {2,1,0,1},
-[; ;hardware.h: 91: {1,2,0,1},
-[; ;hardware.h: 92: {1,3,0,0},
-[; ;hardware.h: 93: {1,0,0,3}
-[; ;hardware.h: 94: };
-"97
+[; ;hardware.h: 78: const char fastenerMatrix[21][4] = {
+[; ;hardware.h: 79: {0,0,0,0},
+[; ;hardware.h: 80: {1,0,0,0},
+[; ;hardware.h: 81: {0,1,0,0},
+[; ;hardware.h: 82: {0,0,1,0},
+[; ;hardware.h: 83: {0,0,0,1},
+[; ;hardware.h: 84: {1,1,0,0},
+[; ;hardware.h: 85: {1,0,1,0},
+[; ;hardware.h: 86: {1,0,0,1},
+[; ;hardware.h: 87: {2,1,0,0},
+[; ;hardware.h: 88: {2,0,1,0},
+[; ;hardware.h: 89: {2,0,0,1},
+[; ;hardware.h: 90: {1,1,0,1},
+[; ;hardware.h: 91: {1,0,1,1},
+[; ;hardware.h: 92: {1,0,0,2},
+[; ;hardware.h: 93: {1,1,0,2},
+[; ;hardware.h: 94: {1,0,1,2},
+[; ;hardware.h: 95: {2,0,1,1},
+[; ;hardware.h: 96: {2,1,0,1},
+[; ;hardware.h: 97: {1,2,0,1},
+[; ;hardware.h: 98: {1,3,0,0},
+[; ;hardware.h: 99: {1,0,0,3}
+[; ;hardware.h: 100: };
+"103
 [v _assemblyStepEncoding `Cuc ~T0 @X0 -> 5 `i e ]
 [i _assemblyStepEncoding
 :U ..
-"100
+"106
 -> -> 85 `i `uc
-"101
+"107
 -> -> 91 `i `uc
-"102
+"108
 -> -> 119 `i `uc
-"103
+"109
 -> -> 127 `i `uc
-"105
+"111
 -> -> 255 `i `uc
 ..
 ]
-[; ;hardware.h: 97: const char assemblyStepEncoding[5] = {
-[; ;hardware.h: 100: 0b01010101,
-[; ;hardware.h: 101: 0b01011011,
-[; ;hardware.h: 102: 0b01110111,
-[; ;hardware.h: 103: 0b01111111,
-[; ;hardware.h: 104: 0b11111111
-[; ;hardware.h: 105: };
-[; ;hardware.h: 108: void packageCompartment(char b, char n, char s, char w);
-[; ;hardware.h: 109: void packaging(void);
-[; ;hardware.h: 110: void clearing(void);
+[; ;hardware.h: 103: const char assemblyStepEncoding[5] = {
+[; ;hardware.h: 106: 0b01010101,
+[; ;hardware.h: 107: 0b01011011,
+[; ;hardware.h: 108: 0b01110111,
+[; ;hardware.h: 109: 0b01111111,
+[; ;hardware.h: 110: 0b11111111
+[; ;hardware.h: 111: };
+[; ;hardware.h: 114: void packageCompartment(char b, char n, char s, char w);
+[; ;hardware.h: 115: void packaging(void);
+[; ;hardware.h: 116: void clearing(void);
 [; ;RTC.h: 11: void RTC_getTime(unsigned char * time);
 [; ;RTC.h: 12: long RTC_getSeconds(void);
 [; ;RTC.h: 13: void RTC_startOperation(void);
-[; ;RTC.h: 14: long RTC_getOperatingTime(void);
-[; ;timer.h: 11: void tic(void);
-[; ;timer.h: 12: double tock(void);
-[; ;timer.h: 13: void tmr0_ISR(void);
-[; ;timer.h: 14: void Timer_startOperation(void);
-[; ;timer.h: 15: double Timer_getOperatingTime(void);
-[; ;timer.h: 16: long getTest(void);
+[; ;RTC.h: 14: int RTC_getOperatingTime(void);
+[; ;timer.h: 11: void tmr0Init(void);
+[; ;timer.h: 12: void tic(void);
+[; ;timer.h: 13: double tock(void);
+[; ;timer.h: 14: void tmr0_ISR(void);
+[; ;timer.h: 15: void Timer_startOperation(void);
+[; ;timer.h: 16: double Timer_getOperatingTime(void);
+[; ;timer.h: 17: long getTest(void);
+[; ;timer.h: 18: void resetMotorTimer(void);
 [; ;motors.h: 11: typedef enum fastenerType {BOLT, NUT, SPACER, WASHER} fastenerType;
 [; ;motors.h: 12: typedef enum motorDirection {FORWARD, REVERSE, STOPMOTOR} motorDirection;
-[; ;motors.h: 14: void motorControl(fastenerType motor, motorDirection dir);
+"19 motors.h
+[v _currentMotorDir `S269 ~T0 @X0 1 e ]
+[i _currentMotorDir
+:U ..
+:U ..
+. `E3187 2
+. `E3187 2
+. `E3187 2
+. `E3187 2
+..
+..
+]
+[; ;motors.h: 14: struct currMotorDir {
+[; ;motors.h: 15: motorDirection b;
+[; ;motors.h: 16: motorDirection n;
+[; ;motors.h: 17: motorDirection s;
+[; ;motors.h: 18: motorDirection w;
+[; ;motors.h: 19: } currentMotorDir = {STOPMOTOR, STOPMOTOR, STOPMOTOR, STOPMOTOR};
+[; ;motors.h: 21: void motorControl(fastenerType motor, motorDirection dir);
+[; ;motors.h: 22: motorDirection inverseDir(motorDirection dir);
 "25 main.c
 [v _packageCompartment `(v ~T0 @X0 1 ef4`uc`uc`uc`uc ]
 {
@@ -3722,24 +3757,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _s `uc ~T0 @X0 1 r3 ]
 [v _w `uc ~T0 @X0 1 r4 ]
 [f ]
-[; ;main.c: 26: TRISA = 0xFF;
+[; ;main.c: 26: currentMode = PACKAGING;
 "26
+[e = _currentMode -> . `E3088 2 `i ]
+[; ;main.c: 27: TRISA = 0xFF;
+"27
 [e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 29: motorControl(BOLT, FORWARD);
-"29
-[e ( _motorControl (2 , . `E3169 0 . `E3175 0 ]
-[; ;main.c: 30: motorControl(NUT, FORWARD);
+[; ;main.c: 30: motorControl(BOLT, FORWARD);
 "30
-[e ( _motorControl (2 , . `E3169 1 . `E3175 0 ]
-[; ;main.c: 31: motorControl(SPACER, FORWARD);
+[e ( _motorControl (2 , . `E3181 0 . `E3187 0 ]
+[; ;main.c: 31: motorControl(NUT, FORWARD);
 "31
-[e ( _motorControl (2 , . `E3169 2 . `E3175 0 ]
-[; ;main.c: 32: motorControl(WASHER, FORWARD);
+[e ( _motorControl (2 , . `E3181 1 . `E3187 0 ]
+[; ;main.c: 32: motorControl(SPACER, FORWARD);
 "32
-[e ( _motorControl (2 , . `E3169 3 . `E3175 0 ]
-"34
+[e ( _motorControl (2 , . `E3181 2 . `E3187 0 ]
+[; ;main.c: 33: motorControl(WASHER, FORWARD);
+"33
+[e ( _motorControl (2 , . `E3181 3 . `E3187 0 ]
+"35
 [v _numB `i ~T0 @X0 1 a ]
-[; ;main.c: 34: int numB=0, numN=0, numS=0, numW=0;
+[; ;main.c: 35: int numB=0, numN=0, numS=0, numW=0;
 [e = _numB -> 0 `i ]
 [v _numN `i ~T0 @X0 1 a ]
 [e = _numN -> 0 `i ]
@@ -3747,9 +3785,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _numS -> 0 `i ]
 [v _numW `i ~T0 @X0 1 a ]
 [e = _numW -> 0 `i ]
-"35
+"36
 [v _doneB `i ~T0 @X0 1 a ]
-[; ;main.c: 35: int doneB=0, doneN=0, doneS=0, doneW=0;
+[; ;main.c: 36: int doneB=0, doneN=0, doneS=0, doneW=0;
 [e = _doneB -> 0 `i ]
 [v _doneN `i ~T0 @X0 1 a ]
 [e = _doneN -> 0 `i ]
@@ -3757,10 +3795,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _doneS -> 0 `i ]
 [v _doneW `i ~T0 @X0 1 a ]
 [e = _doneW -> 0 `i ]
-"36
+"37
 [v _currTime `d ~T0 @X0 1 a ]
 [v _timeB `d ~T0 @X0 1 a ]
-[; ;main.c: 36: double currTime, timeB=0, timeN=0, timeS=0, timeW=0;
+[; ;main.c: 37: double currTime, timeB=0, timeN=0, timeS=0, timeW=0;
 [e = _timeB -> -> 0 `i `d ]
 [v _timeN `d ~T0 @X0 1 a ]
 [e = _timeN -> -> 0 `i `d ]
@@ -3768,231 +3806,265 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _timeS -> -> 0 `i `d ]
 [v _timeW `d ~T0 @X0 1 a ]
 [e = _timeW -> -> 0 `i `d ]
-[; ;main.c: 38: tic();
-"38
-[e ( _tic ..  ]
-[; ;main.c: 39: while (1) {
+[; ;main.c: 39: tic();
 "39
-[e :U 271 ]
-{
-[; ;main.c: 40: currTime = tock();
+[e ( _tic ..  ]
+[; ;main.c: 40: while (1) {
 "40
+[e :U 272 ]
+{
+[; ;main.c: 41: currTime = tock();
+"41
 [e = _currTime ( _tock ..  ]
-[; ;main.c: 52: if (PORTAbits.RA0 == 0 && currTime > timeB + 2) {
-"52
-[e $ ! && == -> . . _PORTAbits 0 0 `i -> 0 `i > _currTime + _timeB -> -> 2 `i `d 273  ]
-{
-[; ;main.c: 53: timeB = currTime;
+[; ;main.c: 53: if (PORTAbits.RA3 == 0 && currTime > timeB + 1) {
 "53
-[e = _timeB _currTime ]
-[; ;main.c: 54: numB++;
-"54
-[e ++ _numB -> 1 `i ]
-[; ;main.c: 55: dispensed.b++;
-"55
-[e ++ . _dispensed 0 -> 1 `i ]
-[; ;main.c: 56: I2C_Send(nanoAddr, "\1Bolt Counted\0");
-"56
-[e ( _I2C_Send (2 , _nanoAddr -> :s 1C `*uc ]
-"57
-}
-[e :U 273 ]
-[; ;main.c: 57: }
-[; ;main.c: 60: if (PORTAbits.RA1 == 0 && currTime > timeN + 2) {
-"60
-[e $ ! && == -> . . _PORTAbits 0 1 `i -> 0 `i > _currTime + _timeN -> -> 2 `i `d 274  ]
+[e $ ! && == -> . . _PORTAbits 0 3 `i -> 0 `i > _currTime + _timeB -> -> 1 `i `d 274  ]
 {
-[; ;main.c: 61: timeN = currTime;
-"61
-[e = _timeN _currTime ]
-[; ;main.c: 62: numN++;
-"62
-[e ++ _numN -> 1 `i ]
-[; ;main.c: 63: dispensed.n++;
-"63
-[e ++ . _dispensed 1 -> 1 `i ]
-[; ;main.c: 64: I2C_Send(nanoAddr, "\1Nut Counted\0");
-"64
-[e ( _I2C_Send (2 , _nanoAddr -> :s 2C `*uc ]
-"65
+[; ;main.c: 54: timeB = currTime;
+"54
+[e = _timeB _currTime ]
+[; ;main.c: 55: numB++;
+"55
+[e ++ _numB -> 1 `i ]
+[; ;main.c: 56: dispensed.b++;
+"56
+[e ++ . _dispensed 0 -> 1 `i ]
+[; ;main.c: 57: I2C_Send(nanoAddr, "\1Bolt Counted\0");
+"57
+[e ( _I2C_Send (2 , _nanoAddr -> :s 1C `*uc ]
+"58
 }
 [e :U 274 ]
-[; ;main.c: 65: }
-[; ;main.c: 68: if (PORTAbits.RA2 == 0 && currTime > timeS + 2) {
-"68
-[e $ ! && == -> . . _PORTAbits 0 2 `i -> 0 `i > _currTime + _timeS -> -> 2 `i `d 275  ]
+[; ;main.c: 58: }
+[; ;main.c: 61: if (PORTAbits.RA1 == 0 && currTime > timeN + 1) {
+"61
+[e $ ! && == -> . . _PORTAbits 0 1 `i -> 0 `i > _currTime + _timeN -> -> 1 `i `d 275  ]
 {
-[; ;main.c: 69: timeS = currTime;
-"69
-[e = _timeS _currTime ]
-[; ;main.c: 70: numS++;
-"70
-[e ++ _numS -> 1 `i ]
-[; ;main.c: 71: dispensed.s++;
-"71
-[e ++ . _dispensed 2 -> 1 `i ]
-[; ;main.c: 72: I2C_Send(nanoAddr, "\1Spacer Counted\0");
-"72
-[e ( _I2C_Send (2 , _nanoAddr -> :s 3C `*uc ]
-"73
+[; ;main.c: 62: timeN = currTime;
+"62
+[e = _timeN _currTime ]
+[; ;main.c: 63: numN++;
+"63
+[e ++ _numN -> 1 `i ]
+[; ;main.c: 64: dispensed.n++;
+"64
+[e ++ . _dispensed 1 -> 1 `i ]
+[; ;main.c: 65: I2C_Send(nanoAddr, "\1Nut Counted\0");
+"65
+[e ( _I2C_Send (2 , _nanoAddr -> :s 2C `*uc ]
+"66
 }
 [e :U 275 ]
-[; ;main.c: 73: }
-[; ;main.c: 76: if (PORTAbits.RA3 == 0 && currTime > timeW + 2) {
-"76
-[e $ ! && == -> . . _PORTAbits 0 3 `i -> 0 `i > _currTime + _timeW -> -> 2 `i `d 276  ]
+[; ;main.c: 66: }
+[; ;main.c: 69: if (PORTAbits.RA0 == 0 && currTime > timeS + 1) {
+"69
+[e $ ! && == -> . . _PORTAbits 0 0 `i -> 0 `i > _currTime + _timeS -> -> 1 `i `d 276  ]
 {
-[; ;main.c: 77: timeW = currTime;
-"77
-[e = _timeW _currTime ]
-[; ;main.c: 78: numW++;
-"78
-[e ++ _numW -> 1 `i ]
-[; ;main.c: 79: dispensed.w++;
-"79
-[e ++ . _dispensed 3 -> 1 `i ]
-[; ;main.c: 80: I2C_Send(nanoAddr, "\1Washer Counted\0");
-"80
-[e ( _I2C_Send (2 , _nanoAddr -> :s 4C `*uc ]
-"81
+[; ;main.c: 70: timeS = currTime;
+"70
+[e = _timeS _currTime ]
+[; ;main.c: 71: numS++;
+"71
+[e ++ _numS -> 1 `i ]
+[; ;main.c: 72: dispensed.s++;
+"72
+[e ++ . _dispensed 2 -> 1 `i ]
+[; ;main.c: 73: I2C_Send(nanoAddr, "\1Spacer Counted\0");
+"73
+[e ( _I2C_Send (2 , _nanoAddr -> :s 3C `*uc ]
+"74
 }
 [e :U 276 ]
-[; ;main.c: 81: }
-[; ;main.c: 84: if (numB >= b) {
-"84
-[e $ ! >= _numB -> _b `i 277  ]
+[; ;main.c: 74: }
+[; ;main.c: 77: if (PORTAbits.RA2 == 0 && currTime > timeW + 1) {
+"77
+[e $ ! && == -> . . _PORTAbits 0 2 `i -> 0 `i > _currTime + _timeW -> -> 1 `i `d 277  ]
 {
-[; ;main.c: 85: motorControl(BOLT, STOPMOTOR);
-"85
-[e ( _motorControl (2 , . `E3169 0 . `E3175 2 ]
-[; ;main.c: 86: doneB=1;
-"86
-[e = _doneB -> 1 `i ]
-"87
+[; ;main.c: 78: timeW = currTime;
+"78
+[e = _timeW _currTime ]
+[; ;main.c: 79: numW++;
+"79
+[e ++ _numW -> 1 `i ]
+[; ;main.c: 80: dispensed.w++;
+"80
+[e ++ . _dispensed 3 -> 1 `i ]
+[; ;main.c: 81: I2C_Send(nanoAddr, "\1Washer Counted\0");
+"81
+[e ( _I2C_Send (2 , _nanoAddr -> :s 4C `*uc ]
+"82
 }
 [e :U 277 ]
-[; ;main.c: 87: }
-[; ;main.c: 88: if (numN >= n) {
-"88
-[e $ ! >= _numN -> _n `i 278  ]
+[; ;main.c: 82: }
+[; ;main.c: 85: if (numB >= b) {
+"85
+[e $ ! >= _numB -> _b `i 278  ]
 {
-[; ;main.c: 89: motorControl(NUT, STOPMOTOR);
-"89
-[e ( _motorControl (2 , . `E3169 1 . `E3175 2 ]
-[; ;main.c: 90: doneN=1;
-"90
-[e = _doneN -> 1 `i ]
-"91
+[; ;main.c: 86: motorControl(BOLT, STOPMOTOR);
+"86
+[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
+[; ;main.c: 87: doneB=1;
+"87
+[e = _doneB -> 1 `i ]
+"88
 }
 [e :U 278 ]
-[; ;main.c: 91: }
-[; ;main.c: 92: if (numS >= s) {
-"92
-[e $ ! >= _numS -> _s `i 279  ]
+[; ;main.c: 88: }
+[; ;main.c: 89: if (numN >= n) {
+"89
+[e $ ! >= _numN -> _n `i 279  ]
 {
-[; ;main.c: 93: motorControl(SPACER, STOPMOTOR);
-"93
-[e ( _motorControl (2 , . `E3169 2 . `E3175 2 ]
-[; ;main.c: 94: doneS=1;
-"94
-[e = _doneS -> 1 `i ]
-"95
+[; ;main.c: 90: motorControl(NUT, STOPMOTOR);
+"90
+[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
+[; ;main.c: 91: doneN=1;
+"91
+[e = _doneN -> 1 `i ]
+"92
 }
 [e :U 279 ]
-[; ;main.c: 95: }
-[; ;main.c: 96: if (numW >= w) {
-"96
-[e $ ! >= _numW -> _w `i 280  ]
+[; ;main.c: 92: }
+[; ;main.c: 93: if (numS >= s) {
+"93
+[e $ ! >= _numS -> _s `i 280  ]
 {
-[; ;main.c: 97: motorControl(WASHER, STOPMOTOR);
-"97
-[e ( _motorControl (2 , . `E3169 3 . `E3175 2 ]
-[; ;main.c: 98: doneW=1;
-"98
-[e = _doneW -> 1 `i ]
-"99
+[; ;main.c: 94: motorControl(SPACER, STOPMOTOR);
+"94
+[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
+[; ;main.c: 95: doneS=1;
+"95
+[e = _doneS -> 1 `i ]
+"96
 }
 [e :U 280 ]
-[; ;main.c: 99: }
-[; ;main.c: 101: if (doneB && doneN && doneS && doneW) {
-"101
-[e $ ! && && && != _doneB -> 0 `i != _doneN -> 0 `i != _doneS -> 0 `i != _doneW -> 0 `i 281  ]
+[; ;main.c: 96: }
+[; ;main.c: 97: if (numW >= w) {
+"97
+[e $ ! >= _numW -> _w `i 281  ]
 {
-[; ;main.c: 102: I2C_Send(nanoAddr, "\1Done compartment\0");
-"102
-[e ( _I2C_Send (2 , _nanoAddr -> :s 5C `*uc ]
-[; ;main.c: 103: break;
-"103
-[e $U 272  ]
-"104
+[; ;main.c: 98: motorControl(WASHER, STOPMOTOR);
+"98
+[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[; ;main.c: 99: doneW=1;
+"99
+[e = _doneW -> 1 `i ]
+"100
 }
 [e :U 281 ]
+[; ;main.c: 100: }
+[; ;main.c: 102: if (doneB && doneN && doneS && doneW) {
+"102
+[e $ ! && && && != _doneB -> 0 `i != _doneN -> 0 `i != _doneS -> 0 `i != _doneW -> 0 `i 282  ]
+{
+[; ;main.c: 103: I2C_Send(nanoAddr, "\1Done compartment\0");
+"103
+[e ( _I2C_Send (2 , _nanoAddr -> :s 5C `*uc ]
+[; ;main.c: 104: break;
+"104
+[e $U 273  ]
 "105
 }
-[e :U 270 ]
-"39
-[e $U 271  ]
-[e :U 272 ]
-[; ;main.c: 104: }
-[; ;main.c: 105: }
-[; ;main.c: 108: I2C_Send(nanoAddr, 2);
-"108
-[e ( _I2C_Send (2 , _nanoAddr -> -> 2 `i `*uc ]
-[; ;main.c: 109: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"109
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 110: }
-"110
-[e :UE 269 ]
+[e :U 282 ]
+"106
 }
+[e :U 271 ]
+"40
+[e $U 272  ]
+[e :U 273 ]
+[; ;main.c: 105: }
+[; ;main.c: 106: }
+[; ;main.c: 107: I2C_Send(nanoAddr, "\1Out of the packaging loop\0");
+"107
+[e ( _I2C_Send (2 , _nanoAddr -> :s 6C `*uc ]
+[; ;main.c: 108: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"108
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[v F3222 `uc ~T0 @X0 -> 0 `x s ]
+[i F3222
+:U ..
+"111
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+..
+]
+[v _instr `uc ~T0 @X0 2  a ]
+[; ;main.c: 111: char instr[] = {2, 0};
+[e = _instr F3222 ]
+[; ;main.c: 112: I2C_Send(nanoAddr, instr);
 "112
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 113: while (PORTAbits.RA5 == 1) {continue;}
+"113
+[e $U 283  ]
+[e :U 284 ]
+{
+[e $U 283  ]
+}
+[e :U 283 ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 284  ]
+[e :U 285 ]
+[; ;main.c: 114: }
+"114
+[e :UE 270 ]
+}
+"116
 [v _packaging `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 112: void packaging(void) {
+[; ;main.c: 116: void packaging(void) {
 [e :U _packaging ]
 [f ]
-"113
+"117
 [v _compartmentNum `i ~T0 @X0 1 a ]
-[; ;main.c: 113: int compartmentNum;
-[; ;main.c: 118: dispensed.b = 0;
-"118
+[; ;main.c: 117: int compartmentNum;
+[; ;main.c: 122: dispensed.b = 0;
+"122
 [e = . _dispensed 0 -> 0 `i ]
-[; ;main.c: 119: dispensed.n = 0;
-"119
-[e = . _dispensed 1 -> 0 `i ]
-[; ;main.c: 120: dispensed.s = 0;
-"120
-[e = . _dispensed 2 -> 0 `i ]
-[; ;main.c: 121: dispensed.w = 0;
-"121
-[e = . _dispensed 3 -> 0 `i ]
-[; ;main.c: 123: I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+[; ;main.c: 123: dispensed.n = 0;
 "123
-[e ( _I2C_Send (2 , _nanoAddr -> :s 6C `*uc ]
-[v F3204 `uc ~T0 @X0 -> 2 `i s ]
-[i F3204
-:U ..
+[e = . _dispensed 1 -> 0 `i ]
+[; ;main.c: 124: dispensed.s = 0;
 "124
+[e = . _dispensed 2 -> 0 `i ]
+[; ;main.c: 125: dispensed.w = 0;
+"125
+[e = . _dispensed 3 -> 0 `i ]
+[; ;main.c: 127: I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+"127
+[e ( _I2C_Send (2 , _nanoAddr -> :s 7C `*uc ]
+[v F3226 `uc ~T0 @X0 -> 2 `i s ]
+[i F3226
+:U ..
+"128
 -> -> 8 `i `uc
 -> -> 0 `i `uc
 ..
 ]
 [v _instr `uc ~T0 @X0 -> 2 `i a ]
-[; ;main.c: 124: char instr[2] = {8, 0};
-[e = _instr F3204 ]
-[; ;main.c: 125: I2C_Send(nanoAddr, &instr);
-"125
+[; ;main.c: 128: char instr[2] = {8, 0};
+[e = _instr F3226 ]
+[; ;main.c: 129: I2C_Send(nanoAddr, &instr);
+"129
 [e ( _I2C_Send (2 , _nanoAddr &U _instr ]
-[; ;main.c: 127: for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
-"127
+[; ;main.c: 131: while (PORTAbits.RA5 == 1) {continue;}
+"131
+[e $U 287  ]
+[e :U 288 ]
+{
+[e $U 287  ]
+}
+[e :U 287 ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 288  ]
+[e :U 289 ]
+[; ;main.c: 133: for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
+"133
 {
 [e = _compartmentNum -> 8 `i ]
-[e $ > _compartmentNum -> 0 `i 283  ]
-[e $U 284  ]
-[e :U 283 ]
+[e $ > _compartmentNum -> 0 `i 290  ]
+[e $U 291  ]
+[e :U 290 ]
 {
-[v F3206 `uc ~T0 @X0 -> 0 `x s ]
-[i F3206
+[v F3228 `uc ~T0 @X0 -> 0 `x s ]
+[i F3228
 :U ..
 -> 1 `c
 -> 83 `c
@@ -4030,424 +4102,583 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"129
-[v _msg `uc ~T0 @X0 34  a ]
-[; ;main.c: 129: char msg[] = "\1Started packaging compartment x\0";
-[e = _msg F3206 ]
-[; ;main.c: 130: msg[31] = compartmentNum + 48;
-"130
-[e = *U + &U _msg * -> -> -> 31 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + _compartmentNum -> 48 `i `uc ]
-[; ;main.c: 131: I2C_Send(nanoAddr, msg);
-"131
-[e ( _I2C_Send (2 , _nanoAddr &U _msg ]
-[; ;main.c: 133: if (params.toFill[compartmentNum-1] == 0) continue;
-"133
-[e $ ! == -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `i -> 0 `i 286  ]
-[e $U 285  ]
-[e :U 286 ]
 "134
-[v _set `*uc ~T0 @X0 1 a ]
-[; ;main.c: 134: char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
-[e = _set -> &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `*uc ]
+[v _msg `uc ~T0 @X0 34  a ]
+[; ;main.c: 134: char msg[] = "\1Started packaging compartment x\0";
+[e = _msg F3228 ]
+[; ;main.c: 135: msg[31] = compartmentNum + 48;
 "135
-[v _msg2 `uc ~T0 @X0 -> 32 `i a ]
+[e = *U + &U _msg * -> -> -> 31 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + _compartmentNum -> 48 `i `uc ]
+[; ;main.c: 136: I2C_Send(nanoAddr, msg);
 "136
-[v _mult `i ~T0 @X0 1 a ]
-[; ;main.c: 135: char msg2[32];
-[; ;main.c: 136: int mult = params.setMultiple[compartmentNum - 1];
-[e = _mult *U + &U . _params 2 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
-[; ;main.c: 137: sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
-"137
-[e ( _sprintf (1 , , , , (. , &U _msg2 :s 7C * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult ]
-[; ;main.c: 138: I2C_Send(nanoAddr, msg2);
+[e ( _I2C_Send (2 , _nanoAddr &U _msg ]
+[; ;main.c: 138: if (params.toFill[compartmentNum-1] == 0) {
 "138
-[e ( _I2C_Send (2 , _nanoAddr &U _msg2 ]
-[; ;main.c: 139: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"139
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 140: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"140
-[e ( _lcdInst (1 -> -> 128 `i `uc ]
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 141: printf("Compartment %d", compartmentNum);
+[e $ ! == -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `i -> 0 `i 293  ]
+{
+[v F3230 `uc ~T0 @X0 -> 0 `x s ]
+[i F3230
+:U ..
 "141
-[e ( _printf , (. :s 8C _compartmentNum ]
-[; ;main.c: 142: packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+-> -> 2 `i `uc
+-> -> 0 `i `uc
+..
+]
+[v _instr `uc ~T0 @X0 2  a ]
+[; ;main.c: 141: char instr[] = {2, 0};
+[e = _instr F3230 ]
+[; ;main.c: 142: I2C_Send(nanoAddr, instr);
 "142
-[e ( _packageCompartment (4 , , , -> * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult `uc ]
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 143: while (PORTAbits.RA5 == 1) {continue;}
 "143
-}
-"127
-[e :U 285 ]
-[e -- _compartmentNum -> 1 `i ]
-[e $ > _compartmentNum -> 0 `i 283  ]
-[e :U 284 ]
-"143
-}
-[; ;main.c: 143: }
-[; ;main.c: 144: }
-"144
-[e :UE 282 ]
-}
-"146
-[v _clearing `(v ~T0 @X0 1 ef ]
+[e $U 294  ]
+[e :U 295 ]
 {
-[; ;main.c: 146: void clearing(void) {
-[e :U _clearing ]
-[f ]
-[; ;main.c: 151: I2C_Send(nanoAddr, 3);
-"151
-[e ( _I2C_Send (2 , _nanoAddr -> -> 3 `i `*uc ]
-"153
-[v _i `i ~T0 @X0 1 a ]
-"154
-[v _spinTime `d ~T0 @X0 1 a ]
-[; ;main.c: 153: int i;
-[; ;main.c: 154: double spinTime=20.0;
-[e = _spinTime .20.0 ]
-"155
-[v _startTime `l ~T0 @X0 1 a ]
-"156
-[v _currTime `d ~T0 @X0 1 a ]
-[v _debounceTime `d ~T0 @X0 1 a ]
-[; ;main.c: 155: long startTime;
-[; ;main.c: 156: double currTime, debounceTime=0;
-[e = _debounceTime -> -> 0 `i `d ]
-[; ;main.c: 158: extras.b = 0;
-"158
-[e = . _extras 0 -> 0 `i ]
-[; ;main.c: 159: extras.n = 0;
-"159
-[e = . _extras 1 -> 0 `i ]
-[; ;main.c: 160: extras.s = 0;
-"160
-[e = . _extras 2 -> 0 `i ]
-[; ;main.c: 161: extras.w = 0;
-"161
-[e = . _extras 3 -> 0 `i ]
-[; ;main.c: 163: tic();
-"163
-[e ( _tic ..  ]
-[; ;main.c: 165: motorControl(BOLT, FORWARD);
-"165
-[e ( _motorControl (2 , . `E3169 0 . `E3175 0 ]
-[; ;main.c: 166: while (extras.b + dispensed.b < 20) {
-"166
-[e $U 288  ]
-[e :U 289 ]
-{
-[; ;main.c: 167: currTime = tock();
-"167
-[e = _currTime ( _tock ..  ]
-[; ;main.c: 168: if (PORTAbits.RA0 == 0 && currTime > debounceTime + 2) {
-"168
-[e $ ! && == -> . . _PORTAbits 0 0 `i -> 0 `i > _currTime + _debounceTime -> -> 2 `i `d 291  ]
-{
-[; ;main.c: 169: debounceTime = currTime;
-"169
-[e = _debounceTime _currTime ]
-[; ;main.c: 170: extras.b++;
-"170
-[e ++ . _extras 0 -> 1 `i ]
-[; ;main.c: 171: I2C_Send(nanoAddr, "\1Bolt counted\0");
-"171
-[e ( _I2C_Send (2 , _nanoAddr -> :s 9C `*uc ]
-"172
+[e $U 294  ]
 }
-[e :U 291 ]
-[; ;main.c: 172: }
-[; ;main.c: 174: if (currTime >= spinTime) break;
-"174
-[e $ ! >= _currTime _spinTime 292  ]
-[e $U 290  ]
-[e :U 292 ]
-"175
-}
-[e :U 288 ]
-"166
-[e $ < + . _extras 0 . _dispensed 0 -> 20 `i 289  ]
-[e :U 290 ]
-[; ;main.c: 175: }
-[; ;main.c: 176: motorControl(BOLT, STOPMOTOR);
-"176
-[e ( _motorControl (2 , . `E3169 0 . `E3175 2 ]
-[; ;main.c: 178: I2C_Send(nanoAddr, 4);
-"178
-[e ( _I2C_Send (2 , _nanoAddr -> -> 4 `i `*uc ]
-[; ;main.c: 179: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"179
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 181: tic();
-"181
-[e ( _tic ..  ]
-[; ;main.c: 182: debounceTime = 0;
-"182
-[e = _debounceTime -> -> 0 `i `d ]
-[; ;main.c: 183: motorControl(NUT, FORWARD);
-"183
-[e ( _motorControl (2 , . `E3169 1 . `E3175 0 ]
-[; ;main.c: 184: while (extras.n + dispensed.n < 25) {
-"184
-[e $U 293  ]
 [e :U 294 ]
-{
-[; ;main.c: 185: currTime = tock();
-"185
-[e = _currTime ( _tock ..  ]
-[; ;main.c: 186: if (PORTAbits.RA1 == 0 && currTime > debounceTime + 2) {
-"186
-[e $ ! && == -> . . _PORTAbits 0 1 `i -> 0 `i > _currTime + _debounceTime -> -> 2 `i `d 296  ]
-{
-[; ;main.c: 187: debounceTime = currTime;
-"187
-[e = _debounceTime _currTime ]
-[; ;main.c: 188: extras.n++;
-"188
-[e ++ . _extras 1 -> 1 `i ]
-[; ;main.c: 189: I2C_Send(nanoAddr, "\1Nut counted\0");
-"189
-[e ( _I2C_Send (2 , _nanoAddr -> :s 10C `*uc ]
-"190
-}
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 295  ]
 [e :U 296 ]
-[; ;main.c: 190: }
-[; ;main.c: 192: if (currTime >= spinTime) break;
-"192
-[e $ ! >= _currTime _spinTime 297  ]
-[e $U 295  ]
-[e :U 297 ]
-"193
+[; ;main.c: 144: continue;
+"144
+[e $U 292  ]
+"145
 }
 [e :U 293 ]
-"184
-[e $ < + . _extras 1 . _dispensed 1 -> 25 `i 294  ]
-[e :U 295 ]
-[; ;main.c: 193: }
-[; ;main.c: 195: motorControl(NUT, STOPMOTOR);
-"195
-[e ( _motorControl (2 , . `E3169 1 . `E3175 2 ]
-[; ;main.c: 197: I2C_Send(nanoAddr, 5);
-"197
-[e ( _I2C_Send (2 , _nanoAddr -> -> 5 `i `*uc ]
-[; ;main.c: 198: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"198
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 200: tic();
-"200
-[e ( _tic ..  ]
-[; ;main.c: 201: debounceTime = 0;
-"201
-[e = _debounceTime -> -> 0 `i `d ]
-[; ;main.c: 202: motorControl(SPACER, FORWARD);
-"202
-[e ( _motorControl (2 , . `E3169 2 . `E3175 0 ]
-[; ;main.c: 203: while (extras.s + dispensed.s < 20) {
-"203
+[; ;main.c: 145: };
+"146
+[v _set `*uc ~T0 @X0 1 a ]
+[; ;main.c: 146: char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
+[e = _set -> &U *U + &U _fastenerMatrix * -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `ux -> * -> # *U &U *U &U _fastenerMatrix `ui -> -> 4 `i `ui `ux `*uc ]
+"147
+[v _msg2 `uc ~T0 @X0 -> 32 `i a ]
+"148
+[v _mult `i ~T0 @X0 1 a ]
+[; ;main.c: 147: char msg2[32];
+[; ;main.c: 148: int mult = params.setMultiple[compartmentNum - 1];
+[e = _mult *U + &U . _params 2 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 2 `ui `ux ]
+[; ;main.c: 149: sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+"149
+[e ( _sprintf (1 , , , , (. , &U _msg2 :s 8C * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult ]
+[; ;main.c: 150: I2C_Send(nanoAddr, msg2);
+"150
+[e ( _I2C_Send (2 , _nanoAddr &U _msg2 ]
+[; ;main.c: 151: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"151
+[e ( _lcdInst (1 -> -> 1 `i `uc ]
+[e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 152: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"152
+[e ( _lcdInst (1 -> -> 128 `i `uc ]
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+[; ;main.c: 153: printf("Compartment %d", compartmentNum);
+"153
+[e ( _printf , (. :s 9C _compartmentNum ]
+[; ;main.c: 154: packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+"154
+[e ( _packageCompartment (4 , , , -> * -> *U + _set * -> -> 0 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 1 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 2 `i `x -> -> # *U _set `i `x `i _mult `uc -> * -> *U + _set * -> -> 3 `i `x -> -> # *U _set `i `x `i _mult `uc ]
+"155
+[v _msg3 `uc ~T0 @X0 -> 50 `i a ]
+[; ;main.c: 155: char msg3[50];
+[; ;main.c: 156: sprintf(msg3, "\1Finished packaging compartment %d\0", compartmentNum);
+"156
+[e ( _sprintf (1 , (. , &U _msg3 :s 10C _compartmentNum ]
+[; ;main.c: 157: I2C_Send(nanoAddr, msg3);
+"157
+[e ( _I2C_Send (2 , _nanoAddr &U _msg3 ]
+[; ;main.c: 158: currentMode = WAITING;
+"158
+[e = _currentMode -> . `E3088 4 `i ]
+[; ;main.c: 159: _delay((unsigned long)((10)*(40000000/4000.0)));
+"159
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
+"160
+}
+"133
+[e :U 292 ]
+[e -- _compartmentNum -> 1 `i ]
+[e $ > _compartmentNum -> 0 `i 290  ]
+[e :U 291 ]
+"160
+}
+[; ;main.c: 160: }
+[; ;main.c: 161: }
+"161
+[e :UE 286 ]
+}
+"163
+[v _clearing `(v ~T0 @X0 1 ef ]
+{
+[; ;main.c: 163: void clearing(void) {
+[e :U _clearing ]
+[f ]
+[; ;main.c: 164: currentMode = WAITING;
+"164
+[e = _currentMode -> . `E3088 4 `i ]
+[v F3240 `uc ~T0 @X0 -> 0 `x s ]
+[i F3240
+:U ..
+"169
+-> -> 3 `i `uc
+-> -> 0 `i `uc
+..
+]
+[v _instr `uc ~T0 @X0 2  a ]
+[; ;main.c: 169: char instr[] = {3, 0};
+[e = _instr F3240 ]
+[; ;main.c: 170: I2C_Send(nanoAddr, instr);
+"170
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 171: while (PORTAbits.RA5 == 1) {continue;}
+"171
 [e $U 298  ]
 [e :U 299 ]
 {
-[; ;main.c: 204: currTime = tock();
-"204
-[e = _currTime ( _tock ..  ]
-[; ;main.c: 205: if (PORTAbits.RA2 == 0 && currTime > debounceTime + 2) {
-"205
-[e $ ! && == -> . . _PORTAbits 0 2 `i -> 0 `i > _currTime + _debounceTime -> -> 2 `i `d 301  ]
-{
-[; ;main.c: 206: debounceTime = currTime;
-"206
-[e = _debounceTime _currTime ]
-[; ;main.c: 207: extras.s++;
-"207
-[e ++ . _extras 2 -> 1 `i ]
-[; ;main.c: 208: I2C_Send(nanoAddr, "\1Spacer counted\0");
-"208
-[e ( _I2C_Send (2 , _nanoAddr -> :s 11C `*uc ]
-"209
-}
-[e :U 301 ]
-[; ;main.c: 209: }
-[; ;main.c: 211: if (currTime >= spinTime) break;
-"211
-[e $ ! >= _currTime _spinTime 302  ]
-[e $U 300  ]
-[e :U 302 ]
-"212
+[e $U 298  ]
 }
 [e :U 298 ]
-"203
-[e $ < + . _extras 2 . _dispensed 2 -> 20 `i 299  ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 299  ]
 [e :U 300 ]
-[; ;main.c: 212: }
-[; ;main.c: 214: motorControl(SPACER, STOPMOTOR);
-"214
-[e ( _motorControl (2 , . `E3169 2 . `E3175 2 ]
-[; ;main.c: 216: I2C_Send(nanoAddr, 6);
-"216
-[e ( _I2C_Send (2 , _nanoAddr -> -> 6 `i `*uc ]
-[; ;main.c: 217: _delay((unsigned long)((5000)*(40000000/4000.0)));
-"217
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 219: tic();
-"219
-[e ( _tic ..  ]
-[; ;main.c: 220: debounceTime = 0;
-"220
+"173
+[v _i `i ~T0 @X0 1 a ]
+"174
+[v _spinTime `d ~T0 @X0 1 a ]
+[; ;main.c: 173: int i;
+[; ;main.c: 174: double spinTime=15.0;
+[e = _spinTime .15.0 ]
+"175
+[v _startTime `l ~T0 @X0 1 a ]
+"176
+[v _currTime `d ~T0 @X0 1 a ]
+[v _debounceTime `d ~T0 @X0 1 a ]
+[; ;main.c: 175: long startTime;
+[; ;main.c: 176: double currTime, debounceTime=0;
 [e = _debounceTime -> -> 0 `i `d ]
-[; ;main.c: 221: motorControl(WASHER, FORWARD);
-"221
-[e ( _motorControl (2 , . `E3169 3 . `E3175 0 ]
-[; ;main.c: 222: while (extras.w + dispensed.w < 35) {
-"222
-[e $U 303  ]
-[e :U 304 ]
+[; ;main.c: 178: extras.b = 0;
+"178
+[e = . _extras 0 -> 0 `i ]
+[; ;main.c: 179: extras.n = 0;
+"179
+[e = . _extras 1 -> 0 `i ]
+[; ;main.c: 180: extras.s = 0;
+"180
+[e = . _extras 2 -> 0 `i ]
+[; ;main.c: 181: extras.w = 0;
+"181
+[e = . _extras 3 -> 0 `i ]
+[; ;main.c: 183: tic();
+"183
+[e ( _tic ..  ]
+[; ;main.c: 185: currentMode = CLEARING;
+"185
+[e = _currentMode -> . `E3088 3 `i ]
+[; ;main.c: 186: motorControl(BOLT, FORWARD);
+"186
+[e ( _motorControl (2 , . `E3181 0 . `E3187 0 ]
+[; ;main.c: 187: while (extras.b + dispensed.b < 20) {
+"187
+[e $U 301  ]
+[e :U 302 ]
 {
-[; ;main.c: 223: currTime = tock();
-"223
+[; ;main.c: 188: currTime = tock();
+"188
 [e = _currTime ( _tock ..  ]
-[; ;main.c: 224: if (PORTAbits.RA3 == 0 && currTime > debounceTime + 2) {
-"224
-[e $ ! && == -> . . _PORTAbits 0 3 `i -> 0 `i > _currTime + _debounceTime -> -> 2 `i `d 306  ]
+[; ;main.c: 189: if (PORTAbits.RA3 == 0 && currTime > debounceTime + 1) {
+"189
+[e $ ! && == -> . . _PORTAbits 0 3 `i -> 0 `i > _currTime + _debounceTime -> -> 1 `i `d 304  ]
 {
-[; ;main.c: 225: debounceTime = currTime;
-"225
+[; ;main.c: 190: debounceTime = currTime;
+"190
 [e = _debounceTime _currTime ]
-[; ;main.c: 226: extras.w++;
-"226
-[e ++ . _extras 3 -> 1 `i ]
-[; ;main.c: 227: I2C_Send(nanoAddr, "\1Washer counted\0");
-"227
-[e ( _I2C_Send (2 , _nanoAddr -> :s 12C `*uc ]
-"228
+[; ;main.c: 191: extras.b++;
+"191
+[e ++ . _extras 0 -> 1 `i ]
+[; ;main.c: 192: I2C_Send(nanoAddr, "\1Bolt counted\0");
+"192
+[e ( _I2C_Send (2 , _nanoAddr -> :s 11C `*uc ]
+"193
+}
+[e :U 304 ]
+[; ;main.c: 193: }
+[; ;main.c: 195: if (currTime >= spinTime) break;
+"195
+[e $ ! >= _currTime _spinTime 305  ]
+[e $U 303  ]
+[e :U 305 ]
+"196
+}
+[e :U 301 ]
+"187
+[e $ < + . _extras 0 . _dispensed 0 -> 20 `i 302  ]
+[e :U 303 ]
+[; ;main.c: 196: }
+[; ;main.c: 197: motorControl(BOLT, STOPMOTOR);
+"197
+[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
+[; ;main.c: 198: currentMode = WAITING;
+"198
+[e = _currentMode -> . `E3088 4 `i ]
+[; ;main.c: 200: instr[0] = 4;
+"200
+[e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 4 `i `uc ]
+[; ;main.c: 201: I2C_Send(nanoAddr, instr);
+"201
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 202: while (PORTAbits.RA5 == 1) {continue;}
+"202
+[e $U 306  ]
+[e :U 307 ]
+{
+[e $U 306  ]
 }
 [e :U 306 ]
-[; ;main.c: 228: }
-[; ;main.c: 230: if (currTime >= spinTime) break;
-"230
-[e $ ! >= _currTime _spinTime 307  ]
-[e $U 305  ]
-[e :U 307 ]
-"231
-}
-[e :U 303 ]
-"222
-[e $ < + . _extras 3 . _dispensed 3 -> 35 `i 304  ]
-[e :U 305 ]
-[; ;main.c: 231: }
-[; ;main.c: 233: motorControl(WASHER, STOP);
-"233
-[e ( _motorControl (2 , . `E3169 3 -> -> _STOP `i `E3175 ]
-[; ;main.c: 235: I2C_Send(nanoAddr, 7);
-"235
-[e ( _I2C_Send (2 , _nanoAddr -> -> 7 `i `*uc ]
-[; ;main.c: 237: }
-"237
-[e :UE 287 ]
-}
-[v $root$_interruptHandler `(v ~T0 @X0 0 e ]
-[v F3223 `(v ~T0 @X0 1 tf ]
-"239
-[v _interruptHandler `IF3223 ~T0 @X0 1 e ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 307  ]
+[e :U 308 ]
+[; ;main.c: 204: tic();
+"204
+[e ( _tic ..  ]
+[; ;main.c: 205: debounceTime = 0;
+"205
+[e = _debounceTime -> -> 0 `i `d ]
+[; ;main.c: 206: currentMode = CLEARING;
+"206
+[e = _currentMode -> . `E3088 3 `i ]
+[; ;main.c: 207: motorControl(NUT, FORWARD);
+"207
+[e ( _motorControl (2 , . `E3181 1 . `E3187 0 ]
+[; ;main.c: 208: while (extras.n + dispensed.n < 25) {
+"208
+[e $U 309  ]
+[e :U 310 ]
 {
-[; ;main.c: 239: void interrupt interruptHandler(void) {
-[e :U _interruptHandler ]
-[f ]
-[; ;main.c: 240: if (T0IE && T0IF) {
-"240
-[e $ ! && _T0IE _T0IF 309  ]
+[; ;main.c: 209: currTime = tock();
+"209
+[e = _currTime ( _tock ..  ]
+[; ;main.c: 210: if (PORTAbits.RA1 == 0 && currTime > debounceTime + 1) {
+"210
+[e $ ! && == -> . . _PORTAbits 0 1 `i -> 0 `i > _currTime + _debounceTime -> -> 1 `i `d 312  ]
 {
-[; ;main.c: 241: T0IF = 0;
-"241
-[e = _T0IF -> -> 0 `i `b ]
-[; ;main.c: 242: tmr0_ISR();
-"242
-[e ( _tmr0_ISR ..  ]
-"243
+[; ;main.c: 211: debounceTime = currTime;
+"211
+[e = _debounceTime _currTime ]
+[; ;main.c: 212: extras.n++;
+"212
+[e ++ . _extras 1 -> 1 `i ]
+[; ;main.c: 213: I2C_Send(nanoAddr, "\1Nut counted\0");
+"213
+[e ( _I2C_Send (2 , _nanoAddr -> :s 12C `*uc ]
+"214
+}
+[e :U 312 ]
+[; ;main.c: 214: }
+[; ;main.c: 216: if (currTime >= spinTime) break;
+"216
+[e $ ! >= _currTime _spinTime 313  ]
+[e $U 311  ]
+[e :U 313 ]
+"217
 }
 [e :U 309 ]
-[; ;main.c: 243: }
-[; ;main.c: 244: }
+"208
+[e $ < + . _extras 1 . _dispensed 1 -> 25 `i 310  ]
+[e :U 311 ]
+[; ;main.c: 217: }
+[; ;main.c: 219: motorControl(NUT, STOPMOTOR);
+"219
+[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
+[; ;main.c: 220: currentMode = WAITING;
+"220
+[e = _currentMode -> . `E3088 4 `i ]
+[; ;main.c: 222: instr[0] = 5;
+"222
+[e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 5 `i `uc ]
+[; ;main.c: 223: I2C_Send(nanoAddr, instr);
+"223
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 224: while (PORTAbits.RA5 == 1) {continue;}
+"224
+[e $U 314  ]
+[e :U 315 ]
+{
+[e $U 314  ]
+}
+[e :U 314 ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 315  ]
+[e :U 316 ]
+[; ;main.c: 226: tic();
+"226
+[e ( _tic ..  ]
+[; ;main.c: 227: debounceTime = 0;
+"227
+[e = _debounceTime -> -> 0 `i `d ]
+[; ;main.c: 228: currentMode = CLEARING;
+"228
+[e = _currentMode -> . `E3088 3 `i ]
+[; ;main.c: 229: motorControl(SPACER, FORWARD);
+"229
+[e ( _motorControl (2 , . `E3181 2 . `E3187 0 ]
+[; ;main.c: 230: while (extras.s + dispensed.s < 20) {
+"230
+[e $U 317  ]
+[e :U 318 ]
+{
+[; ;main.c: 231: currTime = tock();
+"231
+[e = _currTime ( _tock ..  ]
+[; ;main.c: 232: if (PORTAbits.RA0 == 0 && currTime > debounceTime + 1) {
+"232
+[e $ ! && == -> . . _PORTAbits 0 0 `i -> 0 `i > _currTime + _debounceTime -> -> 1 `i `d 320  ]
+{
+[; ;main.c: 233: debounceTime = currTime;
+"233
+[e = _debounceTime _currTime ]
+[; ;main.c: 234: extras.s++;
+"234
+[e ++ . _extras 2 -> 1 `i ]
+[; ;main.c: 235: I2C_Send(nanoAddr, "\1Spacer counted\0");
+"235
+[e ( _I2C_Send (2 , _nanoAddr -> :s 13C `*uc ]
+"236
+}
+[e :U 320 ]
+[; ;main.c: 236: }
+[; ;main.c: 238: if (currTime >= spinTime) break;
+"238
+[e $ ! >= _currTime _spinTime 321  ]
+[e $U 319  ]
+[e :U 321 ]
+"239
+}
+[e :U 317 ]
+"230
+[e $ < + . _extras 2 . _dispensed 2 -> 20 `i 318  ]
+[e :U 319 ]
+[; ;main.c: 239: }
+[; ;main.c: 241: motorControl(SPACER, STOPMOTOR);
+"241
+[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
+[; ;main.c: 242: currentMode = WAITING;
+"242
+[e = _currentMode -> . `E3088 4 `i ]
+[; ;main.c: 244: instr[0] = 6;
 "244
-[e :UE 308 ]
+[e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 6 `i `uc ]
+[; ;main.c: 245: I2C_Send(nanoAddr, instr);
+"245
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 246: while (PORTAbits.RA5 == 1) {continue;}
+"246
+[e $U 322  ]
+[e :U 323 ]
+{
+[e $U 322  ]
+}
+[e :U 322 ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 323  ]
+[e :U 324 ]
+[; ;main.c: 248: tic();
+"248
+[e ( _tic ..  ]
+[; ;main.c: 249: debounceTime = 0;
+"249
+[e = _debounceTime -> -> 0 `i `d ]
+[; ;main.c: 250: currentMode = CLEARING;
+"250
+[e = _currentMode -> . `E3088 3 `i ]
+[; ;main.c: 251: motorControl(WASHER, FORWARD);
+"251
+[e ( _motorControl (2 , . `E3181 3 . `E3187 0 ]
+[; ;main.c: 252: while (extras.w + dispensed.w < 35) {
+"252
+[e $U 325  ]
+[e :U 326 ]
+{
+[; ;main.c: 253: currTime = tock();
+"253
+[e = _currTime ( _tock ..  ]
+[; ;main.c: 254: if (PORTAbits.RA2 == 0 && currTime > debounceTime + 1) {
+"254
+[e $ ! && == -> . . _PORTAbits 0 2 `i -> 0 `i > _currTime + _debounceTime -> -> 1 `i `d 328  ]
+{
+[; ;main.c: 255: debounceTime = currTime;
+"255
+[e = _debounceTime _currTime ]
+[; ;main.c: 256: extras.w++;
+"256
+[e ++ . _extras 3 -> 1 `i ]
+[; ;main.c: 257: I2C_Send(nanoAddr, "\1Washer counted\0");
+"257
+[e ( _I2C_Send (2 , _nanoAddr -> :s 14C `*uc ]
+"258
+}
+[e :U 328 ]
+[; ;main.c: 258: }
+[; ;main.c: 260: if (currTime >= spinTime) break;
+"260
+[e $ ! >= _currTime _spinTime 329  ]
+[e $U 327  ]
+[e :U 329 ]
+"261
+}
+[e :U 325 ]
+"252
+[e $ < + . _extras 3 . _dispensed 3 -> 35 `i 326  ]
+[e :U 327 ]
+[; ;main.c: 261: }
+[; ;main.c: 263: motorControl(WASHER, STOPMOTOR);
+"263
+[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[; ;main.c: 264: currentMode = WAITING;
+"264
+[e = _currentMode -> . `E3088 4 `i ]
+[; ;main.c: 266: instr[0] = 7;
+"266
+[e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 7 `i `uc ]
+[; ;main.c: 267: I2C_Send(nanoAddr, instr);
+"267
+[e ( _I2C_Send (2 , _nanoAddr &U _instr ]
+[; ;main.c: 268: while (PORTAbits.RA5 == 1) {continue;}
+"268
+[e $U 330  ]
+[e :U 331 ]
+{
+[e $U 330  ]
+}
+[e :U 330 ]
+[e $ == -> . . _PORTAbits 0 5 `i -> 1 `i 331  ]
+[e :U 332 ]
+[; ;main.c: 270: }
+"270
+[e :UE 297 ]
+}
+[v $root$_interruptHandler `(v ~T0 @X0 0 e ]
+[v F3248 `(v ~T0 @X0 1 tf ]
+"272
+[v _interruptHandler `IF3248 ~T0 @X0 1 e ]
+{
+[; ;main.c: 272: void interrupt interruptHandler(void) {
+[e :U _interruptHandler ]
+[f ]
+[; ;main.c: 273: if (T0IE && T0IF) {
+"273
+[e $ ! && _T0IE _T0IF 334  ]
+{
+[; ;main.c: 274: T0IF = 0;
+"274
+[e = _T0IF -> -> 0 `i `b ]
+[; ;main.c: 275: tmr0_ISR();
+"275
+[e ( _tmr0_ISR ..  ]
+"276
+}
+[e :U 334 ]
+[; ;main.c: 276: }
+[; ;main.c: 277: }
+"277
+[e :UE 333 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"246
+"279
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 246: void main(void) {
+[; ;main.c: 279: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 251: LATA = 0x00;
-"251
+[; ;main.c: 284: LATA = 0x00;
+"284
 [e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 252: LATB = 0x00;
-"252
+[; ;main.c: 285: LATB = 0x00;
+"285
 [e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 253: LATC = 0x00;
-"253
+[; ;main.c: 286: LATC = 0x00;
+"286
 [e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 254: LATD = 0x00;
-"254
+[; ;main.c: 287: LATD = 0x00;
+"287
 [e = _LATD -> -> 0 `i `uc ]
-[; ;main.c: 255: LATE = 0x00;
-"255
+[; ;main.c: 288: LATE = 0x00;
+"288
 [e = _LATE -> -> 0 `i `uc ]
-[; ;main.c: 258: TRISA = 0xFF;
-"258
+[; ;main.c: 291: TRISA = 0xFF;
+"291
 [e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 259: TRISB = 0b11110111;
-"259
+[; ;main.c: 292: TRISB = 0b11110111;
+"292
 [e = _TRISB -> -> 247 `i `uc ]
-[; ;main.c: 260: TRISC = 0x00;
-"260
+[; ;main.c: 293: TRISC = 0x00;
+"293
 [e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 261: TRISD = 0x00;
-"261
+[; ;main.c: 294: TRISD = 0x00;
+"294
 [e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 262: TRISE = 0x00;
-"262
+[; ;main.c: 295: TRISE = 0x00;
+"295
 [e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 264: ADCON0 = 0x00;
-"264
+[; ;main.c: 297: ADCON0 = 0x00;
+"297
 [e = _ADCON0 -> -> 0 `i `uc ]
-[; ;main.c: 265: ADCON1 = 0x0F;
-"265
+[; ;main.c: 298: ADCON1 = 0x0F;
+"298
 [e = _ADCON1 -> -> 15 `i `uc ]
-[; ;main.c: 268: I2C_Master_Init(100000);
-"268
+[; ;main.c: 301: I2C_Master_Init(100000);
+"301
 [e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
-[; ;main.c: 270: initLCD();
-"270
+[; ;main.c: 302: tmr0Init();
+"302
+[e ( _tmr0Init ..  ]
+[; ;main.c: 303: initLCD();
+"303
 [e ( _initLCD ..  ]
-[; ;main.c: 272: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"272
+[; ;main.c: 305: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"305
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 273: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"273
+[; ;main.c: 306: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"306
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 275: hibernate();
-"275
+[; ;main.c: 309: motorControl(BOLT, STOPMOTOR);
+"309
+[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
+[; ;main.c: 310: motorControl(NUT, STOPMOTOR);
+"310
+[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
+[; ;main.c: 311: motorControl(SPACER, STOPMOTOR);
+"311
+[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
+[; ;main.c: 312: motorControl(WASHER, STOPMOTOR);
+"312
+[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[; ;main.c: 321: hibernate();
+"321
 [e ( _hibernate ..  ]
-[; ;main.c: 276: mainMenu();
-"276
+[; ;main.c: 322: mainMenu();
+"322
 [e ( _mainMenu ..  ]
-[; ;main.c: 279: }
-"279
-[e :UE 310 ]
+[; ;main.c: 323: while(1);
+"323
+[e :U 337 ]
+[e :U 336 ]
+[e $U 337  ]
+[e :U 338 ]
+[; ;main.c: 336: }
+"336
+[e :UE 335 ]
 }
 [p f _sprintf 8388736 ]
 [p f _printf 8388736 ]
-[a 8C 67 111 109 112 97 114 116 109 101 110 116 32 37 100 0 ]
+[a 9C 67 111 109 112 97 114 116 109 101 110 116 32 37 100 0 ]
 [a 5C 1 68 111 110 101 32 99 111 109 112 97 114 116 109 101 110 116 0 0 ]
-[a 6C 1 69 110 116 101 114 101 100 32 116 104 101 32 112 97 99 107 97 103 105 110 103 32 102 117 110 99 116 105 111 110 0 0 ]
-[a 10C 1 78 117 116 32 99 111 117 110 116 101 100 0 0 ]
-[a 9C 1 66 111 108 116 32 99 111 117 110 116 101 100 0 0 ]
-[a 12C 1 87 97 115 104 101 114 32 99 111 117 110 116 101 100 0 0 ]
-[a 11C 1 83 112 97 99 101 114 32 99 111 117 110 116 101 100 0 0 ]
+[a 6C 1 79 117 116 32 111 102 32 116 104 101 32 112 97 99 107 97 103 105 110 103 32 108 111 111 112 0 0 ]
+[a 7C 1 69 110 116 101 114 101 100 32 116 104 101 32 112 97 99 107 97 103 105 110 103 32 102 117 110 99 116 105 111 110 0 0 ]
+[a 12C 1 78 117 116 32 99 111 117 110 116 101 100 0 0 ]
+[a 11C 1 66 111 108 116 32 99 111 117 110 116 101 100 0 0 ]
+[a 14C 1 87 97 115 104 101 114 32 99 111 117 110 116 101 100 0 0 ]
+[a 13C 1 83 112 97 99 101 114 32 99 111 117 110 116 101 100 0 0 ]
 [a 2C 1 78 117 116 32 67 111 117 110 116 101 100 0 0 ]
 [a 1C 1 66 111 108 116 32 67 111 117 110 116 101 100 0 0 ]
 [a 4C 1 87 97 115 104 101 114 32 67 111 117 110 116 101 100 0 0 ]
 [a 3C 1 83 112 97 99 101 114 32 67 111 117 110 116 101 100 0 0 ]
-[a 7C 1 66 58 37 100 32 78 58 37 100 32 83 58 37 100 32 87 58 37 100 0 0 ]
+[a 8C 1 66 58 37 100 32 78 58 37 100 32 83 58 37 100 32 87 58 37 100 0 0 ]
+[a 10C 1 70 105 110 105 115 104 101 100 32 112 97 99 107 97 103 105 110 103 32 99 111 109 112 97 114 116 109 101 110 116 32 37 100 0 0 ]

@@ -2,10 +2,11 @@
 #include "hardware.h"
 #include "helpers.h"
 #include "motors.h"
+#include "timer.h"
 
 void motorControl(fastenerType motor, motorDirection dir) {
     switch(motor) {
-        case BOLT:
+        case SPACER:
             if (dir == FORWARD) {
                 LATBbits.LATB3 = 1;
                 LATCbits.LATC0 = 0;
@@ -16,6 +17,7 @@ void motorControl(fastenerType motor, motorDirection dir) {
                 LATBbits.LATB3 = 1;
                 LATCbits.LATC0 = 1;
             }
+            currentMotorDir.s = dir;
             break;
         case NUT:
             if (dir == FORWARD) {
@@ -28,8 +30,9 @@ void motorControl(fastenerType motor, motorDirection dir) {
                 LATCbits.LATC1 = 1;
                 LATCbits.LATC2 = 1;
             }
+            currentMotorDir.n = dir;
             break;
-        case SPACER:
+        case WASHER:
             if (dir == FORWARD) {
                 LATCbits.LATC5 = 1;
                 LATCbits.LATC6 = 0;
@@ -40,8 +43,9 @@ void motorControl(fastenerType motor, motorDirection dir) {
                 LATCbits.LATC5 = 1;
                 LATCbits.LATC6 = 1;
             }
+            currentMotorDir.w = dir;
             break;
-        case WASHER:
+        case BOLT:
             if (dir == FORWARD) {
                 LATCbits.LATC7 = 1;
                 LATEbits.LATE0 = 0;
@@ -52,8 +56,13 @@ void motorControl(fastenerType motor, motorDirection dir) {
                 LATCbits.LATC7 = 1;
                 LATEbits.LATE0 = 1;
             }
+            currentMotorDir.b = dir;
             break;
         default:
             break;
     }
+}
+
+motorDirection inverseDir(motorDirection dir) {
+    return (dir == FORWARD) ? REVERSE : FORWARD;
 }

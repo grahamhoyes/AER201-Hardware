@@ -1,7 +1,11 @@
 
 # 1 "RTC.c"
 
-# 11 "hardware.h"
+# 13 "hardware.h"
+typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+int currentMode = MENU;
+
+
 typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
 BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
 BNNN=19, BWWW=20} fS;
@@ -23,7 +27,7 @@ int s;
 int w;
 } extras, dispensed;
 
-# 45
+# 51
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3865,12 +3869,18 @@ unsigned char I2C_Master_Read(unsigned char ackBit);
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
 void RTC_startOperation(void);
-long RTC_getOperatingTime(void);
+int RTC_getOperatingTime(void);
 
 # 12 "RTC.c"
+typedef struct time {
+int h;
+int m;
+int s;
+} Time;
+
 static long operatingTime;
-static long startTime;
-static long endTime;
+static Time startTime;
+static Time endTime;
 
 void RTC_getTime(unsigned char * time) {
 
@@ -3894,22 +3904,39 @@ I2C_Master_Stop();
 
 long RTC_getSeconds(void) {
 
-# 40
-unsigned char time[7];
+# 46
+char time[7];
 RTC_getTime(time);
 
-long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+long seconds = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10 + 60*(time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10 + 60*60*(time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+
+
 return seconds;
 }
 
 void RTC_startOperation(void) {
 
-startTime = RTC_getSeconds();
+char time[7];
+RTC_getTime(time);
+startTime.h = (time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+startTime.m = (time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10;
+startTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
 }
 
-long RTC_getOperatingTime(void) {
+int RTC_getOperatingTime(void) {
 
-endTime = RTC_getSeconds();
-return endTime - startTime;
+char time[7];
+RTC_getTime(time);
+endTime.h = (time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
+endTime.m = (time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10;
+endTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
+
+Time operatingTime;
+operatingTime.h = endTime.h - startTime.h;
+operatingTime.m = endTime.m - startTime.m;
+operatingTime.s = endTime.s - startTime.s;
+
+int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
+return res;
 }
 

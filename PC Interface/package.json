@@ -1,0 +1,10 @@
+{
+  "name": "AER201-PC-Interface",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "serialport": "^6.1.1",
+    "socket.io": "^2.0.4"
+  },
+  "author": "Graham Hoyes"
+}

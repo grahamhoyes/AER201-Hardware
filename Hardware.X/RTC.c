@@ -9,9 +9,15 @@
 #include "I2C.h"
 #include "RTC.h"
 
+typedef struct time {
+    int h;
+    int m;
+    int s;
+} Time;
+
 static long operatingTime;
-static long startTime;
-static long endTime;
+static Time startTime;
+static Time endTime;
 
 void RTC_getTime(unsigned char * time) {
     /* Reset RTC memory pointer */
@@ -37,21 +43,38 @@ long RTC_getSeconds(void) {
     /*  Returns: The number of seconds since the start of the day 
      */
     
-    unsigned char time[7];
+    char time[7];
     RTC_getTime(time);
     
-    long seconds = time[0] + 60*time[1] + 60*60*time[2] + 60*60*24*time[3];
+    long seconds = __bcd_to_num(time[0]) + 60*__bcd_to_num(time[1]) + 60*60*__bcd_to_num(time[2]);
+    //long seconds = __bcd_to_num(time[0]) + 60*__bcd_to_num(time[1]) + 60*60*__bcd_to_num(time[2]) + 60*60*24*__bcd_to_num(time[3]);
+    //long seconds = __bcd_to_num(time[0]);
     return seconds;
 }
 
 void RTC_startOperation(void) {
     /* Starts timing the operation */
-    startTime = RTC_getSeconds();
+    char time[7];
+    RTC_getTime(time);
+    startTime.h = __bcd_to_num(time[2]);
+    startTime.m = __bcd_to_num(time[1]);
+    startTime.s = __bcd_to_num(time[0]);
 }
 
-long RTC_getOperatingTime(void) {
+int RTC_getOperatingTime(void) {
     /* Returns: the number of seconds the operation took*/
-    endTime = RTC_getSeconds();
-    return endTime - startTime;
+    char time[7];
+    RTC_getTime(time);
+    endTime.h = __bcd_to_num(time[2]);
+    endTime.m = __bcd_to_num(time[1]);
+    endTime.s = __bcd_to_num(time[0]);
+    
+    Time operatingTime;
+    operatingTime.h = endTime.h - startTime.h;
+    operatingTime.m = endTime.m - startTime.m;
+    operatingTime.s = endTime.s - startTime.s;
+    
+    int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
+    return res;
 }
 

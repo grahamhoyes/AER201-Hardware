@@ -8,12 +8,14 @@
 #ifndef TIMER_H
 #define	TIMER_H
 
+void tmr0Init(void);
 void tic(void);
 double tock(void);
 void tmr0_ISR(void);
 void Timer_startOperation(void);
 double Timer_getOperatingTime(void);
 long getTest(void);
+void resetMotorTimer(void);
 
 #endif	/* TIMER_H */
 

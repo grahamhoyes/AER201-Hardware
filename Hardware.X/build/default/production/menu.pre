@@ -3904,9 +3904,13 @@ void I2C_Send(unsigned char address, char * data);
 void RTC_getTime(unsigned char * time);
 long RTC_getSeconds(void);
 void RTC_startOperation(void);
-long RTC_getOperatingTime(void);
+int RTC_getOperatingTime(void);
 
-# 11 "hardware.h"
+# 13 "hardware.h"
+typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+int currentMode = MENU;
+
+
 typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
 BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
 BNNN=19, BWWW=20} fS;
@@ -3928,7 +3932,7 @@ int s;
 int w;
 } extras, dispensed;
 
-# 45
+# 51
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3997,12 +4001,14 @@ void packaging(void);
 void clearing(void);
 
 # 11 "timer.h"
+void tmr0Init(void);
 void tic(void);
 double tock(void);
 void tmr0_ISR(void);
 void Timer_startOperation(void);
 double Timer_getOperatingTime(void);
 long getTest(void);
+void resetMotorTimer(void);
 
 # 11 "menu.c"
 void hibernate(void) {

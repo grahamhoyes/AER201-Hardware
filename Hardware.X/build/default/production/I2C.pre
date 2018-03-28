@@ -3760,7 +3760,10 @@ extern __nonreentrant void _delay3(unsigned char);
 
 #pragma config EBTRB = OFF
 
-# 22 "I2C.h"
+# 21 "I2C.h"
+const unsigned char nanoAddr = 0b00010000;
+
+
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);
 void I2C_Master_RepeatedStart(void);

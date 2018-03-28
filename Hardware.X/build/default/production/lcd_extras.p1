@@ -2875,175 +2875,175 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ]
 [; ;lcd_extras.h: 11: const char keypadChars[] = "123B456N789S*0#W";
-[; ;lcd_extras.h: 13: int printStringLCD(char * string);
+[; ;lcd_extras.h: 13: void printStringLCD(char * string);
 [; ;lcd_extras.h: 14: void printErrorLCD(char * string);
 [; ;lcd_extras.h: 15: char pollKeypad(void);
 "4 lcd_extras.c
-[v _printStringLCD `(i ~T0 @X0 1 ef1`*uc ]
+[v _printStringLCD `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;lcd_extras.c: 4: int printStringLCD(char *string) {
+[; ;lcd_extras.c: 4: void printStringLCD(char *string) {
 [e :U _printStringLCD ]
 [v _string `*uc ~T0 @X0 1 r1 ]
 [f ]
-"10
+"9
 [v _i `i ~T0 @X0 1 a ]
-"11
+"10
 [v _j `i ~T0 @X0 1 a ]
-[; ;lcd_extras.c: 10: int i;
-[; ;lcd_extras.c: 11: int j = 1;
+[; ;lcd_extras.c: 9: int i;
+[; ;lcd_extras.c: 10: int j = 1;
 [e = _j -> 1 `i ]
-"12
+"11
 [v _newlineIndex `i ~T0 @X0 1 a ]
-[; ;lcd_extras.c: 12: int newlineIndex = 16;
+[; ;lcd_extras.c: 11: int newlineIndex = 16;
 [e = _newlineIndex -> 16 `i ]
-"13
+"12
 [v _newlineCharIndex `i ~T0 @X0 1 a ]
-[; ;lcd_extras.c: 13: int newlineCharIndex = -1;
+[; ;lcd_extras.c: 12: int newlineCharIndex = -1;
 [e = _newlineCharIndex -U -> 1 `i ]
-"14
+"13
 [v _spaceIndex `i ~T0 @X0 1 a ]
-[; ;lcd_extras.c: 14: int spaceIndex = 0;
+[; ;lcd_extras.c: 13: int spaceIndex = 0;
 [e = _spaceIndex -> 0 `i ]
-[; ;lcd_extras.c: 16: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"16
+[; ;lcd_extras.c: 15: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"15
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;lcd_extras.c: 17: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"17
+[; ;lcd_extras.c: 16: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"16
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;lcd_extras.c: 20: for (i = 0; i < 17; i++) {
-"20
+[; ;lcd_extras.c: 19: for (i = 0; i < 17; i++) {
+"19
 {
 [e = _i -> 0 `i ]
 [e $ < _i -> 17 `i 267  ]
 [e $U 268  ]
 [e :U 267 ]
 {
-[; ;lcd_extras.c: 21: if (string[i] == 0) break;
-"21
+[; ;lcd_extras.c: 20: if (string[i] == 0) break;
+"20
 [e $ ! == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 0 `i 270  ]
 [e $U 268  ]
 [e :U 270 ]
-[; ;lcd_extras.c: 22: if (string[i] == 32) {
-"22
+[; ;lcd_extras.c: 21: if (string[i] == 32) {
+"21
 [e $ ! == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 32 `i 271  ]
 {
-[; ;lcd_extras.c: 23: spaceIndex = i;
-"23
+[; ;lcd_extras.c: 22: spaceIndex = i;
+"22
 [e = _spaceIndex _i ]
-"24
+"23
 }
 [e :U 271 ]
-[; ;lcd_extras.c: 24: }
-[; ;lcd_extras.c: 26: if (string[i] == 10) {
-"26
+[; ;lcd_extras.c: 23: }
+[; ;lcd_extras.c: 25: if (string[i] == 10) {
+"25
 [e $ ! == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 10 `i 272  ]
 {
-[; ;lcd_extras.c: 27: newlineCharIndex = i;
-"27
+[; ;lcd_extras.c: 26: newlineCharIndex = i;
+"26
 [e = _newlineCharIndex _i ]
-[; ;lcd_extras.c: 28: newlineIndex = newlineCharIndex;
-"28
+[; ;lcd_extras.c: 27: newlineIndex = newlineCharIndex;
+"27
 [e = _newlineIndex _newlineCharIndex ]
-"29
+"28
 }
 [e :U 272 ]
-[; ;lcd_extras.c: 29: }
-[; ;lcd_extras.c: 32: if (i == 16 && string[i] != 32 && newlineCharIndex < 0) {
-"32
+[; ;lcd_extras.c: 28: }
+[; ;lcd_extras.c: 31: if (i == 16 && string[i] != 32 && newlineCharIndex < 0) {
+"31
 [e $ ! && && == _i -> 16 `i != -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 32 `i < _newlineCharIndex -> 0 `i 273  ]
 {
-[; ;lcd_extras.c: 33: newlineIndex = spaceIndex;
-"33
+[; ;lcd_extras.c: 32: newlineIndex = spaceIndex;
+"32
 [e = _newlineIndex _spaceIndex ]
-"34
+"33
 }
 [e :U 273 ]
-"35
+"34
 }
-"20
+"19
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 17 `i 267  ]
 [e :U 268 ]
-"35
+"34
 }
+[; ;lcd_extras.c: 33: }
 [; ;lcd_extras.c: 34: }
-[; ;lcd_extras.c: 35: }
-[; ;lcd_extras.c: 38: for (i = 0; i < 32; i++) {
-"38
+[; ;lcd_extras.c: 37: for (i = 0; i < 32; i++) {
+"37
 {
 [e = _i -> 0 `i ]
 [e $ < _i -> 32 `i 274  ]
 [e $U 275  ]
 [e :U 274 ]
 {
-[; ;lcd_extras.c: 39: if (string[i] == 0) break;
-"39
+[; ;lcd_extras.c: 38: if (string[i] == 0) break;
+"38
 [e $ ! == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 0 `i 277  ]
 [e $U 275  ]
 [e :U 277 ]
-[; ;lcd_extras.c: 50: if (i == newlineIndex && j < LCD_SIZE_VERT) {
-"50
+[; ;lcd_extras.c: 49: if (i == newlineIndex && j < LCD_SIZE_VERT) {
+"49
 [e $ ! && == _i _newlineIndex < _j -> _LCD_SIZE_VERT `i 278  ]
 {
-[; ;lcd_extras.c: 51: j++;
-"51
+[; ;lcd_extras.c: 50: j++;
+"50
 [e ++ _j -> 1 `i ]
-[; ;lcd_extras.c: 52: lcdInst(0xC0);;
-"52
+[; ;lcd_extras.c: 51: lcdInst(0xC0);;
+"51
 [e ( _lcdInst (1 -> -> 192 `i `uc ]
-[; ;lcd_extras.c: 53: if (string[i] == 32 || string[i] == 10) continue;
-"53
+[; ;lcd_extras.c: 52: if (string[i] == 32 || string[i] == 10) continue;
+"52
 [e $ ! || == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 32 `i == -> *U + _string * -> _i `x -> -> # *U _string `i `x `i -> 10 `i 279  ]
 [e $U 276  ]
 [e :U 279 ]
-"54
+"53
 }
 [e :U 278 ]
-[; ;lcd_extras.c: 54: }
-[; ;lcd_extras.c: 56: putch(string[i]);
-"56
+[; ;lcd_extras.c: 53: }
+[; ;lcd_extras.c: 55: putch(string[i]);
+"55
 [e ( _putch (1 *U + _string * -> _i `x -> -> # *U _string `i `x ]
-"57
+"56
 }
-"38
+"37
 [e :U 276 ]
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 32 `i 274  ]
 [e :U 275 ]
-"57
+"56
 }
+[; ;lcd_extras.c: 56: }
 [; ;lcd_extras.c: 57: }
-[; ;lcd_extras.c: 58: }
-"58
+"57
 [e :UE 266 ]
 }
-"60
+"59
 [v _printErrorLCD `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;lcd_extras.c: 60: void printErrorLCD(char *string) {
+[; ;lcd_extras.c: 59: void printErrorLCD(char *string) {
 [e :U _printErrorLCD ]
 [v _string `*uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;lcd_extras.c: 61: printStringLCD(string);
-"61
+[; ;lcd_extras.c: 60: printStringLCD(string);
+"60
 [e ( _printStringLCD (1 _string ]
-[; ;lcd_extras.c: 62: _delay((unsigned long)((2000)*(40000000/4000.0)));
-"62
+[; ;lcd_extras.c: 61: _delay((unsigned long)((2000)*(40000000/4000.0)));
+"61
 [e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;lcd_extras.c: 63: }
-"63
+[; ;lcd_extras.c: 62: }
+"62
 [e :UE 280 ]
 }
-"66
+"65
 [v _pollKeypad `(uc ~T0 @X0 1 ef ]
 {
-[; ;lcd_extras.c: 66: char pollKeypad(void) {
+[; ;lcd_extras.c: 65: char pollKeypad(void) {
 [e :U _pollKeypad ]
 [f ]
-[; ;lcd_extras.c: 68: while (PORTBbits.RB1 == 0) {continue;}
-"68
+[; ;lcd_extras.c: 67: while (PORTBbits.RB1 == 0) {continue;}
+"67
 [e $U 282  ]
 [e :U 283 ]
 {
@@ -3052,12 +3052,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 282 ]
 [e $ == -> . . _PORTBbits 0 1 `i -> 0 `i 283  ]
 [e :U 284 ]
-"71
+"70
 [v _keypress `uc ~T0 @X0 1 a ]
-[; ;lcd_extras.c: 71: unsigned char keypress = (unsigned char)(PORTB & 0xF0) >> 4;
+[; ;lcd_extras.c: 70: unsigned char keypress = (unsigned char)(PORTB & 0xF0) >> 4;
 [e = _keypress -> >> -> -> & -> _PORTB `i -> 240 `i `uc `i -> 4 `i `uc ]
-[; ;lcd_extras.c: 74: while (PORTBbits.RB1 == 1) {continue;}
-"74
+[; ;lcd_extras.c: 73: while (PORTBbits.RB1 == 1) {continue;}
+"73
 [e $U 285  ]
 [e :U 286 ]
 {
@@ -3066,14 +3066,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 285 ]
 [e $ == -> . . _PORTBbits 0 1 `i -> 1 `i 286  ]
 [e :U 287 ]
-[; ;lcd_extras.c: 76: __nop();
-"76
+[; ;lcd_extras.c: 75: __nop();
+"75
 [e ( ___nop ..  ]
-[; ;lcd_extras.c: 78: return keypadChars[keypress];
-"78
+[; ;lcd_extras.c: 77: return keypadChars[keypress];
+"77
 [e ) *U + &U _keypadChars * -> _keypress `ux -> -> # *U &U _keypadChars `ui `ux ]
 [e $UE 281  ]
-[; ;lcd_extras.c: 79: }
-"79
+[; ;lcd_extras.c: 78: }
+"78
 [e :UE 281 ]
 }

@@ -2788,12 +2788,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p x EBTR3=OFF ]
 "69
 [p x EBTRB=OFF ]
-[; ;I2C.h: 22: void I2C_Master_Init(const unsigned long c);
-[; ;I2C.h: 23: void I2C_Master_Start(void);
-[; ;I2C.h: 24: void I2C_Master_RepeatedStart(void);
-[; ;I2C.h: 25: void I2C_Master_Stop(void);
-[; ;I2C.h: 26: void I2C_Master_Write(unsigned byteToWrite);
-[; ;I2C.h: 27: unsigned char I2C_Master_Read(unsigned char ackBit);
+"21 I2C.h
+[v _nanoAddr `Cuc ~T0 @X0 1 e ]
+[i _nanoAddr
+-> -> 16 `i `uc
+]
+[; ;I2C.h: 21: const unsigned char nanoAddr = 0b00010000;
+[; ;I2C.h: 24: void I2C_Master_Init(const unsigned long c);
+[; ;I2C.h: 25: void I2C_Master_Start(void);
+[; ;I2C.h: 26: void I2C_Master_RepeatedStart(void);
+[; ;I2C.h: 27: void I2C_Master_Stop(void);
+[; ;I2C.h: 28: void I2C_Master_Write(unsigned byteToWrite);
+[; ;I2C.h: 29: unsigned char I2C_Master_Read(unsigned char ackBit);
 "14 I2C.c
 [v _I2C_Master_Init `(v ~T0 @X0 1 ef1`Cul ]
 {

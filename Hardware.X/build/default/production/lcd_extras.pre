@@ -3846,14 +3846,14 @@ void lcd_shift_display(unsigned char numChars, unsigned char direction);
 # 11 "lcd_extras.h"
 const char keypadChars[] = "123B456N789S*0#W";
 
-int printStringLCD(char * string);
+void printStringLCD(char * string);
 void printErrorLCD(char * string);
 char pollKeypad(void);
 
 # 4 "lcd_extras.c"
-int printStringLCD(char *string) {
+void printStringLCD(char *string) {
 
-# 10
+# 9
 int i;
 int j = 1;
 int newlineIndex = 16;
@@ -3885,7 +3885,7 @@ newlineIndex = spaceIndex;
 for (i = 0; i < 32; i++) {
 if (string[i] == 0) break;
 
-# 50
+# 49
 if (i == newlineIndex && j < LCD_SIZE_VERT) {
 j++;
 lcdInst(0xC0);;

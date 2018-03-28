@@ -1,100 +1,238 @@
 #include "menu.h"
-/*
-typedef enum {B=66, N=78, S=83, W=87, steps, sets, x} fastener;
+#include <string.h>
+#include "lcd.h"
+#include "I2C.h"
+#include "helpers.h"
+#include "RTC.h"
+#include "hardware.h"
+#include "stdio.h"
+#include "timer.h"
 
-typedef struct {
-    char min;
-    char max;
-    char end;
-    char name[5];
-    fastener type; // Fastener currently being selected
-    menuOption * next[4]; // Pointers to next menu screen, index by input
-    menuOption * prev;  // Pointer to the previous menu
-} menuOption;*/
+void hibernate(void) {
+    printStringLCD("Press 1 to begin");
+    int pressed;
+    while (1) {
+        pressed = pollKeypad();
+        if (pressed - 48 == 1) {
+            return;
+        }
+    }
+}
 
-/* Start assembling the tree */
-/* Final states */ 
-//struct menuOption mBBNW = {0, 0, 1, "BBNW\0"};
-//struct menuOption mBBN = {0, 0, 1, "BBN\0"};
-//struct menuOption mBBSW = {0, 0, 1, "BBSW\0"};
-//struct menuOption mBBS = {0, 0, 1, "BBS\0"};
-//struct menuOption mBBW = {0, 0, 1, "BBW\0"};
-//struct menuOption mBNNN = {0, 0, 1, "BNNN\0"};
-//struct menuOption mBNNW = {0, 0, 1, "BNNW\0"};
-//struct menuOption mBNWW = {0, 0, 1, "BNWW\0"};
-//struct menuOption mBNW = {0, 0, 1, "BNW\0"};
-//struct menuOption mBN = {0, 0, 1, "BN\0"};
-//struct menuOption mBSWW = {0, 0, 1, "BSWW\0"};
-//struct menuOption mBSW = {0, 0, 1, "BSW\0"};
-//struct menuOption mBS = {0, 0, 1, "BS\0"};
-//struct menuOption mBWWW = {0, 0, 1, "BWWW\0"};
-//struct menuOption mBWW = {0, 0, 1, "BWW\0"};
-//struct menuOption mBW = {0, 0, 1, "BW\0"};
-//struct menuOption mB = {0, 0, 1, "B\0"};
-//struct menuOption mW = {0, 0, 1, "W\0"};
-//struct menuOption mS = {0, 0, 1, "S\0"};
-//struct menuOption mN = {0, 0, 1, "N\0"};
-//
-///* Intermediate states */
-//struct menuOption mOne = {0, 1, 0, "\0", W, {&mBBN, &mBBNW}};
-//struct menuOption mTwo = {0, 1, 0, "\0", W, {&mBBS, &mBBSW}};
-//// mThree goes straight to BBW
-//struct menuOption mFour = {0, 1, 0, "\0", S, {&mBBW, &mTwo}};
-//// mFive goes straight to BNNN
-//// mSix goes straight to BNNW
-//struct menuOption mSeven = {0, 2, 0, "\0", W, {&mBN, &mBNW, &mBNWW}};
-//struct menuOption mEight = {0, 2, 0, "\0", W, {&mBS, &mBSW, &mBSWW}};
-//struct menuOption mNine = {0, 3, 0, "\0", W, {&mB, &mBW, &mBWW, &mBWWW}};
-//struct menuOption mTen = {0, 1, 0, "\0", S, {&mNine, &mEight}};
-//// mEleven goes straight to W
-//struct menuOption mTwelve = {0, 1, 0, "\0", S, {&mW, &mS}};
-//struct menuOption mThirteen = {0, 1, 0, "\0", N, {&mFour, &mOne}};
-//struct menuOption mFourteen = {0, 3, 0, "\0", N, {&mTen, &mSeven, &mBNNW, &mBNNN}};
-//struct menuOption mFifteen = {0, 1, 0, "\0", N, {&mTwelve, &mN}};
-//struct menuOption mStart = {0, 2, 0, "\0", B, {&mFifteen, &mFourteen, &mThirteen}};
-//
-///* The beginning options */
-//struct menuOption mSets = {1, 4, 0, "\0", sets, {&mStart, &mStart, &mStart, &mStart}};
-//struct menuOption mSteps = {4, 8, 0, "\0", steps, {&mSets, &mSets, &mSets, &mSets}};
+void viewLogs() {
+    printStringLCD("Not there yet\n* to return");
+    while (1) {
+        int pressed = pollKeypad();
+        if (pressed == 42) return;
+    }
+}
 
-/* Now that everything has been declared, backwards link the tree together */
-void initMenu(void) {
-    mBBNW.prev = &mOne;
-    mBBN.prev = &mOne;
-    mBBSW.prev = &mTwo;
-    mBBS.prev = &mTwo;
-    mBBW.prev = &mFour;
-    mBNNN.prev = &mFourteen;
-    mBNNW.prev = &mFourteen;
-    mBNWW.prev = &mSeven;
-    mBNW.prev = &mSeven;
-    mBN.prev = &mSeven;
-    mBSWW.prev = &mEight;
-    mBSW.prev = &mEight;
-    mBS.prev = &mEight;
-    mBWWW.prev = &mFour;
-    mBWW.prev = &mFour;
-    mBW.prev = &mFour;
-    mB.prev = &mFour;
-    mW.prev = &mTwelve;
-    mS.prev = &mTwelve;
-    mN.prev = &mFifteen;
+void inputEntry(void) {
+    __lcd_clear();
+    __lcd_home();
+   
+    I2C_Send(nanoAddr, "Started input entry, hi\0");
     
-    /* Intermediate states */
-    mOne.prev = &mThirteen;
-    mTwo.prev = &mFour;
-    mFour.prev = &mThirteen;
-    mSeven.prev = &mFourteen;
-    mEight.prev = &mTen;
-    mNine.prev = &mTen;
-    mTen.prev = &mFourteen;
-    mTwelve.prev = &mFifteen;
-    mThirteen.prev = &mStart;
-    mFourteen.prev = &mStart;
-    mFifteen.prev = &mStart;
-    mStart.prev = &mSets;
+    int compartmentNum = 0;
+    char compartmentLabel[2] = "C0";
+    int inputEntryStep = 0;
+    int done = 0;
     
-    /* In the beginning... */
-    mSteps.prev = &mSteps;
-    mSets.prev = &mSteps;
+    int i, numPressed, doneCompartment, numB, numN, numS, numW, found, numFasteners;
+    int setIsGood, doneMultiples;
+    unsigned char pressed;
+    
+    while (!done) {
+        /* Getting # of assembly steps */
+        if (inputEntryStep == 0) {
+            printStringLCD(inputEntryQuestions[inputEntryStep]);
+            
+            pressed = pollKeypad();
+            numPressed = pressed - 48;
+            
+            putch(pressed); // Put their selection to to the LCD
+            __delay_ms(500); // Delay for dramatic effect
+            
+            if (numPressed >= 4 && numPressed <= 8) {
+                params.steps = numPressed;
+                inputEntryStep++;
+            } else printErrorLCD(errMsgs.badEntry);
+        } else if (inputEntryStep == 1) {            
+            /* Getting fastener set for each compartment */
+            char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
+            for (compartmentNum = 0; compartmentNum < 8; compartmentNum++) {
+                STARTCOMPARTMENT: 
+                if ((compartmentsToFill >> compartmentNum) & 0b1) { // Tells us if this compartment needs to be filled in
+                    char msg[] = "\1Started compartment x\0";
+                    msg[21] = compartmentNum + 1 + 48;
+                    I2C_Send(nanoAddr, msg);
+                    /* First, logic pertaining to which fastener set */
+                    setIsGood = 0;
+                    while (!setIsGood) {
+                        numB = 0;
+                        numN = 0;
+                        numS = 0;
+                        numW = 0;
+                        char fastenerString[32];
+                        strcpy(fastenerString, inputEntryQuestions[inputEntryStep]); // "Fasteners in Cx"
+                        fastenerString[14] = compartmentNum + 1 + 48; // Replace 'x' with the compartment number
+
+                        printStringLCD(fastenerString);
+                        lcd_set_cursor(9, 1);
+                        doneCompartment = 0;
+
+                        while(doneCompartment < 4) {
+                            pressed = pollKeypad();
+                            if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
+                                putch(pressed); // Put their selection to the LCD
+                                if (pressed == 66) numB++;
+                                else if (pressed == 78) numN++;
+                                else if (pressed == 83) numS ++;
+                                else if (pressed == 87) numW++;
+                                doneCompartment++;
+                            } else if (pressed == 35) { // #: done
+                                if (numB != 0 || numN != 0 || numS != 0 || numW != 0) doneCompartment = 4;
+                            } else if (pressed == 42) { // *: Go back
+                                compartmentNum--;
+                                goto STARTMULTIPLES;
+                            }
+                        }
+
+                        /* Determine which fastener set we're dealing with */
+                        found = 0;
+                        for (i = 0; i < 21; i++) {
+                            if (fastenerMatrix[i][0] == numB && 
+                                fastenerMatrix[i][1] == numN &&
+                                fastenerMatrix[i][2] == numS &&
+                                fastenerMatrix[i][3] == numW) 
+                            {
+                                params.toFill[compartmentNum] = i; // i will correspond to the enum fS
+                                found = 1;
+                            }
+                        }  
+                        if (!found) {
+                            printErrorLCD(errMsgs.badEntry);
+                            // Compartment will be done again
+                            //compartmentNum--; // So that it does this compartment again
+                            continue;
+                        } else {
+                            setIsGood = 1;
+                        }
+                    }
+                    /* Next, figure out how many multiples*/
+                    
+                    STARTMULTIPLES:
+                    doneMultiples = 0;
+                    while (!doneMultiples) {
+                        printStringLCD(inputEntryQuestions[2]);
+                        lcd_set_cursor(14, 1);
+
+                        pressed = pollKeypad();
+                        numPressed = pressed - 48;
+                        
+                        if (pressed == 42) goto STARTCOMPARTMENT; // *: go back
+                        /* Caveat: If */
+                        
+                        putch(pressed);
+                        __delay_ms(500); // For dramatic effect
+                        
+                        int sum = 0;
+                        for (i = 0; i < 4; i++) {
+                            sum += fastenerMatrix[params.toFill[compartmentNum]][i];
+                        };
+                        if (numPressed * sum > 4) {
+                            printErrorLCD(errMsgs.tooManyFasteners);
+                        } else if (numPressed * sum <= 0) {
+                            printErrorLCD(errMsgs.noFasteners);
+                            
+                        // Using numB, etc. here (and elsewhere) prevents us from going backwards.
+                        // Solution: either always go back to start of compartment, or store these in an array somewhere
+                        } else if (numB * numPressed > maxCompB) {
+                            printErrorLCD(errMsgs.tooManyBolts);
+                        } else if (numN * numPressed > maxCompN) {
+                            printErrorLCD(errMsgs.tooManyNuts);
+                        } else if (numS * numPressed > maxCompS) {
+                            printErrorLCD(errMsgs.tooManySpacers);
+                        } else if (numW * numPressed > maxCompW) {
+                            printErrorLCD(errMsgs.tooManyWashers);
+                        } else {
+                            params.setMultiple[compartmentNum] = numPressed;
+                            doneMultiples = 1;
+                        }
+                    }
+                } else {
+                    params.toFill[compartmentNum] = NONE;
+                    params.setMultiple[compartmentNum] = 0;
+                }
+            }
+            done = 1;
+            I2C_Send(nanoAddr, "\1Done inputs\0");
+        }
+    }
+}
+
+void mainMenu(void) {
+    int pressed;
+    int needToPrint = 1; 
+    
+    while (1) {
+        if (needToPrint) { // Save some processor cycles
+            printStringLCD("0:Sleep 1:Begin \n2: View Logs");
+            needToPrint = 0;
+        }
+        pressed = pollKeypad();
+        putch(pressed);
+        if (pressed - 48 == 0) { // Sleep
+            hibernate();
+            needToPrint = 1;
+        } else if (pressed - 48 == 1) { // Begin
+            inputEntry(); // Get user input parameters
+            __lcd_clear();
+            __lcd_home();
+            printf("Press 1 to start");
+            __lcd_newline();
+            printf("packaging");
+            int startPress = pollKeypad();
+            while (startPress - 48 != 1) {
+                startPress = pollKeypad();
+            }
+            RTC_startOperation(); // Begin global timing
+            __lcd_clear();
+            __lcd_home();
+            printf("Starting packaging");
+            I2C_Send(nanoAddr, "\1Starting packaging\0");
+            packaging(); // Fill the box
+            clearing(); // Empty and reset the machine
+            long operationTime = RTC_getOperatingTime();
+            
+            printf("Summary:");
+            __delay_ms(1000);
+            int i;
+            while(1) {
+                for (i = 0; i < 8; i++) {
+                    __lcd_clear();
+                    __lcd_home();
+                    printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
+                    __delay_ms(2000);
+                }
+                // Print remaining amounts
+                __lcd_clear();
+                __lcd_home();
+                printf("Remaining:");
+                __lcd_newline();
+                printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+                __delay_ms(2000);
+                __lcd_clear();
+                __lcd_home();
+                printf("Time:");
+                __lcd_newline();
+                printf("%ld", operationTime);
+                __delay_ms(2000);
+                
+            }
+        } else if (pressed - 48 == 2) { // View logs
+            viewLogs();
+            needToPrint = 1;
+        }
+    }
 }

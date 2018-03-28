@@ -256,20 +256,28 @@ extern double round(double);
 # 13 "C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\doprnt.c"
 #pragma warning disable 350
 
+# 354
+const static unsigned long dpowers[] = {1, 10, 100, 1000, 10000,
+
+100000, 1000000, 10000000, 100000000,
+1000000000
+
+};
+
 # 455
 int
 
-# 464
-printf(const char * f, ...)
+
+_doprnt(struct __prbuf * pb, register const char * f, register va_list ap)
 {
-va_list ap;
 
 # 499
 signed char c;
 
-# 506
-signed char prec;
+# 504
+int prec;
 
+# 508
 unsigned char flag;
 
 # 523
@@ -278,30 +286,117 @@ unsigned long vd;
 double integ;
 } tmpval;
 
-unsigned int val;
+unsigned long val;
 unsigned len;
 const char * cp;
 
-
-*ap = __va_start();
-
-
+# 536
 while(c = *f++) {
 
-# 540
+if(c != '%')
+
 {
-(putch(c) );
+if(pb->func) (pb->func(c)); else ((*pb->ptr++ = c));
 continue;
 }
+
+# 548
+flag = 0;
+
+# 633
+loop:
+
+switch(c = *f++) {
+
+case 0:
+goto alldone;
+
+
+case 'l':
+
+flag |= 0x10;
+goto loop;
+
+# 697
+case 'd':
+case 'i':
+break;
+
+# 728
+case 's':
+
+# 734
+cp = (*(const char * *)__va_arg((*(const char * **)ap), (const char *)0));
+
+# 740
+if(!cp)
+cp = "(null)";
+
+# 777
+while(*cp)
+if(pb->func) (pb->func(*cp++)); else ((*pb->ptr++ = *cp++));
+continue;
+
+# 802
+default:
+
+# 813
+continue;
+
+# 822
+}
+
+# 1253
+{
+
+if(flag & 0x10)
+val = (*(long *)__va_arg((*(long **)ap), (long)0));
+else
+
+val = (long)(*(int *)__va_arg((*(int **)ap), (int)0));
+
+if((long)val < 0) {
+flag |= 0x03;
+val = -val;
+}
+
+}
+
+# 1305
+for(c = 1 ; c != sizeof dpowers/sizeof dpowers[0] ; c++)
+if(val < dpowers[c])
+break;
 
 # 1422
 {
 
+# 1438
+if(flag & 0x03)
+if(pb->func) (pb->func('-')); else ((*pb->ptr++ = '-'));
+
 # 1469
+}
+
+
+prec = c;
+
+while(prec--) {
+
+# 1478
+{
+
+# 1489
+c = (val / dpowers[prec]) % 10 + '0';
+
+# 1523
+}
+if(pb->func) (pb->func(c)); else ((*pb->ptr++ = c));
 }
 
 # 1533
 }
+
+alldone:
 
 # 1540
 return 0;

@@ -3875,23 +3875,58 @@ void lcd_set_cursor(unsigned char x, unsigned char y);
 void lcd_shift_cursor(unsigned char numChars, unsigned char direction);
 void lcd_shift_display(unsigned char numChars, unsigned char direction);
 
-# 11 "lcd_extras.h"
+# 21 "I2C.h"
+const unsigned char nanoAddr = 0b00010000;
+
+
+void I2C_Master_Init(const unsigned long c);
+void I2C_Master_Start(void);
+void I2C_Master_RepeatedStart(void);
+void I2C_Master_Stop(void);
+void I2C_Master_Write(unsigned byteToWrite);
+unsigned char I2C_Master_Read(unsigned char ackBit);
+
+# 11 "helpers.h"
 const char keypadChars[] = "123B456N789S*0#W";
 
-int printStringLCD(char * string);
+void printStringLCD(char * string);
 void printErrorLCD(char * string);
 char pollKeypad(void);
+void I2C_Send(unsigned char address, char * data);
 
-# 11 "hardware.h"
-typedef enum fs {B=0, N=1, S=2, W=3, BN=4, BS=5, BW=6, BBN=7, BBS=8, BBW=9, BNW=10,
-BSW=11, BWW=12, BNWW=13, BSWW=14, BBSW=15, BBNW=16, BNNW=17,
-BNNN=18, BWWW=19} fS;
+# 11 "menu.h"
+void inputEntry(void);
+void hibernate(void);
+void mainMenu(void);
+void viewLogs(void);
+
+# 13 "hardware.h"
+typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
+int currentMode = MENU;
 
 
+typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
+BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
+BNNN=19, BWWW=20} fS;
 
-int inputEntry(void);
+char fSLookup[21][5] = {"NONE", "B", "N", "S", "W", "BN", "BS", "BW", "BBN", "BBS", "BBW", "BNW",
+"BSW", "BWW", "BNNW", "BSWW", "BBSW", "BBNW", "BNNW",
+"BNNN", "BWWW"};
 
-# 15 "main.c"
+struct inputParams{
+int steps;
+fS toFill[8];
+int setMultiple[8];
+} params;
+
+struct amounts {
+int b;
+int n;
+int s;
+int w;
+} extras, dispensed;
+
+# 51
 const char inputEntryQuestions[4][33] = {
 "Assembly steps\n" "*<-  (4-8)     \0",
 "Fasteners in Cx\n" "*<-(BNSW)    ->#\0",
@@ -3919,13 +3954,8 @@ const char noFasteners[32];
 "No fasteners selected\0"
 };
 
-struct inputParams{
-int steps;
-fS toFill[8];
-int setMultiple[8];
-} params;
-
-const char fastenerMatrix[20][4] = {
+const char fastenerMatrix[21][4] = {
+{0,0,0,0},
 {1,0,0,0},
 {0,1,0,0},
 {0,0,1,0},
@@ -3951,7 +3981,7 @@ const char fastenerMatrix[20][4] = {
 
 const char assemblyStepEncoding[5] = {
 
-# 82
+
 0b01010101,
 0b01011011,
 0b01110111,
@@ -3959,112 +3989,286 @@ const char assemblyStepEncoding[5] = {
 0b11111111
 };
 
-int inputEntry(void) {
+
+void packageCompartment(char b, char n, char s, char w);
+void packaging(void);
+void clearing(void);
+
+# 11 "RTC.h"
+void RTC_getTime(unsigned char * time);
+long RTC_getSeconds(void);
+void RTC_startOperation(void);
+int RTC_getOperatingTime(void);
+
+# 11 "timer.h"
+void tmr0Init(void);
+void tic(void);
+double tock(void);
+void tmr0_ISR(void);
+void Timer_startOperation(void);
+double Timer_getOperatingTime(void);
+long getTest(void);
+void resetMotorTimer(void);
+
+# 11 "motors.h"
+typedef enum fastenerType {BOLT, NUT, SPACER, WASHER} fastenerType;
+typedef enum motorDirection {FORWARD, REVERSE, STOPMOTOR} motorDirection;
+
+struct currMotorDir {
+motorDirection b;
+motorDirection n;
+motorDirection s;
+motorDirection w;
+} currentMotorDir = {STOPMOTOR, STOPMOTOR, STOPMOTOR, STOPMOTOR};
+
+void motorControl(fastenerType motor, motorDirection dir);
+motorDirection inverseDir(motorDirection dir);
+
+# 25 "main.c"
+void packageCompartment(char b, char n, char s, char w) {
+currentMode = PACKAGING;
+TRISA = 0xFF;
+
+
+motorControl(BOLT, FORWARD);
+motorControl(NUT, FORWARD);
+motorControl(SPACER, FORWARD);
+motorControl(WASHER, FORWARD);
+
+int numB=0, numN=0, numS=0, numW=0;
+int doneB=0, doneN=0, doneS=0, doneW=0;
+double currTime, timeB=0, timeN=0, timeS=0, timeW=0;
+
+tic();
+while (1) {
+currTime = tock();
+
+# 53
+if (PORTAbits.RA3 == 0 && currTime > timeB + 1) {
+timeB = currTime;
+numB++;
+dispensed.b++;
+I2C_Send(nanoAddr, "\1Bolt Counted\0");
+}
+
+
+if (PORTAbits.RA1 == 0 && currTime > timeN + 1) {
+timeN = currTime;
+numN++;
+dispensed.n++;
+I2C_Send(nanoAddr, "\1Nut Counted\0");
+}
+
+
+if (PORTAbits.RA0 == 0 && currTime > timeS + 1) {
+timeS = currTime;
+numS++;
+dispensed.s++;
+I2C_Send(nanoAddr, "\1Spacer Counted\0");
+}
+
+
+if (PORTAbits.RA2 == 0 && currTime > timeW + 1) {
+timeW = currTime;
+numW++;
+dispensed.w++;
+I2C_Send(nanoAddr, "\1Washer Counted\0");
+}
+
+
+if (numB >= b) {
+motorControl(BOLT, STOPMOTOR);
+doneB=1;
+}
+if (numN >= n) {
+motorControl(NUT, STOPMOTOR);
+doneN=1;
+}
+if (numS >= s) {
+motorControl(SPACER, STOPMOTOR);
+doneS=1;
+}
+if (numW >= w) {
+motorControl(WASHER, STOPMOTOR);
+doneW=1;
+}
+
+if (doneB && doneN && doneS && doneW) {
+I2C_Send(nanoAddr, "\1Done compartment\0");
+break;
+}
+}
+I2C_Send(nanoAddr, "\1Out of the packaging loop\0");
+_delay((unsigned long)((2000)*(40000000/4000.0)));
+
+
+char instr[] = {2, 0};
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+}
+
+void packaging(void) {
+int compartmentNum;
+
+# 122
+dispensed.b = 0;
+dispensed.n = 0;
+dispensed.s = 0;
+dispensed.w = 0;
+
+I2C_Send(nanoAddr, "\1Entered the packaging function\0");
+char instr[2] = {8, 0};
+I2C_Send(nanoAddr, &instr);
+
+while (PORTAbits.RA5 == 1) {continue;}
+
+for (compartmentNum = 8; compartmentNum > 0; compartmentNum--) {
+char msg[] = "\1Started packaging compartment x\0";
+msg[31] = compartmentNum + 48;
+I2C_Send(nanoAddr, msg);
+
+if (params.toFill[compartmentNum-1] == 0) {
+
+
+char instr[] = {2, 0};
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+continue;
+};
+char * set = fastenerMatrix[params.toFill[compartmentNum-1]];
+char msg2[32];
+int mult = params.setMultiple[compartmentNum - 1];
+sprintf(msg2, "\1B:%d N:%d S:%d W:%d\0", set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+I2C_Send(nanoAddr, msg2);
 lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
 lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-
-int compartmentNum = 0;
-char compartmentLabel[2] = "C0";
-int inputEntryStep = 0;
-int done = 0;
-
-int i, numPressed, doneCompartment, numB, numN, numS, numW, found;
-unsigned char pressed;
-
-while (!done) {
-
-if (inputEntryStep == 0) {
-printStringLCD(inputEntryQuestions[inputEntryStep]);
-
-pressed = pollKeypad();
-numPressed = pressed - 48;
-
-putch(pressed);
-_delay((unsigned long)((500)*(40000000/4000.0)));
-
-if (numPressed >= 4 && numPressed <= 8) {
-params.steps = numPressed;
-inputEntryStep++;
-} else printErrorLCD(errMsgs.badEntry);
-} else if (inputEntryStep == 1) {
-
-char compartmentsToFill = assemblyStepEncoding[params.steps - 4];
-for (compartmentNum = 0; compartmentNum < params.steps; compartmentNum++) {
-if ((compartmentsToFill >> compartmentNum) & 0b1) {
-
-int setIsGood = 0;
-while (!setIsGood) {
-numB = 0;
-numN = 0;
-numS = 0;
-numW = 0;
-char fastenerString[32];
-strcpy(fastenerString, inputEntryQuestions[inputEntryStep]);
-fastenerString[14] = compartmentNum + 1 + 48;
-
-printStringLCD(fastenerString);
-lcd_set_cursor(9, 1);
-doneCompartment = 0;
-
-while(doneCompartment < 4) {
-pressed = pollKeypad();
-if (pressed == 66 || pressed == 78 || pressed == 83 || pressed == 87) {
-putch(pressed);
-switch(pressed) {
-case 66:
-numB++;
-break;
-case 78:
-numN++;
-break;
-case 83:
-numS++;
-break;
-case 87:
-numW++;
-break;
-default:
-break;
-}
-doneCompartment++;
-} else if (pressed == 35) {
-doneCompartment = 4;
-} else if (pressed == 42) {
-break;
+printf("Compartment %d", compartmentNum);
+packageCompartment(set[0]*mult, set[1]*mult, set[2]*mult, set[3]*mult);
+char msg3[50];
+sprintf(msg3, "\1Finished packaging compartment %d\0", compartmentNum);
+I2C_Send(nanoAddr, msg3);
+currentMode = WAITING;
+_delay((unsigned long)((10)*(40000000/4000.0)));
 }
 }
 
+void clearing(void) {
+currentMode = WAITING;
 
-found = 0;
-for (i = 0; i < 20; i++) {
-if (fastenerMatrix[i][0] == numB &&
-fastenerMatrix[i][1] == numN &&
-fastenerMatrix[i][2] == numS &&
-fastenerMatrix[i][3] == numW)
-{
-params.toFill[compartmentNum] == i;
-found = 1;
-}
-}
-if (!found) {
-printErrorLCD(errMsgs.badEntry);
+# 169
+char instr[] = {3, 0};
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
 
+int i;
+double spinTime=15.0;
+long startTime;
+double currTime, debounceTime=0;
 
-} else {
-setIsGood = 1;
-}
-}
-}
-}
-inputEntryStep++;
-}
+extras.b = 0;
+extras.n = 0;
+extras.s = 0;
+extras.w = 0;
+
+tic();
+
+currentMode = CLEARING;
+motorControl(BOLT, FORWARD);
+while (extras.b + dispensed.b < 20) {
+currTime = tock();
+if (PORTAbits.RA3 == 0 && currTime > debounceTime + 1) {
+debounceTime = currTime;
+extras.b++;
+I2C_Send(nanoAddr, "\1Bolt counted\0");
 }
 
+if (currTime >= spinTime) break;
+}
+motorControl(BOLT, STOPMOTOR);
+currentMode = WAITING;
+
+instr[0] = 4;
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+
+tic();
+debounceTime = 0;
+currentMode = CLEARING;
+motorControl(NUT, FORWARD);
+while (extras.n + dispensed.n < 25) {
+currTime = tock();
+if (PORTAbits.RA1 == 0 && currTime > debounceTime + 1) {
+debounceTime = currTime;
+extras.n++;
+I2C_Send(nanoAddr, "\1Nut counted\0");
+}
+
+if (currTime >= spinTime) break;
+}
+
+motorControl(NUT, STOPMOTOR);
+currentMode = WAITING;
+
+instr[0] = 5;
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+
+tic();
+debounceTime = 0;
+currentMode = CLEARING;
+motorControl(SPACER, FORWARD);
+while (extras.s + dispensed.s < 20) {
+currTime = tock();
+if (PORTAbits.RA0 == 0 && currTime > debounceTime + 1) {
+debounceTime = currTime;
+extras.s++;
+I2C_Send(nanoAddr, "\1Spacer counted\0");
+}
+
+if (currTime >= spinTime) break;
+}
+
+motorControl(SPACER, STOPMOTOR);
+currentMode = WAITING;
+
+instr[0] = 6;
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+
+tic();
+debounceTime = 0;
+currentMode = CLEARING;
+motorControl(WASHER, FORWARD);
+while (extras.w + dispensed.w < 35) {
+currTime = tock();
+if (PORTAbits.RA2 == 0 && currTime > debounceTime + 1) {
+debounceTime = currTime;
+extras.w++;
+I2C_Send(nanoAddr, "\1Washer counted\0");
+}
+
+if (currTime >= spinTime) break;
+}
+
+motorControl(WASHER, STOPMOTOR);
+currentMode = WAITING;
+
+instr[0] = 7;
+I2C_Send(nanoAddr, instr);
+while (PORTAbits.RA5 == 1) {continue;}
+
+}
+
+void interrupt interruptHandler(void) {
+if (T0IE && T0IF) {
+T0IF = 0;
+tmr0_ISR();
+}
 }
 
 void main(void) {
 
-# 197
+# 284
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4073,17 +4277,32 @@ LATE = 0x00;
 
 
 TRISA = 0xFF;
-TRISB = 0xFF;
+TRISB = 0b11110111;
 TRISC = 0x00;
 TRISD = 0x00;
 TRISE = 0x00;
 
-# 214
+ADCON0 = 0x00;
+ADCON1 = 0x0F;
+
+
+I2C_Master_Init(100000);
+tmr0Init();
 initLCD();
-inputEntry();
+
+lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
 
 
+motorControl(BOLT, STOPMOTOR);
+motorControl(NUT, STOPMOTOR);
+motorControl(SPACER, STOPMOTOR);
+motorControl(WASHER, STOPMOTOR);
 
-
+# 321
+hibernate();
+mainMenu();
 while(1);
+
+# 336
 }

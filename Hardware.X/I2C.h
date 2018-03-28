@@ -18,6 +18,8 @@
 #define ACK     0
 #define NACK    1
 
+const unsigned char nanoAddr = 0b00010000; // Arduino address + write
+
 /****************************** Public Interfaces *****************************/
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Start(void);

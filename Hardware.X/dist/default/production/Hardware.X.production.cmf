@@ -11,11 +11,6 @@
 # All addresses and the length are given in unqualified hexadecimal
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
-$C:\Users\Graham\AppData\Local\Temp\scjo.obj
-idloc IDLOC 0 200000 200000 8 1
-init CODE 0 E E 4 1
-reset_vec CODE 0 0 0 4 1
-config CONFIG 0 300000 300000 E 1
 $dist/default/production\Hardware.X.production.obj
 cinit CODE 0 2C38 2C38 8E 1
 intcode_body CODE 0 2A64 2A64 A2 1
@@ -81,6 +76,11 @@ dataBANK2 BANK2 1 200 200 69 1
 dataCOMRAM COMRAM 1 4D 4D 18 1
 bssCOMRAM COMRAM 1 34 34 19 1
 mediumconst MEDIUMCONST 0 FBF0 FBF0 410 1
+$C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+idloc IDLOC 0 200000 200000 8 1
+init CODE 0 E E 4 1
+reset_vec CODE 0 0 0 4 1
+config CONFIG 0 300000 300000 E 1
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
 # is described on a single line as follows:
@@ -1107,74 +1107,74 @@ FE2 text7 CODE >1524:C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\d
 28FC text0 CODE >321:C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 2900 text0 CODE >322:C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
 2904 text0 CODE >323:C:\Users\Graham\OneDrive\School\AER201\Microcontroller\AER201-Hardware\Hardware.X\main.c
-2C38 cinit CODE >3921:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C38 cinit CODE >3923:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C38 cinit CODE >3926:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C38 cinit CODE >4045:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C3A cinit CODE >4046:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C3C cinit CODE >4047:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C3E cinit CODE >4048:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C40 cinit CODE >4049:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C42 cinit CODE >4050:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C44 cinit CODE >4051:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C48 cinit CODE >4052:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C4C cinit CODE >4053:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C4C cinit CODE >4054:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C4E cinit CODE >4055:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C52 cinit CODE >4056:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C54 cinit CODE >4057:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C56 cinit CODE >4058:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C58 cinit CODE >4062:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C5A cinit CODE >4063:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C5C cinit CODE >4064:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C5E cinit CODE >4065:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C60 cinit CODE >4066:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C62 cinit CODE >4067:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C64 cinit CODE >4068:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C68 cinit CODE >4069:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C6C cinit CODE >4070:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C6C cinit CODE >4071:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C6E cinit CODE >4072:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C72 cinit CODE >4073:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C74 cinit CODE >4074:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C76 cinit CODE >4075:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C78 cinit CODE >4079:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C7A cinit CODE >4080:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C7C cinit CODE >4081:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C7E cinit CODE >4082:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C80 cinit CODE >4083:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C82 cinit CODE >4084:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C84 cinit CODE >4085:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C88 cinit CODE >4086:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C8C cinit CODE >4087:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C8C cinit CODE >4088:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C8E cinit CODE >4089:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C92 cinit CODE >4090:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C94 cinit CODE >4091:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C96 cinit CODE >4092:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C98 cinit CODE >4096:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C9C cinit CODE >4097:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C9E cinit CODE >4098:C:\Users\Graham\AppData\Local\Temp\scjo.
-2C9E cinit CODE >4099:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CA0 cinit CODE >4100:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CA2 cinit CODE >4101:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CA4 cinit CODE >4104:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CA8 cinit CODE >4105:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CAA cinit CODE >4106:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CAA cinit CODE >4107:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CAC cinit CODE >4108:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CAE cinit CODE >4109:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CB0 cinit CODE >4112:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CB4 cinit CODE >4113:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CB6 cinit CODE >4114:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CB6 cinit CODE >4115:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CB8 cinit CODE >4116:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CBA cinit CODE >4117:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CBC cinit CODE >4123:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CBC cinit CODE >4125:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CBE cinit CODE >4126:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CC0 cinit CODE >4127:C:\Users\Graham\AppData\Local\Temp\scjo.
-2CC2 cinit CODE >4128:C:\Users\Graham\AppData\Local\Temp\scjo.
+2C38 cinit CODE >4207:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C38 cinit CODE >4209:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C38 cinit CODE >4212:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C38 cinit CODE >4331:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C3A cinit CODE >4332:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C3C cinit CODE >4333:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C3E cinit CODE >4334:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C40 cinit CODE >4335:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C42 cinit CODE >4336:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C44 cinit CODE >4337:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C48 cinit CODE >4338:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C4C cinit CODE >4339:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C4C cinit CODE >4340:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C4E cinit CODE >4341:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C52 cinit CODE >4342:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C54 cinit CODE >4343:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C56 cinit CODE >4344:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C58 cinit CODE >4348:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C5A cinit CODE >4349:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C5C cinit CODE >4350:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C5E cinit CODE >4351:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C60 cinit CODE >4352:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C62 cinit CODE >4353:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C64 cinit CODE >4354:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C68 cinit CODE >4355:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C6C cinit CODE >4356:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C6C cinit CODE >4357:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C6E cinit CODE >4358:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C72 cinit CODE >4359:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C74 cinit CODE >4360:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C76 cinit CODE >4361:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C78 cinit CODE >4365:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C7A cinit CODE >4366:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C7C cinit CODE >4367:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C7E cinit CODE >4368:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C80 cinit CODE >4369:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C82 cinit CODE >4370:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C84 cinit CODE >4371:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C88 cinit CODE >4372:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C8C cinit CODE >4373:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C8C cinit CODE >4374:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C8E cinit CODE >4375:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C92 cinit CODE >4376:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C94 cinit CODE >4377:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C96 cinit CODE >4378:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C98 cinit CODE >4382:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C9C cinit CODE >4383:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C9E cinit CODE >4384:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2C9E cinit CODE >4385:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CA0 cinit CODE >4386:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CA2 cinit CODE >4387:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CA4 cinit CODE >4390:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CA8 cinit CODE >4391:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CAA cinit CODE >4392:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CAA cinit CODE >4393:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CAC cinit CODE >4394:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CAE cinit CODE >4395:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CB0 cinit CODE >4398:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CB4 cinit CODE >4399:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CB6 cinit CODE >4400:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CB6 cinit CODE >4401:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CB8 cinit CODE >4402:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CBA cinit CODE >4403:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CBC cinit CODE >4409:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CBC cinit CODE >4411:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CBE cinit CODE >4412:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CC0 cinit CODE >4413:C:\Users\Graham\AppData\Local\Temp\s6o4.
+2CC2 cinit CODE >4414:C:\Users\Graham\AppData\Local\Temp\s6o4.
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -1207,7 +1207,7 @@ tmr0_ISR@motorControlTimerB 1A 0 COMRAM 1 cstackCOMRAM dist/default/production\H
 tmr0_ISR@motorControlTimerN 1C 0 COMRAM 1 cstackCOMRAM dist/default/production\Hardware.X.production.obj
 tmr0_ISR@motorControlTimerS 1E 0 COMRAM 1 cstackCOMRAM dist/default/production\Hardware.X.production.obj
 tmr0_ISR@motorControlTimerW 20 0 COMRAM 1 cstackCOMRAM dist/default/production\Hardware.X.production.obj
-__mediumconst FBF0 0 MEDIUMCONST 0 mediumconst C:\Users\Graham\AppData\Local\Temp\scjo.obj
+__mediumconst FBF0 0 MEDIUMCONST 0 mediumconst C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 __Heeprom_data 0 0 EEDATA 0 eeprom_data dist/default/production\Hardware.X.production.obj
 __end_of_RTC_getTime 2ECE 0 CODE 0 text30 dist/default/production\Hardware.X.production.obj
 __CFG_MCLRE$ON 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
@@ -1224,14 +1224,14 @@ _LATD F8C 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 _LATE F8D 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 _T0IE 7F95 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 _T0IF 7F92 0 ABS 0 - dist/default/production\Hardware.X.production.obj
-___sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\scjo.obj
+___sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 _main 2852 0 CODE 0 text0 dist/default/production\Hardware.X.production.obj
 _test 1DA 0 BANK1 1 bssBANK1 dist/default/production\Hardware.X.production.obj
 _tock 3356 0 CODE 0 text20 dist/default/production\Hardware.X.production.obj
 btemp 65 0 COMRAM 1 temp dist/default/production\Hardware.X.production.obj
 ___ftadd@f1 88 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 ___ftadd@f2 8B 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
-start E 0 CODE 0 init C:\Users\Graham\AppData\Local\Temp\scjo.obj
+start E 0 CODE 0 init C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 __size_of___ftadd 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 RTC_getTime@i 85 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __size_of_main 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
@@ -1265,12 +1265,12 @@ _T0CONbits FD5 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 _timerInit 4A 0 COMRAM 1 bssCOMRAM dist/default/production\Hardware.X.production.obj
 printErrorLCD@string 95 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __HdataCOMRAM 0 0 ABS 0 dataCOMRAM dist/default/production\Hardware.X.production.obj
-__accesstop 80 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\scjo.obj
+__accesstop 80 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 __end_of_LCD_LEFT FC41 0 MEDIUMCONST 0 mediumconst dist/default/production\Hardware.X.production.obj
-intlevel0 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\scjo.obj
-intlevel1 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\scjo.obj
-intlevel2 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\scjo.obj
-intlevel3 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\scjo.obj
+intlevel0 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+intlevel1 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+intlevel2 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+intlevel3 0 0 CODE 0 text C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 ?_RTC_getOperatingTime 86 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __LbssCOMRAM 0 0 ABS 0 bssCOMRAM dist/default/production\Hardware.X.production.obj
 __LnvFARRAM 0 0 FARRAM 0 nvFARRAM dist/default/production\Hardware.X.production.obj
@@ -1304,9 +1304,10 @@ _LCD_SIZE_VERT FC42 0 MEDIUMCONST 0 mediumconst dist/default/production\Hardware
 _ADCON0 FC2 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 _ADCON1 FC1 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __end_of_lcdInst 331E 0 CODE 0 text37 dist/default/production\Hardware.X.production.obj
-___inthi_sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\scjo.obj
-___intlo_sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\scjo.obj
+___inthi_sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+___intlo_sp 0 0 STACK 2 stack C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 __LdataCOMRAM 0 0 ABS 0 dataCOMRAM dist/default/production\Hardware.X.production.obj
+_EECON1bits FA6 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __size_of_initLCD 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __doprnt@flag A0 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __doprnt@prec 9E 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
@@ -1315,6 +1316,9 @@ __Hintcode_body 0 0 ABS 0 intcode_body dist/default/production\Hardware.X.produc
 i2motorControl@motor 3 0 COMRAM 1 cstackCOMRAM dist/default/production\Hardware.X.production.obj
 __end_of___ftge 2C38 0 CODE 0 text23 dist/default/production\Hardware.X.production.obj
 __end_of___wmul 326C 0 CODE 0 text29 dist/default/production\Hardware.X.production.obj
+_EEADRH FAA 0 ABS 0 - dist/default/production\Hardware.X.production.obj
+_EECON2 FA7 0 ABS 0 - dist/default/production\Hardware.X.production.obj
+_EEDATA FA8 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __Lintsave_regs 0 0 BIGRAM 1 intsave_regs dist/default/production\Hardware.X.production.obj
 __end_of_errMsgs FD26 0 MEDIUMCONST 0 mediumconst dist/default/production\Hardware.X.production.obj
 __size_of_sprintf 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
@@ -1421,7 +1425,7 @@ __Hbank15 0 0 ABS 0 bank15 dist/default/production\Hardware.X.production.obj
 _currentMode 48 0 COMRAM 1 bssCOMRAM dist/default/production\Hardware.X.production.obj
 __Hbigbss 0 0 BIGRAM 1 bigbss dist/default/production\Hardware.X.production.obj
 __Hbigram 0 0 ABS 0 bigram dist/default/production\Hardware.X.production.obj
-__smallconst 0 0 SMALLCONST 0 smallconst C:\Users\Graham\AppData\Local\Temp\scjo.obj
+__smallconst 0 0 SMALLCONST 0 smallconst C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 __end_of_sprintf 30D8 0 CODE 0 text5 dist/default/production\Hardware.X.production.obj
 __Hcomram 0 0 ABS 0 comram dist/default/production\Hardware.X.production.obj
 __Hconfig 30000E 0 CONFIG 0 config dist/default/production\Hardware.X.production.obj
@@ -1688,8 +1692,8 @@ _motorGoingBackwards 40 0 COMRAM 1 bssCOMRAM dist/default/production\Hardware.X.
 I2C_Master_Write@byteToWrite 81 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 packaging@instr 174 0 BANK1 1 cstackBANK1 dist/default/production\Hardware.X.production.obj
 __end_of_pollKeypad 31F2 0 CODE 0 text18 dist/default/production\Hardware.X.production.obj
-stackhi F7F 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\scjo.obj
-stacklo 269 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\scjo.obj
+stackhi F7F 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\s6o4.obj
+stacklo 269 0 ABS 0 - C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 I2C_Master_Read@receivedByte 82 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __Lintcode 8 0 CODE 0 intcode dist/default/production\Hardware.X.production.obj
 i2___ftadd@f1 9 0 COMRAM 1 cstackCOMRAM dist/default/production\Hardware.X.production.obj
@@ -1713,6 +1717,7 @@ __pbssCOMRAM 34 0 COMRAM 1 bssCOMRAM dist/default/production\Hardware.X.producti
 __HcstackBANK0 0 0 ABS 0 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __HcstackBANK1 0 0 ABS 0 cstackBANK1 dist/default/production\Hardware.X.production.obj
 lcd_shift_cursor@n 85 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
+_PIR2bits FA1 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __LcstackCOMRAM 0 0 ABS 0 cstackCOMRAM dist/default/production\Hardware.X.production.obj
 printf@ap B2 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 printf@pb B4 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
@@ -1799,7 +1804,7 @@ __Ltext45 0 0 ABS 0 text45 dist/default/production\Hardware.X.production.obj
 __Ltext46 0 0 ABS 0 text46 dist/default/production\Hardware.X.production.obj
 __Ltext47 0 0 ABS 0 text47 dist/default/production\Hardware.X.production.obj
 __Ltext48 0 0 ABS 0 text48 dist/default/production\Hardware.X.production.obj
-__ramtop 1000 0 RAM 0 ramtop C:\Users\Graham\AppData\Local\Temp\scjo.obj
+__ramtop 1000 0 RAM 0 ramtop C:\Users\Graham\AppData\Local\Temp\s6o4.obj
 _sprintf 3094 0 CODE 0 text5 dist/default/production\Hardware.X.production.obj
 ?__doprnt 96 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __Lpowerup E 0 CODE 0 powerup dist/default/production\Hardware.X.production.obj
@@ -1874,6 +1879,7 @@ lcd_set_cursor@x 89 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.pro
 lcd_set_cursor@y 86 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __size_of_packaging 0 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 __end_of_dpowers FC19 0 MEDIUMCONST 0 mediumconst dist/default/production\Hardware.X.production.obj
+_EEADR FA9 0 ABS 0 - dist/default/production\Hardware.X.production.obj
 ?_sprintf A8 0 BANK0 1 cstackBANK0 dist/default/production\Hardware.X.production.obj
 __end_of_nanoAddr FC40 0 MEDIUMCONST 0 mediumconst dist/default/production\Hardware.X.production.obj
 _PORTB F81 0 ABS 0 - dist/default/production\Hardware.X.production.obj

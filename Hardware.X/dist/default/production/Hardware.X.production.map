@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.45\dat\en_msgs.txt -cs \
   -h+dist/default/production\Hardware.X.production.sym \
   --cmf=dist/default/production\Hardware.X.production.cmf -z -Q18F4620 \
-  -oC:\Users\Graham\AppData\Local\Temp\scjo.2 \
+  -oC:\Users\Graham\AppData\Local\Temp\s6o4.2 \
   -Mdist/default/production/Hardware.X.production.map -E1 -ver=XC8 \
   -ASTACK=0269h-0f7fh -pstack=STACK -ACODE=00h-0FFFFh -ACONST=00h-0FFFFh \
   -ASMALLCONST=01000h-010FFhx240 -AMEDIUMCONST=01000h-0FFFFh \
@@ -25,7 +25,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\Graham\AppData\Local\Temp\scjo.obj \
+  C:\Users\Graham\AppData\Local\Temp\s6o4.obj \
   dist/default/production\Hardware.X.production.obj 
 
 Object code version is 3.11
@@ -38,7 +38,7 @@ Call graph: (short form)
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Graham\AppData\Local\Temp\scjo.obj
+C:\Users\Graham\AppData\Local\Temp\s6o4.obj
                 init                                  E        E        4        4       0
                 reset_vec                             0        0        4        0       0
                 idloc                            200000   200000        8   200000       0
@@ -324,6 +324,11 @@ RTC_getTime@time                   cstackBANK0  000083
 RTC_startOperation@time            cstackBANK0  000088
 _ADCON0                            (abs)        000FC2
 _ADCON1                            (abs)        000FC1
+_EEADR                             (abs)        000FA9
+_EEADRH                            (abs)        000FAA
+_EECON1bits                        (abs)        000FA6
+_EECON2                            (abs)        000FA7
+_EEDATA                            (abs)        000FA8
 _I2C_Master_Init                   text39       002FA0
 _I2C_Master_Read                   text34       0031F2
 _I2C_Master_Start                  text33       003384
@@ -349,6 +354,7 @@ _LCD_SIZE_HORZ                     mediumconst  00FC43
 _LCD_SIZE_VERT                     mediumconst  00FC42
 _LCD_VERT_LIMIT                    mediumconst  00FC44
 _LCDinterruptState                 bssCOMRAM    00004C
+_PIR2bits                          (abs)        000FA1
 _PORTAbits                         (abs)        000F80
 _PORTB                             (abs)        000F81
 _PORTBbits                         (abs)        000F81

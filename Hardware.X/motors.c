@@ -4,7 +4,7 @@
 #include "motors.h"
 #include "timer.h"
 
-void motorControl(fastenerType motor, motorDirection dir) {
+void motorControl(fastenerType motor, motorDirection dir) { // Some error about this being duplicated by the compiler?
     switch(motor) {
         case SPACER:
             if (dir == FORWARD) {

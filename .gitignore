@@ -8,3 +8,16 @@ Hardware.X/build/
 PCinterface.py
 *.p1
 *.pre
+*.d
+*.lst
+*.sym
+*.obj
+*.o
+*.sdb
+*.obj
+*.dmp
+*.rlf
+*.map
+*.elf
+*.cmf
+Makefile-*

@@ -1,12 +1,12 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "14 hardware.h
-[c E3088 0 1 2 3 4 .. ]
-[n E3088 operatingMode MENU LOGS PACKAGING CLEARING WAITING  ]
+[c E3089 0 1 2 3 4 .. ]
+[n E3089 operatingMode MENU LOGS PACKAGING CLEARING WAITING  ]
 "29
-[c E3096 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
-[n E3096 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
+[c E3097 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .. ]
+[n E3097 fs NONE B N S W BN BS BW BBN BBS BBW BNW BSW BWW BNWW BSWW BBSW BBNW BNNW BNNN BWWW  ]
 "25
-[s S266 `i 1 `E3096 -> 8 `i `i -> 8 `i ]
+[s S266 `i 1 `E3097 -> 8 `i `i -> 8 `i ]
 [n S266 inputParams steps toFill setMultiple ]
 "31
 [s S267 `i 1 `i 1 `i 1 `i 1 ]
@@ -15,18 +15,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [s S268 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S268 errorMessages badEntry tooManyFasteners tooManyBolts tooManyNuts tooManyWashers tooManySpacers noFasteners ]
 "19 motors.h
-[c E3187 0 1 2 .. ]
-[n E3187 motorDirection FORWARD REVERSE STOPMOTOR  ]
+[c E3188 0 1 2 .. ]
+[n E3188 motorDirection FORWARD REVERSE STOPMOTOR  ]
 "14
-[s S269 `E3187 1 `E3187 1 `E3187 1 `E3187 1 ]
+[s S269 `E3188 1 `E3188 1 `E3188 1 `E3188 1 ]
 [n S269 currMotorDir b n s w ]
 "1378 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
 "30 main.c
-[c E3181 0 1 2 3 .. ]
-[n E3181 fastenerType BOLT NUT SPACER WASHER  ]
+[c E3182 0 1 2 3 .. ]
+[n E3182 fastenerType BOLT NUT SPACER WASHER  ]
 "21 motors.h
-[v _motorControl `(v ~T0 @X0 0 ef2`E3181`E3187 ]
+[v _motorControl `(v ~T0 @X0 0 ef2`E3182`E3188 ]
 "12 timer.h
 [v _tic `(v ~T0 @X0 0 ef ]
 "13
@@ -78,8 +78,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _T0IF `Vb ~T0 @X0 0 e@32658 ]
 "14 timer.h
 [v _tmr0_ISR `(v ~T0 @X0 0 ef ]
+"7021 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
+[v _INT1IF `Vb ~T0 @X0 0 e@32640 ]
+"187
+[v _PORTB `Vuc ~T0 @X0 0 e@3969 ]
 [p mainexit ]
-"878 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f4620.h
+"878
 [v _LATA `Vuc ~T0 @X0 0 e@3977 ]
 "990
 [v _LATB `Vuc ~T0 @X0 0 e@3978 ]
@@ -107,9 +111,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _tmr0Init `(v ~T0 @X0 0 ef ]
 "74 lcd.h
 [v _initLCD `(v ~T0 @X0 0 ef ]
-"12 menu.h
+"14 menu.h
 [v _hibernate `(v ~T0 @X0 0 ef ]
-"13
+"15
 [v _mainMenu `(v ~T0 @X0 0 ef ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
@@ -2999,23 +3003,29 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;helpers.h: 14: void printErrorLCD(char * string);
 [; ;helpers.h: 15: char pollKeypad(void);
 [; ;helpers.h: 16: void I2C_Send(unsigned char address, char * data);
-[; ;menu.h: 11: void inputEntry(void);
-[; ;menu.h: 12: void hibernate(void);
-[; ;menu.h: 13: void mainMenu(void);
-[; ;menu.h: 14: void viewLogs(void);
+"11 menu.h
+[v _interruptKeypress `Vuc ~T0 @X0 1 e ]
+[i _interruptKeypress
+-> -> 255 `i `uc
+]
+[; ;menu.h: 11: volatile unsigned char interruptKeypress = 0xFF;
+[; ;menu.h: 13: void inputEntry(void);
+[; ;menu.h: 14: void hibernate(void);
+[; ;menu.h: 15: void mainMenu(void);
+[; ;menu.h: 16: void viewLogs(void);
 [; ;hardware.h: 13: typedef enum operatingMode {MENU, LOGS, PACKAGING, CLEARING, WAITING} operatingMode;
 "14 hardware.h
 [v _currentMode `i ~T0 @X0 1 e ]
 [i _currentMode
--> . `E3088 0 `i
+-> . `E3089 0 `i
 ]
 [; ;hardware.h: 14: int currentMode = MENU;
 [; ;hardware.h: 17: typedef enum fs {NONE=0, B=1, N=2, S=3, W=4, BN=5, BS=6, BW=7, BBN=8, BBS=9, BBW=10, BNW=11,
 [; ;hardware.h: 18: BSW=12, BWW=13, BNWW=14, BSWW=15, BBSW=16, BBNW=17, BNNW=18,
 [; ;hardware.h: 19: BNNN=19, BWWW=20} fS;
-[v F3120 `uc ~T0 @X0 -> 5 `i t ]
+[v F3121 `uc ~T0 @X0 -> 5 `i t ]
 "21
-[v _fSLookup `F3120 ~T0 @X0 -> 21 `i e ]
+[v _fSLookup `F3121 ~T0 @X0 -> 21 `i e ]
 [i _fSLookup
 :U ..
 :U ..
@@ -3162,9 +3172,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 34: int s;
 [; ;hardware.h: 35: int w;
 [; ;hardware.h: 36: } extras, dispensed;
-[v F3134 `Cuc ~T0 @X0 -> 33 `i t ]
+[v F3135 `Cuc ~T0 @X0 -> 33 `i t ]
 "51
-[v _inputEntryQuestions `F3134 ~T0 @X0 -> 4 `i e ]
+[v _inputEntryQuestions `F3135 ~T0 @X0 -> 4 `i e ]
 [i _inputEntryQuestions
 :U ..
 :U ..
@@ -3510,9 +3520,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;hardware.h: 74: "Too many spacers\0",
 [; ;hardware.h: 75: "No fasteners selected\0"
 [; ;hardware.h: 76: };
-[v F3146 `Cuc ~T0 @X0 -> 4 `i t ]
+[v F3147 `Cuc ~T0 @X0 -> 4 `i t ]
 "78
-[v _fastenerMatrix `F3146 ~T0 @X0 -> 21 `i e ]
+[v _fastenerMatrix `F3147 ~T0 @X0 -> 21 `i e ]
 [i _fastenerMatrix
 :U ..
 :U ..
@@ -3732,10 +3742,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [i _currentMotorDir
 :U ..
 :U ..
-. `E3187 2
-. `E3187 2
-. `E3187 2
-. `E3187 2
+. `E3188 2
+. `E3188 2
+. `E3188 2
+. `E3188 2
 ..
 ..
 ]
@@ -3759,22 +3769,22 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;main.c: 26: currentMode = PACKAGING;
 "26
-[e = _currentMode -> . `E3088 2 `i ]
+[e = _currentMode -> . `E3089 2 `i ]
 [; ;main.c: 27: TRISA = 0xFF;
 "27
 [e = _TRISA -> -> 255 `i `uc ]
 [; ;main.c: 30: motorControl(BOLT, FORWARD);
 "30
-[e ( _motorControl (2 , . `E3181 0 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 0 . `E3188 0 ]
 [; ;main.c: 31: motorControl(NUT, FORWARD);
 "31
-[e ( _motorControl (2 , . `E3181 1 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 1 . `E3188 0 ]
 [; ;main.c: 32: motorControl(SPACER, FORWARD);
 "32
-[e ( _motorControl (2 , . `E3181 2 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 2 . `E3188 0 ]
 [; ;main.c: 33: motorControl(WASHER, FORWARD);
 "33
-[e ( _motorControl (2 , . `E3181 3 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 3 . `E3188 0 ]
 "35
 [v _numB `i ~T0 @X0 1 a ]
 [; ;main.c: 35: int numB=0, numN=0, numS=0, numW=0;
@@ -3902,7 +3912,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;main.c: 86: motorControl(BOLT, STOPMOTOR);
 "86
-[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 0 . `E3188 2 ]
 [; ;main.c: 87: doneB=1;
 "87
 [e = _doneB -> 1 `i ]
@@ -3916,7 +3926,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;main.c: 90: motorControl(NUT, STOPMOTOR);
 "90
-[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 1 . `E3188 2 ]
 [; ;main.c: 91: doneN=1;
 "91
 [e = _doneN -> 1 `i ]
@@ -3930,7 +3940,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;main.c: 94: motorControl(SPACER, STOPMOTOR);
 "94
-[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 2 . `E3188 2 ]
 [; ;main.c: 95: doneS=1;
 "95
 [e = _doneS -> 1 `i ]
@@ -3944,7 +3954,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;main.c: 98: motorControl(WASHER, STOPMOTOR);
 "98
-[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 3 . `E3188 2 ]
 [; ;main.c: 99: doneW=1;
 "99
 [e = _doneW -> 1 `i ]
@@ -3979,8 +3989,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 108: _delay((unsigned long)((2000)*(40000000/4000.0)));
 "108
 [e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[v F3222 `uc ~T0 @X0 -> 0 `x s ]
-[i F3222
+[v F3223 `uc ~T0 @X0 -> 0 `x s ]
+[i F3223
 :U ..
 "111
 -> -> 2 `i `uc
@@ -3989,7 +3999,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _instr `uc ~T0 @X0 2  a ]
 [; ;main.c: 111: char instr[] = {2, 0};
-[e = _instr F3222 ]
+[e = _instr F3223 ]
 [; ;main.c: 112: I2C_Send(nanoAddr, instr);
 "112
 [e ( _I2C_Send (2 , _nanoAddr &U _instr ]
@@ -4031,8 +4041,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 127: I2C_Send(nanoAddr, "\1Entered the packaging function\0");
 "127
 [e ( _I2C_Send (2 , _nanoAddr -> :s 7C `*uc ]
-[v F3226 `uc ~T0 @X0 -> 2 `i s ]
-[i F3226
+[v F3227 `uc ~T0 @X0 -> 2 `i s ]
+[i F3227
 :U ..
 "128
 -> -> 8 `i `uc
@@ -4041,7 +4051,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _instr `uc ~T0 @X0 -> 2 `i a ]
 [; ;main.c: 128: char instr[2] = {8, 0};
-[e = _instr F3226 ]
+[e = _instr F3227 ]
 [; ;main.c: 129: I2C_Send(nanoAddr, &instr);
 "129
 [e ( _I2C_Send (2 , _nanoAddr &U _instr ]
@@ -4063,8 +4073,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 291  ]
 [e :U 290 ]
 {
-[v F3228 `uc ~T0 @X0 -> 0 `x s ]
-[i F3228
+[v F3229 `uc ~T0 @X0 -> 0 `x s ]
+[i F3229
 :U ..
 -> 1 `c
 -> 83 `c
@@ -4105,7 +4115,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "134
 [v _msg `uc ~T0 @X0 34  a ]
 [; ;main.c: 134: char msg[] = "\1Started packaging compartment x\0";
-[e = _msg F3228 ]
+[e = _msg F3229 ]
 [; ;main.c: 135: msg[31] = compartmentNum + 48;
 "135
 [e = *U + &U _msg * -> -> -> 31 `i `ui `ux -> -> # *U &U _msg `ui `ux -> + _compartmentNum -> 48 `i `uc ]
@@ -4116,8 +4126,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "138
 [e $ ! == -> *U + &U . _params 1 * -> -> - _compartmentNum -> 1 `i `ui `ux -> -> # *U &U . _params 1 `ui `ux `i -> 0 `i 293  ]
 {
-[v F3230 `uc ~T0 @X0 -> 0 `x s ]
-[i F3230
+[v F3231 `uc ~T0 @X0 -> 0 `x s ]
+[i F3231
 :U ..
 "141
 -> -> 2 `i `uc
@@ -4126,7 +4136,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _instr `uc ~T0 @X0 2  a ]
 [; ;main.c: 141: char instr[] = {2, 0};
-[e = _instr F3230 ]
+[e = _instr F3231 ]
 [; ;main.c: 142: I2C_Send(nanoAddr, instr);
 "142
 [e ( _I2C_Send (2 , _nanoAddr &U _instr ]
@@ -4189,7 +4199,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _I2C_Send (2 , _nanoAddr &U _msg3 ]
 [; ;main.c: 158: currentMode = WAITING;
 "158
-[e = _currentMode -> . `E3088 4 `i ]
+[e = _currentMode -> . `E3089 4 `i ]
 [; ;main.c: 159: _delay((unsigned long)((10)*(40000000/4000.0)));
 "159
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
@@ -4215,9 +4225,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;main.c: 164: currentMode = WAITING;
 "164
-[e = _currentMode -> . `E3088 4 `i ]
-[v F3240 `uc ~T0 @X0 -> 0 `x s ]
-[i F3240
+[e = _currentMode -> . `E3089 4 `i ]
+[v F3241 `uc ~T0 @X0 -> 0 `x s ]
+[i F3241
 :U ..
 "169
 -> -> 3 `i `uc
@@ -4226,7 +4236,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _instr `uc ~T0 @X0 2  a ]
 [; ;main.c: 169: char instr[] = {3, 0};
-[e = _instr F3240 ]
+[e = _instr F3241 ]
 [; ;main.c: 170: I2C_Send(nanoAddr, instr);
 "170
 [e ( _I2C_Send (2 , _nanoAddr &U _instr ]
@@ -4272,10 +4282,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _tic ..  ]
 [; ;main.c: 185: currentMode = CLEARING;
 "185
-[e = _currentMode -> . `E3088 3 `i ]
+[e = _currentMode -> . `E3089 3 `i ]
 [; ;main.c: 186: motorControl(BOLT, FORWARD);
 "186
-[e ( _motorControl (2 , . `E3181 0 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 0 . `E3188 0 ]
 [; ;main.c: 187: while (extras.b + dispensed.b < 20) {
 "187
 [e $U 301  ]
@@ -4315,10 +4325,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 196: }
 [; ;main.c: 197: motorControl(BOLT, STOPMOTOR);
 "197
-[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 0 . `E3188 2 ]
 [; ;main.c: 198: currentMode = WAITING;
 "198
-[e = _currentMode -> . `E3088 4 `i ]
+[e = _currentMode -> . `E3089 4 `i ]
 [; ;main.c: 200: instr[0] = 4;
 "200
 [e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 4 `i `uc ]
@@ -4343,10 +4353,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _debounceTime -> -> 0 `i `d ]
 [; ;main.c: 206: currentMode = CLEARING;
 "206
-[e = _currentMode -> . `E3088 3 `i ]
+[e = _currentMode -> . `E3089 3 `i ]
 [; ;main.c: 207: motorControl(NUT, FORWARD);
 "207
-[e ( _motorControl (2 , . `E3181 1 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 1 . `E3188 0 ]
 [; ;main.c: 208: while (extras.n + dispensed.n < 25) {
 "208
 [e $U 309  ]
@@ -4386,10 +4396,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 217: }
 [; ;main.c: 219: motorControl(NUT, STOPMOTOR);
 "219
-[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 1 . `E3188 2 ]
 [; ;main.c: 220: currentMode = WAITING;
 "220
-[e = _currentMode -> . `E3088 4 `i ]
+[e = _currentMode -> . `E3089 4 `i ]
 [; ;main.c: 222: instr[0] = 5;
 "222
 [e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 5 `i `uc ]
@@ -4414,10 +4424,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _debounceTime -> -> 0 `i `d ]
 [; ;main.c: 228: currentMode = CLEARING;
 "228
-[e = _currentMode -> . `E3088 3 `i ]
+[e = _currentMode -> . `E3089 3 `i ]
 [; ;main.c: 229: motorControl(SPACER, FORWARD);
 "229
-[e ( _motorControl (2 , . `E3181 2 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 2 . `E3188 0 ]
 [; ;main.c: 230: while (extras.s + dispensed.s < 20) {
 "230
 [e $U 317  ]
@@ -4457,10 +4467,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 239: }
 [; ;main.c: 241: motorControl(SPACER, STOPMOTOR);
 "241
-[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 2 . `E3188 2 ]
 [; ;main.c: 242: currentMode = WAITING;
 "242
-[e = _currentMode -> . `E3088 4 `i ]
+[e = _currentMode -> . `E3089 4 `i ]
 [; ;main.c: 244: instr[0] = 6;
 "244
 [e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 6 `i `uc ]
@@ -4485,10 +4495,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _debounceTime -> -> 0 `i `d ]
 [; ;main.c: 250: currentMode = CLEARING;
 "250
-[e = _currentMode -> . `E3088 3 `i ]
+[e = _currentMode -> . `E3089 3 `i ]
 [; ;main.c: 251: motorControl(WASHER, FORWARD);
 "251
-[e ( _motorControl (2 , . `E3181 3 . `E3187 0 ]
+[e ( _motorControl (2 , . `E3182 3 . `E3188 0 ]
 [; ;main.c: 252: while (extras.w + dispensed.w < 35) {
 "252
 [e $U 325  ]
@@ -4528,10 +4538,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 261: }
 [; ;main.c: 263: motorControl(WASHER, STOPMOTOR);
 "263
-[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[e ( _motorControl (2 , . `E3182 3 . `E3188 2 ]
 [; ;main.c: 264: currentMode = WAITING;
 "264
-[e = _currentMode -> . `E3088 4 `i ]
+[e = _currentMode -> . `E3089 4 `i ]
 [; ;main.c: 266: instr[0] = 7;
 "266
 [e = *U + &U _instr * -> -> -> 0 `i `ui `ux -> -> # *U &U _instr `ui `ux -> -> 7 `i `uc ]
@@ -4553,9 +4563,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 297 ]
 }
 [v $root$_interruptHandler `(v ~T0 @X0 0 e ]
-[v F3248 `(v ~T0 @X0 1 tf ]
+[v F3249 `(v ~T0 @X0 1 tf ]
 "272
-[v _interruptHandler `IF3248 ~T0 @X0 1 e ]
+[v _interruptHandler `IF3249 ~T0 @X0 1 e ]
 {
 [; ;main.c: 272: void interrupt interruptHandler(void) {
 [e :U _interruptHandler ]
@@ -4574,97 +4584,124 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [e :U 334 ]
 [; ;main.c: 276: }
-[; ;main.c: 277: }
+[; ;main.c: 277: if (INT1IF) {
 "277
+[e $ ! _INT1IF 335  ]
+{
+[; ;main.c: 278: if (currentMode == LOGS) {
+"278
+[e $ ! == _currentMode -> . `E3089 1 `i 336  ]
+{
+[; ;main.c: 279: interruptKeypress = (PORTB & 0xF0) >> 4;
+"279
+[e = _interruptKeypress -> >> & -> _PORTB `i -> 240 `i -> 4 `i `uc ]
+"280
+}
+[e :U 336 ]
+[; ;main.c: 280: }
+[; ;main.c: 281: INT1IF = 0;
+"281
+[e = _INT1IF -> -> 0 `i `b ]
+"282
+}
+[e :U 335 ]
+[; ;main.c: 282: }
+[; ;main.c: 283: }
+"283
 [e :UE 333 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"279
+"285
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 279: void main(void) {
+[; ;main.c: 285: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 284: LATA = 0x00;
-"284
+[; ;main.c: 290: LATA = 0x00;
+"290
 [e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 285: LATB = 0x00;
-"285
-[e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 286: LATC = 0x00;
-"286
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 287: LATD = 0x00;
-"287
-[e = _LATD -> -> 0 `i `uc ]
-[; ;main.c: 288: LATE = 0x00;
-"288
-[e = _LATE -> -> 0 `i `uc ]
-[; ;main.c: 291: TRISA = 0xFF;
+[; ;main.c: 291: LATB = 0x00;
 "291
-[e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 292: TRISB = 0b11110111;
+[e = _LATB -> -> 0 `i `uc ]
+[; ;main.c: 292: LATC = 0x00;
 "292
-[e = _TRISB -> -> 247 `i `uc ]
-[; ;main.c: 293: TRISC = 0x00;
+[e = _LATC -> -> 0 `i `uc ]
+[; ;main.c: 293: LATD = 0x00;
 "293
-[e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 294: TRISD = 0x00;
+[e = _LATD -> -> 0 `i `uc ]
+[; ;main.c: 294: LATE = 0x00;
 "294
-[e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 295: TRISE = 0x00;
-"295
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 297: ADCON0 = 0x00;
+[e = _LATE -> -> 0 `i `uc ]
+[; ;main.c: 297: TRISA = 0xFF;
 "297
-[e = _ADCON0 -> -> 0 `i `uc ]
-[; ;main.c: 298: ADCON1 = 0x0F;
+[e = _TRISA -> -> 255 `i `uc ]
+[; ;main.c: 298: TRISB = 0b11110111;
 "298
-[e = _ADCON1 -> -> 15 `i `uc ]
-[; ;main.c: 301: I2C_Master_Init(100000);
+[e = _TRISB -> -> 247 `i `uc ]
+[; ;main.c: 299: TRISC = 0x00;
+"299
+[e = _TRISC -> -> 0 `i `uc ]
+[; ;main.c: 300: TRISD = 0x00;
+"300
+[e = _TRISD -> -> 0 `i `uc ]
+[; ;main.c: 301: TRISE = 0x00;
 "301
-[e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
-[; ;main.c: 302: tmr0Init();
-"302
-[e ( _tmr0Init ..  ]
-[; ;main.c: 303: initLCD();
+[e = _TRISE -> -> 0 `i `uc ]
+[; ;main.c: 303: ADCON0 = 0x00;
 "303
+[e = _ADCON0 -> -> 0 `i `uc ]
+[; ;main.c: 304: ADCON1 = 0x0F;
+"304
+[e = _ADCON1 -> -> 15 `i `uc ]
+[; ;main.c: 307: I2C_Master_Init(100000);
+"307
+[e ( _I2C_Master_Init (1 -> -> 100000 `l `ul ]
+[; ;main.c: 308: tmr0Init();
+"308
+[e ( _tmr0Init ..  ]
+[; ;main.c: 309: initLCD();
+"309
 [e ( _initLCD ..  ]
-[; ;main.c: 305: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-"305
+[; ;main.c: 311: lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
+"311
 [e ( _lcdInst (1 -> -> 1 `i `uc ]
 [e ( __delay (1 -> * -> -> 15 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 306: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-"306
+[; ;main.c: 312: lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
+"312
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 40000000 `l `d .4000.0 `ul ]
-[; ;main.c: 309: motorControl(BOLT, STOPMOTOR);
-"309
-[e ( _motorControl (2 , . `E3181 0 . `E3187 2 ]
-[; ;main.c: 310: motorControl(NUT, STOPMOTOR);
-"310
-[e ( _motorControl (2 , . `E3181 1 . `E3187 2 ]
-[; ;main.c: 311: motorControl(SPACER, STOPMOTOR);
-"311
-[e ( _motorControl (2 , . `E3181 2 . `E3187 2 ]
-[; ;main.c: 312: motorControl(WASHER, STOPMOTOR);
-"312
-[e ( _motorControl (2 , . `E3181 3 . `E3187 2 ]
+[; ;main.c: 315: motorControl(BOLT, STOPMOTOR);
+"315
+[e ( _motorControl (2 , . `E3182 0 . `E3188 2 ]
+[; ;main.c: 316: motorControl(NUT, STOPMOTOR);
+"316
+[e ( _motorControl (2 , . `E3182 1 . `E3188 2 ]
+[; ;main.c: 317: motorControl(SPACER, STOPMOTOR);
+"317
+[e ( _motorControl (2 , . `E3182 2 . `E3188 2 ]
+[; ;main.c: 318: motorControl(WASHER, STOPMOTOR);
+"318
+[e ( _motorControl (2 , . `E3182 3 . `E3188 2 ]
+[; ;main.c: 320: while (1) {
+"320
+[e :U 339 ]
+{
 [; ;main.c: 321: hibernate();
 "321
 [e ( _hibernate ..  ]
 [; ;main.c: 322: mainMenu();
 "322
 [e ( _mainMenu ..  ]
-[; ;main.c: 323: while(1);
 "323
-[e :U 337 ]
-[e :U 336 ]
-[e $U 337  ]
+}
 [e :U 338 ]
-[; ;main.c: 336: }
-"336
-[e :UE 335 ]
+"320
+[e $U 339  ]
+[e :U 340 ]
+[; ;main.c: 323: }
+[; ;main.c: 324: }
+"324
+[e :UE 337 ]
 }
 [p f _sprintf 8388736 ]
 [p f _printf 8388736 ]

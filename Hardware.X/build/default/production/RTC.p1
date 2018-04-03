@@ -3642,21 +3642,22 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;RTC.c: 70: endTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
 "70
 [e = . _endTime 2 + & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 15 `i * >> & -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 240 `i -> 4 `i -> 10 `i ]
-[v _operatingTime `S268 ~T0 @X0 1 a ]
-[; ;RTC.c: 72: Time operatingTime;
-[; ;RTC.c: 73: operatingTime.h = endTime.h - startTime.h;
+"72
+[v _operatingTimeLocal `S268 ~T0 @X0 1 a ]
+[; ;RTC.c: 72: Time operatingTimeLocal;
+[; ;RTC.c: 73: operatingTimeLocal.h = endTime.h - startTime.h;
 "73
-[e = . _operatingTime 0 - . _endTime 0 . _startTime 0 ]
-[; ;RTC.c: 74: operatingTime.m = endTime.m - startTime.m;
+[e = . _operatingTimeLocal 0 - . _endTime 0 . _startTime 0 ]
+[; ;RTC.c: 74: operatingTimeLocal.m = endTime.m - startTime.m;
 "74
-[e = . _operatingTime 1 - . _endTime 1 . _startTime 1 ]
-[; ;RTC.c: 75: operatingTime.s = endTime.s - startTime.s;
+[e = . _operatingTimeLocal 1 - . _endTime 1 . _startTime 1 ]
+[; ;RTC.c: 75: operatingTimeLocal.s = endTime.s - startTime.s;
 "75
-[e = . _operatingTime 2 - . _endTime 2 . _startTime 2 ]
+[e = . _operatingTimeLocal 2 - . _endTime 2 . _startTime 2 ]
 "77
 [v _res `i ~T0 @X0 1 a ]
-[; ;RTC.c: 77: int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
-[e = _res + + * * -> 60 `i -> 60 `i . _operatingTime 0 * -> 60 `i . _operatingTime 1 . _operatingTime 2 ]
+[; ;RTC.c: 77: int res = 60*60*operatingTimeLocal.h + 60*operatingTimeLocal.m + operatingTimeLocal.s;
+[e = _res + + * * -> 60 `i -> 60 `i . _operatingTimeLocal 0 * -> 60 `i . _operatingTimeLocal 1 . _operatingTimeLocal 2 ]
 [; ;RTC.c: 78: return res;
 "78
 [e ) _res ]

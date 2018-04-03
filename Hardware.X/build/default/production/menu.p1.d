@@ -5,6 +5,7 @@ I2C.h  \
 timer.h  \
 RTC.h  \
 lcd.h  \
+EEPROM.h  \
 menu.h  \
 hardware.h  \
 configBits.h  \

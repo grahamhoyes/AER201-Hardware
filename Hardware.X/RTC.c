@@ -69,12 +69,12 @@ int RTC_getOperatingTime(void) {
     endTime.m = __bcd_to_num(time[1]);
     endTime.s = __bcd_to_num(time[0]);
     
-    Time operatingTime;
-    operatingTime.h = endTime.h - startTime.h;
-    operatingTime.m = endTime.m - startTime.m;
-    operatingTime.s = endTime.s - startTime.s;
+    Time operatingTimeLocal;
+    operatingTimeLocal.h = endTime.h - startTime.h;
+    operatingTimeLocal.m = endTime.m - startTime.m;
+    operatingTimeLocal.s = endTime.s - startTime.s;
     
-    int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
+    int res = 60*60*operatingTimeLocal.h + 60*operatingTimeLocal.m + operatingTimeLocal.s;
     return res;
 }
 

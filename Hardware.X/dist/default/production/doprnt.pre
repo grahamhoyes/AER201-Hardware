@@ -257,11 +257,9 @@ extern double round(double);
 #pragma warning disable 350
 
 # 354
-const static unsigned long dpowers[] = {1, 10, 100, 1000, 10000,
+const static unsigned int dpowers[] = {1, 10, 100, 1000, 10000,
 
-100000, 1000000, 10000000, 100000000,
-1000000000
-
+# 359
 };
 
 # 455
@@ -274,10 +272,13 @@ _doprnt(struct __prbuf * pb, register const char * f, register va_list ap)
 # 499
 signed char c;
 
-# 504
-int prec;
+int width;
 
-# 508
+
+
+
+signed char prec;
+
 unsigned char flag;
 
 # 523
@@ -286,7 +287,7 @@ unsigned long vd;
 double integ;
 } tmpval;
 
-unsigned long val;
+unsigned int val;
 unsigned len;
 const char * cp;
 
@@ -300,22 +301,40 @@ if(pb->func) (pb->func(c)); else ((*pb->ptr++ = c));
 continue;
 }
 
-# 548
+
+width = 0;
+
 flag = 0;
 
-# 633
-loop:
+for(;;) {
+switch(*f) {
 
+# 579
+case '0':
+flag |= 0x04;
+f++;
+continue;
+
+}
+break;
+}
+
+# 597
+if(isdigit((unsigned)*f)) {
+width = 0;
+do {
+width *= 10;
+width += *f++ - '0';
+} while(isdigit((unsigned)*f));
+
+# 608
+}
+
+# 635
 switch(c = *f++) {
 
 case 0:
 goto alldone;
-
-
-case 'l':
-
-flag |= 0x10;
-goto loop;
 
 # 697
 case 'd':
@@ -332,9 +351,26 @@ cp = (*(const char * *)__va_arg((*(const char * **)ap), (const char *)0));
 if(!cp)
 cp = "(null)";
 
-# 777
-while(*cp)
+
+
+len = 0;
+while(cp[len])
+len++;
+
+# 757
+if(width > len)
+width -= len;
+else
+width = 0;
+
+# 764
+while(width--)
+if(pb->func) (pb->func(' ')); else ((*pb->ptr++ = ' '));
+
+while(len--)
 if(pb->func) (pb->func(*cp++)); else ((*pb->ptr++ = *cp++));
+
+# 774
 continue;
 
 # 802
@@ -343,23 +379,39 @@ default:
 # 813
 continue;
 
-# 822
+
+
+case 'u':
+flag |= 0x40;
+break;
+
+
 }
 
-# 1253
+# 1251
+if((flag & 0x40) == 0x00)
+
 {
 
-if(flag & 0x10)
-val = (*(long *)__va_arg((*(long **)ap), (long)0));
-else
+# 1259
+val = (int)(*(int *)__va_arg((*(int **)ap), (int)0));
 
-val = (long)(*(int *)__va_arg((*(int **)ap), (int)0));
-
-if((long)val < 0) {
+if((int)val < 0) {
 flag |= 0x03;
 val = -val;
 }
 
+}
+
+else
+
+
+
+
+{
+
+# 1286
+val = (*(unsigned *)__va_arg((*(unsigned **)ap), (unsigned)0));
 }
 
 # 1305
@@ -367,8 +419,42 @@ for(c = 1 ; c != sizeof dpowers/sizeof dpowers[0] ; c++)
 if(val < dpowers[c])
 break;
 
-# 1422
+# 1345
+if(width && flag & 0x03)
+width--;
+
+# 1381
+if(width > c)
+width -= c;
+else
+width = 0;
+
+
+if(flag & 0x04) {
+
+
+
+
+if(flag & 0x03)
+if(pb->func) (pb->func('-')); else ((*pb->ptr++ = '-'));
+
+# 1415
+if(width)
+do
+if(pb->func) (pb->func('0')); else ((*pb->ptr++ = '0'));
+while(--width);
+
+} else
+
 {
+
+if(width
+
+# 1428
+)
+do
+if(pb->func) (pb->func(' ')); else ((*pb->ptr++ = ' '));
+while(--width);
 
 # 1438
 if(flag & 0x03)

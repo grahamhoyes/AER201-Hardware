@@ -273,7 +273,13 @@ void interrupt interruptHandler(void) {
     if (T0IE && T0IF) {
         T0IF = 0;
         tmr0_ISR();
-    } 
+    }
+    if (INT1IF) {
+        if (currentMode == LOGS) {
+            interruptKeypress = (PORTB & 0xF0) >> 4;
+        }
+        INT1IF = 0; // Clear flag
+    }
 }
 
 void main(void) {
@@ -311,26 +317,8 @@ void main(void) {
     motorControl(SPACER, STOPMOTOR);
     motorControl(WASHER, STOPMOTOR);
     
-//    currentMode = PACKAGING;
-//    motorControl(BOLT, FORWARD);
-//    motorControl(NUT, FORWARD);
-//    motorControl(SPACER, FORWARD); // This triggers spacers and washers
-//    motorControl(WASHER, FORWARD);
-//    while(1);
-    
-    hibernate();
-    mainMenu();
-    while(1);
-    //    while (1) {
-//        motorControl(BOLT, FORWARD);
-//        motorControl(SPACER, FORWARD);
-//        motorControl(NUT, FORWARD);
-//        motorControl(WASHER, FORWARD);
-//        __delay_ms(2600);
-//        motorControl(BOLT, REVERSE);
-//        motorControl(SPACER, REVERSE);
-//        motorControl(NUT, REVERSE);
-//        motorControl(WASHER, REVERSE);
-//        __delay_ms(400);
-//    }
+    while (1) {
+        hibernate();
+        mainMenu();
+    }
 }

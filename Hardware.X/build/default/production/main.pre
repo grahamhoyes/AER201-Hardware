@@ -3895,6 +3895,8 @@ char pollKeypad(void);
 void I2C_Send(unsigned char address, char * data);
 
 # 11 "menu.h"
+volatile unsigned char interruptKeypress = 0xFF;
+
 void inputEntry(void);
 void hibernate(void);
 void mainMenu(void);
@@ -4264,11 +4266,17 @@ if (T0IE && T0IF) {
 T0IF = 0;
 tmr0_ISR();
 }
+if (INT1IF) {
+if (currentMode == LOGS) {
+interruptKeypress = (PORTB & 0xF0) >> 4;
+}
+INT1IF = 0;
+}
 }
 
 void main(void) {
 
-# 284
+# 290
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
@@ -4299,10 +4307,8 @@ motorControl(NUT, STOPMOTOR);
 motorControl(SPACER, STOPMOTOR);
 motorControl(WASHER, STOPMOTOR);
 
-# 321
+while (1) {
 hibernate();
 mainMenu();
-while(1);
-
-# 336
+}
 }

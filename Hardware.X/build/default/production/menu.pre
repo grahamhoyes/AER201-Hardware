@@ -2,6 +2,8 @@
 # 1 "menu.c"
 
 # 11 "menu.h"
+volatile unsigned char interruptKeypress = 0xFF;
+
 void inputEntry(void);
 void hibernate(void);
 void mainMenu(void);
@@ -4010,7 +4012,30 @@ double Timer_getOperatingTime(void);
 long getTest(void);
 void resetMotorTimer(void);
 
-# 11 "menu.c"
+# 11 "EEPROM.h"
+struct operationInfo {
+unsigned char year;
+unsigned char day;
+unsigned char month;
+unsigned char minutes;
+unsigned char seconds;
+unsigned char packagedB;
+unsigned char packagedN;
+unsigned char packagedS;
+unsigned char packagedW;
+unsigned char remainingB;
+unsigned char remainingN;
+unsigned char remainingS;
+unsigned char remainingW;
+};
+
+void EEPROM_write(unsigned int address, unsigned char data);
+unsigned char EEPROM_read(unsigned int address);
+void EEPROM_logOperation(struct operationInfo *data);
+int EEPROM_readLog(unsigned int logNum, struct operationInfo *data);
+void EEPROM_clear(void);
+
+# 12 "menu.c"
 void hibernate(void) {
 printStringLCD("Press 1 to begin");
 int pressed;
@@ -4023,10 +4048,42 @@ return;
 }
 
 void viewLogs() {
-printStringLCD("Not there yet\n* to return");
+
+
+unsigned int i = 0;
+unsigned int entry = 0;
+printStringLCD("0:Return\n<>:Navigate");
+int pressed;
 while (1) {
-int pressed = pollKeypad();
-if (pressed == 42) return;
+pressed = pollKeypad();
+if (pressed == '0') {
+return;
+} else if (pressed == '>' || pressed == '#') {
+i = (i < 16) ? i+1 : 0;
+} else if (pressed == '<' || pressed == '*') {
+i = (i > 0) ? i-1 : 16;
+}
+
+if (i == 0) {
+printStringLCD("0:Return\n<>:Navigate");
+} else {
+entry = (unsigned int)(i-1)/4;
+struct operationInfo run;
+int success = EEPROM_readLog(entry, &run);
+if (success) {
+char msgs[4][32];
+sprintf(msgs[0], "Date:\n20%02d-%02d-%02d", run.year, run.minutes, run.seconds);
+sprintf(msgs[1], "Packaged:\nB%d N%d S%d W%d", run.packagedB, run.packagedN, run.packagedS, run.packagedW);
+sprintf(msgs[2], "Remaining:\nB%d N%d S%d W%d", run.remainingB, run.remainingN, run.remainingS, run.remainingW);
+sprintf(msgs[3], "Time:\n%d:%d", run.minutes, run.seconds);
+int j = (i-1)%4;
+printStringLCD(msgs[j]);
+} else {
+char msg[32];
+sprintf(msg, "Entry %u\nis empty", entry);
+printStringLCD(msg);
+}
+}
 }
 }
 
@@ -4190,49 +4247,96 @@ hibernate();
 needToPrint = 1;
 } else if (pressed - 48 == 1) {
 inputEntry();
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("Press 1 to start");
-lcdInst(0xC0);;
-printf("packaging");
+printStringLCD("Press 1 to start\npackaging");
 int startPress = pollKeypad();
 while (startPress - 48 != 1) {
 startPress = pollKeypad();
 }
 RTC_startOperation();
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("Starting packaging");
+printStringLCD("Packaging\nPlease wait...");
 I2C_Send(nanoAddr, "\1Starting packaging\0");
 packaging();
 clearing();
 long operationTime = RTC_getOperatingTime();
+int operationMinutes = (int)(operationTime/60);
+int operationSeconds = (int)operationTime - 60*operationMinutes;
 
-printf("Summary:");
-_delay((unsigned long)((1000)*(40000000/4000.0)));
+
+
+char summaries[3][32];
+char savedToEEPROM = 0;
+
+sprintf(summaries[0], "0:return 1:save\n<>:view summary");
+printStringLCD(summaries[0]);
+
+
 int i;
-while(1) {
-for (i = 0; i < 8; i++) {
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("C%d: %s x%d", i+1, fSLookup[params.toFill[i]], params.setMultiple[i]);
+
+# 253
+sprintf(summaries[1], "Remaining:\nB%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
+
+
+sprintf(summaries[2], "Operating time:\n%d:%d", operationMinutes, operationSeconds);
+
+unsigned char pressed;
+i = 0;
+while (1) {
+pressed = pollKeypad();
+if (pressed == '>' || pressed == '#') {
+i = (i < 10) ? i+1 : 0;
+} else if (pressed == '<' || pressed == '*') {
+i = (i > 0) ? i-1 : 10;
+} else if (pressed == '0') {
+
+
+return;
+} else if (pressed == '1') {
+if (!savedToEEPROM) {
+
+unsigned char time[7];
+RTC_getTime(time);
+struct operationInfo run;
+
+run.year = (time[6] & 0x0F) + ((time[6] & 0xF0)>>4)*10;
+run.month = (time[5] & 0x0F) + ((time[5] & 0xF0)>>4)*10;
+run.day = (time[4] & 0x0F) + ((time[4] & 0xF0)>>4)*10;
+
+run.minutes = operationMinutes;
+run.seconds = operationSeconds;
+
+run.packagedB = dispensed.b;
+run.packagedN = dispensed.n;
+run.packagedS = dispensed.s;
+run.packagedW = dispensed.w;
+
+run.remainingB = extras.b;
+run.remainingN = extras.n;
+run.remainingS = extras.s;
+run.remainingW = extras.w;
+
+EEPROM_logOperation(&run);
+printStringLCD("Saved to EEPROM");
+_delay((unsigned long)((2000)*(40000000/4000.0)));
+
+} else {
+printStringLCD("Already saved");
 _delay((unsigned long)((2000)*(40000000/4000.0)));
 }
 
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("Remaining:");
-lcdInst(0xC0);;
-printf("B%d N%d S%d W%d", extras.b, extras.n, extras.s, extras.w);
-_delay((unsigned long)((2000)*(40000000/4000.0)));
-lcdInst(0x01);_delay((unsigned long)((15)*(40000000/4000.0)));;
-lcdInst(0x80);_delay((unsigned long)((5)*(40000000/4000.0)));;
-printf("Time:");
-lcdInst(0xC0);;
-printf("%ld", operationTime);
-_delay((unsigned long)((2000)*(40000000/4000.0)));
-
 }
+
+if (i == 0) {
+printStringLCD(summaries[0]);
+} else if (i > 0 && i <= 8) {
+char msg[32];
+sprintf(msg, "C%d: %s x%d", i, fSLookup[params.toFill[i-1]], params.setMultiple[i-1]);
+printStringLCD(msg);
+} else if (i > 8) {
+printStringLCD(summaries[i-8]);
+}
+}
+
+# 343
 } else if (pressed - 48 == 2) {
 viewLogs();
 needToPrint = 1;

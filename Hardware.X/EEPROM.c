@@ -42,15 +42,15 @@ unsigned char EEPROM_read(unsigned int address) {
     return EEDATA;
 }
 
-void EEPROM_logOperation(struct operationInfo *data) {
+void EEPROM_logOperation(struct operationInfo *data) { // This might be an issue if the variables in data are longer than they are supposed to be... should probably & with stuff to make sure
     // Perform magic to get everything to fit in 8 bytes
-    unsigned char line0 = (data->year << 3) | (data->day >> 2);
-    unsigned char line1 = (data->day << 6) | (data->month << 2) | (data->packagedN >> 3);
-    unsigned char line2 = (data->packagedN << 5) | (data->packagedW);
-    unsigned char line3 = (data->packagedB << 4) | (data->packagedS);
-    unsigned char line4 = (data->remainingB << 4) | (data->remainingN >> 2);
-    unsigned char line5 = (data->remainingN << 6) | (data->remainingS << 1) | (data->remainingW >> 5);
-    unsigned char line6 = (data->remainingW << 3) | (data->minutes);
+    unsigned char line0 = (data->year << 3) | ((data->day & 0b00011111) >> 2);
+    unsigned char line1 = (data->day << 6) | ((data->month & 0b00001111) << 2) | ((data->packagedN & 0b00011111) >> 3);
+    unsigned char line2 = (data->packagedN << 5) | (data->packagedW & 0b00011111);
+    unsigned char line3 = (data->packagedB << 4) | (data->packagedS & 0b00001111);
+    unsigned char line4 = (data->remainingB << 4) | ((data->remainingN &0b00011111) >> 2);
+    unsigned char line5 = (data->remainingN << 6) | ((data->remainingS & 0b00011111) << 1) | ((data->remainingW & 0b00011111) >> 5);
+    unsigned char line6 = (data->remainingW << 3) | (data->minutes & 0b00000111);
     unsigned char line7 = (data->seconds << 2) | 0b1;
     
     // Figure out what the next unused block of EEPROM is
@@ -70,7 +70,7 @@ void EEPROM_logOperation(struct operationInfo *data) {
     EEPROM_write(address+7, line7);
 }
 
-void EEPROM_readLog(unsigned int logNum, struct operationInfo *data) {
+int EEPROM_readLog(unsigned int logNum, struct operationInfo *data) {
     unsigned int address = logNum*8;
     
     unsigned char line0 = EEPROM_read(address);
@@ -81,6 +81,10 @@ void EEPROM_readLog(unsigned int logNum, struct operationInfo *data) {
     unsigned char line5 = EEPROM_read(address+5);
     unsigned char line6 = EEPROM_read(address+6);
     unsigned char line7 = EEPROM_read(address+7);
+    
+    if ((line7 & 0b1) == 0) {
+        return 0; // Entry is empty
+    }
     
     // Extract all the data
     data->year = (unsigned char)(line0 >> 3);
@@ -97,6 +101,7 @@ void EEPROM_readLog(unsigned int logNum, struct operationInfo *data) {
     data->minutes = (unsigned char)(line6 & 0b00000111);
     data->seconds = (unsigned char)(line7 >> 2);
     
+    return 1;
 }
 
 void EEPROM_clear(void) {

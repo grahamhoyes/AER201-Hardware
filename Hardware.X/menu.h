@@ -8,6 +8,8 @@
 #ifndef MENU_H
 #define	MENU_H
 
+volatile unsigned char interruptKeypress = 0xFF;
+
 void inputEntry(void);
 void hibernate(void);
 void mainMenu(void);

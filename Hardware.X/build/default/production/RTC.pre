@@ -3931,12 +3931,12 @@ endTime.h = (time[2] & 0x0F) + ((time[2] & 0xF0)>>4)*10;
 endTime.m = (time[1] & 0x0F) + ((time[1] & 0xF0)>>4)*10;
 endTime.s = (time[0] & 0x0F) + ((time[0] & 0xF0)>>4)*10;
 
-Time operatingTime;
-operatingTime.h = endTime.h - startTime.h;
-operatingTime.m = endTime.m - startTime.m;
-operatingTime.s = endTime.s - startTime.s;
+Time operatingTimeLocal;
+operatingTimeLocal.h = endTime.h - startTime.h;
+operatingTimeLocal.m = endTime.m - startTime.m;
+operatingTimeLocal.s = endTime.s - startTime.s;
 
-int res = 60*60*operatingTime.h + 60*operatingTime.m + operatingTime.s;
+int res = 60*60*operatingTimeLocal.h + 60*operatingTimeLocal.m + operatingTimeLocal.s;
 return res;
 }
 

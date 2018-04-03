@@ -24,5 +24,11 @@ struct operationInfo {
     unsigned char remainingW;
 };
 
+void EEPROM_write(unsigned int address, unsigned char data);
+unsigned char EEPROM_read(unsigned int address);
+void EEPROM_logOperation(struct operationInfo *data);
+int EEPROM_readLog(unsigned int logNum, struct operationInfo *data);
+void EEPROM_clear(void);
+
 #endif	/* EEPROM_H */
 
